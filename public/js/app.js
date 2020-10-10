@@ -3334,6 +3334,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../Components/ItemComponent */ "./resources/js/Components/ItemComponent.vue");
+/* harmony import */ var _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../Jetstream/Modal */ "./resources/js/Jetstream/Modal.vue");
 //
 //
 //
@@ -3407,12 +3408,132 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ItemComponent: _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ItemComponent: _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Modal: _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -26918,8 +27039,79 @@ var render = function() {
                 _vm._v("Budget for October 2020")
               ]),
               _vm._v(" "),
-              _c("div", [
-                _c("div", { staticClass: "inline-block relative w-64 ml-4" }, [
+              _c("div", { staticClass: "flex items-center" }, [
+                _c(
+                  "div",
+                  { staticClass: "inline-block relative w-32 ml-4 mr-2" },
+                  [
+                    _c(
+                      "select",
+                      {
+                        staticClass:
+                          "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                      },
+                      [
+                        _c("option"),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("January")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("February")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("March")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("April")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("May")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("June")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("July")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("August")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("September")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("October")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("November")]),
+                        _vm._v(" "),
+                        _c("option", [_vm._v("December")])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "fill-current h-4 w-4",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              viewBox: "0 0 20 20"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d:
+                                  "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "mr-4" }, [_vm._v("Month")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "inline-block relative w-32 mr-2" }, [
                   _c(
                     "select",
                     {
@@ -26927,15 +27119,29 @@ var render = function() {
                         "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
                     },
                     [
-                      _c("option", [
-                        _vm._v(
-                          "Really long option that will likely overlap the chevron"
-                        )
-                      ]),
+                      _c("option"),
                       _vm._v(" "),
-                      _c("option", [_vm._v("Option 2")]),
+                      _c("option", [_vm._v("2018")]),
                       _vm._v(" "),
-                      _c("option", [_vm._v("Option 3")])
+                      _c("option", [_vm._v("2019")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2020")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2021")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2022")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2023")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2024")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2025")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2026")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2027")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("2028")])
                     ]
                   ),
                   _vm._v(" "),
@@ -26966,7 +27172,18 @@ var render = function() {
                       )
                     ]
                   )
-                ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mr-4" }, [_vm._v("Year")]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg"
+                  },
+                  [_vm._v("\n            Go to Month\n          ")]
+                )
               ]),
               _vm._v(" "),
               _c("h2", { staticClass: "text-2xl m-4" }, [_vm._v("Paychecks")]),
@@ -27108,7 +27325,99 @@ var render = function() {
                   planned: "200.00",
                   spent: "34.00"
                 }
-              })
+              }),
+              _vm._v(" "),
+              _c("Modal", { attrs: { show: "true" } }, [
+                _c("div", { staticClass: "p-8" }, [
+                  _c("h1", { staticClass: "text-2xl" }, [
+                    _vm._v("Create New Item")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-2" }, [
+                    _c("label", [_vm._v("Name")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "w-full border p-2",
+                      attrs: { type: "text" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-2" }, [
+                    _c("div", [_c("label", [_vm._v("Category")])]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "inline-block relative w-64 mr-2" },
+                      [
+                        _c(
+                          "select",
+                          {
+                            staticClass:
+                              "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                          },
+                          [
+                            _c("option", [_vm._v("Food")]),
+                            _vm._v(" "),
+                            _c("option", [_vm._v("Transportation")]),
+                            _vm._v(" "),
+                            _c("option", [_vm._v("Music")]),
+                            _vm._v(" "),
+                            _c("option", [_vm._v("Miscellaneous")])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "fill-current h-4 w-4",
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  viewBox: "0 0 20 20"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                  }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-2" }, [
+                    _c("input", {
+                      staticClass: "border",
+                      attrs: { type: "checkbox" }
+                    }),
+                    _vm._v(" "),
+                    _c("label", [_vm._v("Fund?")])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-2" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                      },
+                      [_vm._v("\n                Create New\n              ")]
+                    )
+                  ])
+                ])
+              ])
             ],
             1
           )
@@ -44575,8 +44884,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })
