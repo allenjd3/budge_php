@@ -27607,7 +27607,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", [
                       _c("input", {
-                        staticClass: "w-64 border p-2",
+                        staticClass: "w-64 border p-2 h-10",
                         attrs: { type: "date" }
                       })
                     ])
@@ -27624,7 +27624,7 @@ var render = function() {
                           "select",
                           {
                             staticClass:
-                              "block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 rounded leading-tight focus:outline-none focus:shadow-outline h-10"
+                              "block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline h-10"
                           },
                           [
                             _c("option"),
@@ -27724,7 +27724,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "pt-12" }, [
+      _c("div", { staticClass: "pt-12 mb-12" }, [
         _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
           _c(
             "div",

@@ -13,7 +13,7 @@
               <div class="mr-4">
                 <label>Date</label>
                 <div>
-                  <input type="date" class="w-64 border p-2" />
+                  <input type="date" class="w-64 border p-2 h-10" />
                 </div>
               </div>
               <div class="ml-4">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="inline-block relative w-32 mr-2">
                   <select
-                    class="block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 rounded leading-tight focus:outline-none focus:shadow-outline h-10"
+                    class="block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline h-10"
                   >
                     <option></option>
                     <option>January</option>
@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-    <div class="pt-12">
+    <div class="pt-12 mb-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
           <table class="table-fixed w-full">
