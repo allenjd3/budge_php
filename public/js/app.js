@@ -3370,6 +3370,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -26871,6 +26908,129 @@ var render = function() {
     },
     [
       _vm._v(" "),
+      _c("div", { staticClass: "pt-12" }, [
+        _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
+          _c(
+            "div",
+            { staticClass: "bg-white overflow-hidden shadow-xl sm:rounded-lg" },
+            [
+              _c("h1", { staticClass: "text-3xl m-4" }, [
+                _vm._v("Budget for October 2020")
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("div", { staticClass: "inline-block relative w-64 ml-4" }, [
+                  _c(
+                    "select",
+                    {
+                      staticClass:
+                        "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                    },
+                    [
+                      _c("option", [
+                        _vm._v(
+                          "Really long option that will likely overlap the chevron"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("Option 2")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v("Option 3")])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                    },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          staticClass: "fill-current h-4 w-4",
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            viewBox: "0 0 20 20"
+                          }
+                        },
+                        [
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("h2", { staticClass: "text-2xl m-4" }, [_vm._v("Paychecks")]),
+              _vm._v(" "),
+              _c("item-component", {
+                attrs: {
+                  name: "First Paycheck",
+                  planned: "2000.00",
+                  spent: "34.00"
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex justify-around my-8" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "mx-2 text-center pt-4 pb-8 bg-teal-100 w-64 rounded-lg"
+                  },
+                  [
+                    _c("h3", { staticClass: "text-lg" }, [
+                      _vm._v("Total Planned")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-3xl" }, [_vm._v("230.00")])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "mx-2 text-center pt-4 pb-8 bg-indigo-100 w-64 rounded-lg"
+                  },
+                  [
+                    _c("h3", { staticClass: "text-lg" }, [
+                      _vm._v("Total Paid")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-3xl" }, [_vm._v("230.00")])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "mx-2 text-center pt-4 pb-8 bg-purple-100 w-64 rounded-lg"
+                  },
+                  [
+                    _c("h3", { staticClass: "text-lg" }, [
+                      _vm._v("Amount Left")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-3xl" }, [_vm._v("230.00")])
+                  ]
+                )
+              ])
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
       _c("div", { staticClass: "py-12" }, [
         _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
           _c(
@@ -44415,8 +44575,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })
