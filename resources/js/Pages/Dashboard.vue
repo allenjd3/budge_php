@@ -135,54 +135,91 @@
             planned="200.00"
             spent="34.00"
           />
-          <Modal show="true">
-            <div class="p-8">
-              <h1 class="text-2xl">Create New Item</h1>
-              <div class="my-2">
-                <label>Name</label>
-                <input type="text" class="w-full border p-2" />
+          <Modal ref="new-item" :show="showItemModal">
+            <div class="p-8 relative">
+              <div
+                class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
+                @click="closeCreateItem"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-x"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
               </div>
-              <div class="my-2">
-                <div>
-                  <label>Category</label>
+              <h1 class="text-2xl">Create New Item</h1>
+              <form @submit.prevent="storeItem">
+                <div class="my-2">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    class="w-full border p-2"
+                    v-model="createItemForm.name"
+                  />
                 </div>
-                <div class="inline-block relative w-64 mr-2">
-                  <select
-                    class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
-                  >
-                    <option>Food</option>
-                    <option>Transportation</option>
-                    <option>Music</option>
-                    <option>Miscellaneous</option>
-                  </select>
-                  <div
-                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-                  >
-                    <svg
-                      class="fill-current h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
+                <div class="my-2">
+                  <div>
+                    <label>Category</label>
+                  </div>
+                  <div class="inline-block relative w-64 mr-2">
+                    <select
+                      class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                      v-model="createItemForm.category"
                     >
-                      <path
-                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                      />
-                    </svg>
+                      <option>Food</option>
+                      <option>Transportation</option>
+                      <option>Music</option>
+                      <option>Miscellaneous</option>
+                    </select>
+                    <div
+                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                    >
+                      <svg
+                        class="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="my-2">
-                <input type="checkbox" class="border"/>
-                <label>Fund?</label>
-              </div>
-              <div class="my-2">
-                <button
-                  class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
-                >
-                  Create New
-                </button>
-              </div>
+                <div class="my-2">
+                  <input
+                    type="checkbox"
+                    class="border"
+                    v-model="createItemForm.isFund"
+                  />
+                  <label>Fund?</label>
+                </div>
+                <div class="my-2">
+                  <button
+                    class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                  >
+                    Create New
+                  </button>
+                </div>
+              </form>
             </div>
           </Modal>
+          <button
+            class="bg-gray-900 w-32 h-10 text-gray-100"
+            @click="createItem"
+          >
+            Create Item
+          </button>
         </div>
       </div>
     </div>
@@ -193,12 +230,39 @@
 import AppLayout from "./../Layouts/AppLayout";
 import ItemComponent from "./../Components/ItemComponent";
 import Modal from "./../Jetstream/Modal";
+import {Inertia} from "@inertiajs/inertia";
 
 export default {
   components: {
     AppLayout,
     ItemComponent,
     Modal,
+  },
+  data() {
+    return {
+      showItemModal: false,
+      createItemForm: {
+        name : null,
+        category : null,
+        isFund : null
+      },
+      item : ""
+    };
+  },
+  mounted() {
+    console.log(this.item);
+  },
+  methods: {
+    createItem() {
+      this.showItemModal = true;
+    },
+    storeItem() {
+      Inertia.post("/items", {item : this.createItemForm})
+      this.showItemModal = false;
+    },
+    closeCreateItem() {
+      this.showItemModal = false;
+    },
   },
 };
 </script>

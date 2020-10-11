@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', function() {
 
     return Inertia\Inertia::render('ItemTransactions');
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
+    $item = $request;
+    return redirect()->route('dashboard', ['item'=>$item]);
 });

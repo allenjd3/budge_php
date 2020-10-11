@@ -3335,6 +3335,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../Components/ItemComponent */ "./resources/js/Components/ItemComponent.vue");
 /* harmony import */ var _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../Jetstream/Modal */ "./resources/js/Jetstream/Modal.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__);
 //
 //
 //
@@ -3526,6 +3528,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -3534,6 +3574,34 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     ItemComponent: _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     Modal: _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: function data() {
+    return {
+      showItemModal: false,
+      createItemForm: {
+        name: null,
+        category: null,
+        isFund: null
+      },
+      item: ""
+    };
+  },
+  mounted: function mounted() {
+    console.log(this.item);
+  },
+  methods: {
+    createItem: function createItem() {
+      this.showItemModal = true;
+    },
+    storeItem: function storeItem() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/items", {
+        item: this.createItemForm
+      });
+      this.showItemModal = false;
+    },
+    closeCreateItem: function closeCreateItem() {
+      this.showItemModal = false;
+    }
   }
 });
 
@@ -27446,97 +27514,258 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("Modal", { attrs: { show: "true" } }, [
-                _c("div", { staticClass: "p-8" }, [
-                  _c("h1", { staticClass: "text-2xl" }, [
-                    _vm._v("Create New Item")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "my-2" }, [
-                    _c("label", [_vm._v("Name")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "w-full border p-2",
-                      attrs: { type: "text" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "my-2" }, [
-                    _c("div", [_c("label", [_vm._v("Category")])]),
-                    _vm._v(" "),
+              _c(
+                "Modal",
+                { ref: "new-item", attrs: { show: _vm.showItemModal } },
+                [
+                  _c("div", { staticClass: "p-8 relative" }, [
                     _c(
                       "div",
-                      { staticClass: "inline-block relative w-64 mr-2" },
+                      {
+                        staticClass:
+                          "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
+                        on: { click: _vm.closeCreateItem }
+                      },
                       [
                         _c(
-                          "select",
+                          "svg",
                           {
-                            staticClass:
-                              "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                            staticClass: "feather feather-x",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
                           },
                           [
-                            _c("option", [_vm._v("Food")]),
+                            _c("line", {
+                              attrs: { x1: "18", y1: "6", x2: "6", y2: "18" }
+                            }),
                             _vm._v(" "),
-                            _c("option", [_vm._v("Transportation")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("Music")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("Miscellaneous")])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-                          },
-                          [
-                            _c(
-                              "svg",
-                              {
-                                staticClass: "fill-current h-4 w-4",
-                                attrs: {
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  viewBox: "0 0 20 20"
-                                }
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    d:
-                                      "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                                  }
-                                })
-                              ]
-                            )
+                            _c("line", {
+                              attrs: { x1: "6", y1: "6", x2: "18", y2: "18" }
+                            })
                           ]
                         )
                       ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "my-2" }, [
-                    _c("input", {
-                      staticClass: "border",
-                      attrs: { type: "checkbox" }
-                    }),
+                    ),
                     _vm._v(" "),
-                    _c("label", [_vm._v("Fund?")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "my-2" }, [
+                    _c("h1", { staticClass: "text-2xl" }, [
+                      _vm._v("Create New Item")
+                    ]),
+                    _vm._v(" "),
                     _c(
-                      "button",
+                      "form",
                       {
-                        staticClass:
-                          "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            return _vm.storeItem($event)
+                          }
+                        }
                       },
-                      [_vm._v("\n                Create New\n              ")]
+                      [
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("label", [_vm._v("Name")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.createItemForm.name,
+                                expression: "createItemForm.name"
+                              }
+                            ],
+                            staticClass: "w-full border p-2",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.createItemForm.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.createItemForm,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("div", [_c("label", [_vm._v("Category")])]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "inline-block relative w-64 mr-2" },
+                            [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.createItemForm.category,
+                                      expression: "createItemForm.category"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.createItemForm,
+                                        "category",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("option", [_vm._v("Food")]),
+                                  _vm._v(" "),
+                                  _c("option", [_vm._v("Transportation")]),
+                                  _vm._v(" "),
+                                  _c("option", [_vm._v("Music")]),
+                                  _vm._v(" "),
+                                  _c("option", [_vm._v("Miscellaneous")])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                                },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticClass: "fill-current h-4 w-4",
+                                      attrs: {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        viewBox: "0 0 20 20"
+                                      }
+                                    },
+                                    [
+                                      _c("path", {
+                                        attrs: {
+                                          d:
+                                            "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.createItemForm.isFund,
+                                expression: "createItemForm.isFund"
+                              }
+                            ],
+                            staticClass: "border",
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked: Array.isArray(_vm.createItemForm.isFund)
+                                ? _vm._i(_vm.createItemForm.isFund, null) > -1
+                                : _vm.createItemForm.isFund
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.createItemForm.isFund,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.createItemForm,
+                                        "isFund",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.createItemForm,
+                                        "isFund",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.createItemForm, "isFund", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", [_vm._v("Fund?")])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                            },
+                            [
+                              _vm._v(
+                                "\n                  Create New\n                "
+                              )
+                            ]
+                          )
+                        ])
+                      ]
                     )
                   ])
-                ])
-              ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "bg-gray-900 w-32 h-10 text-gray-100",
+                  on: { click: _vm.createItem }
+                },
+                [_vm._v("\n          Create Item\n        ")]
+              )
             ],
             1
           )
