@@ -3586,11 +3586,9 @@ __webpack_require__.r(__webpack_exports__);
       item: ""
     };
   },
-  mounted: function mounted() {
-    console.log(this.item);
-  },
   methods: {
     createItem: function createItem() {
+      console.log('im working...');
       this.showItemModal = true;
     },
     storeItem: function storeItem() {
@@ -3599,7 +3597,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.showItemModal = false;
     },
-    closeCreateItem: function closeCreateItem() {
+    closeItem: function closeItem() {
       this.showItemModal = false;
     }
   }
@@ -27524,7 +27522,7 @@ var render = function() {
                       {
                         staticClass:
                           "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
-                        on: { click: _vm.closeCreateItem }
+                        on: { click: _vm.closeItem }
                       },
                       [
                         _c(

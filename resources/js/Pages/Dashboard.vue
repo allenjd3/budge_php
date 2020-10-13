@@ -139,7 +139,7 @@
             <div class="p-8 relative">
               <div
                 class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
-                @click="closeCreateItem"
+                @click="closeItem"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -249,20 +249,18 @@ export default {
       item : ""
     };
   },
-  mounted() {
-    console.log(this.item);
-  },
   methods: {
     createItem() {
+      console.log('im working...')
       this.showItemModal = true;
     },
     storeItem() {
       Inertia.post("/items", {item : this.createItemForm})
       this.showItemModal = false;
     },
-    closeCreateItem() {
+    closeItem() {
       this.showItemModal = false;
-    },
+    }
   },
 };
 </script>

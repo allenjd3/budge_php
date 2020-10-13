@@ -28,6 +28,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', func
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
-    $item = $request;
-    return redirect()->route('dashboard', ['item'=>$item]);
+
+    return Inertia\Inertia::render('Dashboard');
 });
