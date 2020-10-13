@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +30,19 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', func
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
 
     return Inertia\Inertia::render('Dashboard');
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
+    $months = App\Models\Month::all();
+    return Inertia\Inertia::render('CreateMonth', compact('months'));
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Request $request){
+    $month = new App\Models\Month;
+    $month->month = $request->month;
+    $month->year = $request->year;
+    $month->user_id = $request->user()->id;
+    $month->save();
+
+    return redirect()->route('dashboard');
 });

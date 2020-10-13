@@ -251,7 +251,6 @@ export default {
   },
   methods: {
     createItem() {
-      console.log('im working...')
       this.showItemModal = true;
     },
     storeItem() {
@@ -260,7 +259,8 @@ export default {
     },
     closeItem() {
       this.showItemModal = false;
-    }
+    },
+
   },
 };
 </script>
