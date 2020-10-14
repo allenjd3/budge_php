@@ -19,7 +19,9 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
+    $month = App\Models\Month::orderByDesc('id')->with('categories')->first();
+    
+    return Inertia\Inertia::render('Dashboard', compact(['month']));
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', function() {
@@ -29,12 +31,23 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', func
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
 
-    return Inertia\Inertia::render('Dashboard');
+    ddd($request);
+    return redirect()->route('dashboard');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
     $months = App\Models\Month::all();
     return Inertia\Inertia::render('CreateMonth', compact('months'));
+});
+Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(Request $request){
+
+    $category = new App\Models\Category;
+    $category->name = $request->category['name'];
+    $category->user_id = $request->user()->id;
+    $category->month_id = $request->category['month_id'];
+    $category->save();
+
+    return redirect()->route('dashboard');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Request $request){

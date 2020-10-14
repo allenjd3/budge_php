@@ -108,6 +108,13 @@
         </div>
       </div>
     </div>
+    <div class="py-12" v-for="c in month.categories" :key="c.id">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <h2 class="text-2xl m-4">{{c.name}}</h2>
+        </div>
+      </div>
+    </div>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -214,11 +221,53 @@
               </form>
             </div>
           </Modal>
+          <Modal ref="new-item" :show="showCategoryModal">
+            <div class="p-8 relative">
+              <div
+                class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
+                @click="closeCategory"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-x"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </div>
+              <div class="p-8">
+                <h1 class="text-2xl">Create New Category</h1>
+                <form @submit.prevent="storeCategory">
+                  <div class="my-2">
+                    <label class="font-bold">Name: </label>
+                    <input type="text" v-model="createCategoryForm.name" class="p-2 border w-full"/>
+                  </div>
+                  <div class="my-2">
+                    <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Create Category</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </Modal>
           <button
             class="bg-gray-900 w-32 h-10 text-gray-100"
             @click="createItem"
           >
             Create Item
+          </button>
+          <button
+            class="bg-gray-900 w-64 h-10 text-gray-100"
+            @click="createCategory"
+          >
+            Create Category
           </button>
         </div>
       </div>
@@ -238,28 +287,49 @@ export default {
     ItemComponent,
     Modal,
   },
+  props: ['month'],
   data() {
     return {
       showItemModal: false,
+      showCategoryModal: false,
       createItemForm: {
         name : null,
         category : null,
         isFund : null
       },
+      createCategoryForm: {
+        name : null,
+        month_id : null
+      },
       item : ""
     };
+  },
+  mounted(){
+    console.log(this.categories);
   },
   methods: {
     createItem() {
       this.showItemModal = true;
     },
+    createCategory() {
+      this.showCategoryModal = true;
+    },
     storeItem() {
       Inertia.post("/items", {item : this.createItemForm})
       this.showItemModal = false;
     },
+    storeCategory() {
+      this.createCategoryForm.month_id = this.month.id;
+      Inertia.post("/categories", {category : this.createCategoryForm})
+      this.showCategoryModal = false;
+
+    },
     closeItem() {
       this.showItemModal = false;
     },
+    closeCategory() {
+      this.showCategoryModal = false;
+    }
 
   },
 };

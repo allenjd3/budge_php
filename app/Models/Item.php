@@ -12,4 +12,8 @@ class Item extends Model
     public function setPlannedAttribute($value) {
         $this->attributes['planned'] = $value * 100;
     }
+
+    public function month() {
+        $this->belongsTo(Month::class);
+    }
 }

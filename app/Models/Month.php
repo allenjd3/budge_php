@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Month extends Model
 {
     use HasFactory;
+
+    public function categories() {
+        return $this->hasMany(Category::class);
+    }
+
+    public function items() {
+        return $this->hasMany(Item::class);
+    }
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
 }

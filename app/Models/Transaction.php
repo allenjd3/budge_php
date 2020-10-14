@@ -12,4 +12,8 @@ class Transaction extends Model
     public function setSpentAttribute($value) {
         $this->attributes['spent'] = $value * 100;
     }
+
+    public function month() {
+        $this->belongsTo(Month::class);
+    }
 }

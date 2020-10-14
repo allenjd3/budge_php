@@ -3706,6 +3706,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3716,20 +3765,32 @@ __webpack_require__.r(__webpack_exports__);
     ItemComponent: _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     Modal: _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
+  props: ['month'],
   data: function data() {
     return {
       showItemModal: false,
+      showCategoryModal: false,
       createItemForm: {
         name: null,
         category: null,
         isFund: null
       },
+      createCategoryForm: {
+        name: null,
+        month_id: null
+      },
       item: ""
     };
+  },
+  mounted: function mounted() {
+    console.log(this.categories);
   },
   methods: {
     createItem: function createItem() {
       this.showItemModal = true;
+    },
+    createCategory: function createCategory() {
+      this.showCategoryModal = true;
     },
     storeItem: function storeItem() {
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/items", {
@@ -3737,8 +3798,18 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.showItemModal = false;
     },
+    storeCategory: function storeCategory() {
+      this.createCategoryForm.month_id = this.month.id;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/categories", {
+        category: this.createCategoryForm
+      });
+      this.showCategoryModal = false;
+    },
     closeItem: function closeItem() {
       this.showItemModal = false;
+    },
+    closeCategory: function closeCategory() {
+      this.showCategoryModal = false;
     }
   }
 });
@@ -27884,6 +27955,24 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
+      _vm._l(_vm.month.categories, function(c) {
+        return _c("div", { key: c.id, staticClass: "py-12" }, [
+          _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
+            _c(
+              "div",
+              {
+                staticClass: "bg-white overflow-hidden shadow-xl sm:rounded-lg"
+              },
+              [
+                _c("h2", { staticClass: "text-2xl m-4" }, [
+                  _vm._v(_vm._s(c.name))
+                ])
+              ]
+            )
+          ])
+        ])
+      }),
+      _vm._v(" "),
       _c("div", { staticClass: "py-12" }, [
         _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
           _c(
@@ -28208,19 +28297,136 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
+                "Modal",
+                { ref: "new-item", attrs: { show: _vm.showCategoryModal } },
+                [
+                  _c("div", { staticClass: "p-8 relative" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
+                        on: { click: _vm.closeCategory }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "feather feather-x",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("line", {
+                              attrs: { x1: "18", y1: "6", x2: "6", y2: "18" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "6", y1: "6", x2: "18", y2: "18" }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-8" }, [
+                      _c("h1", { staticClass: "text-2xl" }, [
+                        _vm._v("Create New Category")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "form",
+                        {
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              return _vm.storeCategory($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Name: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createCategoryForm.name,
+                                  expression: "createCategoryForm.name"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.createCategoryForm.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createCategoryForm,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
+                              },
+                              [_vm._v("Create Category")]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
                 "button",
                 {
                   staticClass: "bg-gray-900 w-32 h-10 text-gray-100",
                   on: { click: _vm.createItem }
                 },
                 [_vm._v("\n          Create Item\n        ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "bg-gray-900 w-64 h-10 text-gray-100",
+                  on: { click: _vm.createCategory }
+                },
+                [_vm._v("\n          Create Category\n        ")]
               )
             ],
             1
           )
         ])
       ])
-    ]
+    ],
+    2
   )
 }
 var staticRenderFns = []
