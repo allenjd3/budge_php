@@ -3789,6 +3789,10 @@ __webpack_require__.r(__webpack_exports__);
     createItem: function createItem() {
       this.showItemModal = true;
     },
+    createItemWithCategory: function createItemWithCategory(category) {
+      this.createItemForm.category = category;
+      this.showItemModal = true;
+    },
     createCategory: function createCategory() {
       this.showCategoryModal = true;
     },
@@ -27726,7 +27730,7 @@ var render = function() {
                   staticClass:
                     "font-semibold text-xl text-gray-800 leading-tight"
                 },
-                [_vm._v("\n      Dashboard\n    ")]
+                [_vm._v("\n        Dashboard\n      ")]
               )
             ]
           },
@@ -27889,7 +27893,7 @@ var render = function() {
                     staticClass:
                       "w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg"
                   },
-                  [_vm._v("\n            Go to Month\n          ")]
+                  [_vm._v("\n              Go to Month\n            ")]
                 )
               ]),
               _vm._v(" "),
@@ -27964,9 +27968,56 @@ var render = function() {
                 staticClass: "bg-white overflow-hidden shadow-xl sm:rounded-lg"
               },
               [
-                _c("h2", { staticClass: "text-2xl m-4" }, [
-                  _vm._v(_vm._s(c.name))
-                ])
+                _c(
+                  "div",
+                  { staticClass: "flex justify-between items-center" },
+                  [
+                    _c("h2", { staticClass: "text-2xl m-4" }, [
+                      _vm._v(_vm._s(c.name))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "mr-8",
+                        attrs: { href: "" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.createItemWithCategory(c.id)
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "feather feather-plus",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("line", {
+                              attrs: { x1: "12", y1: "5", x2: "12", y2: "19" }
+                            }),
+                            _c("line", {
+                              attrs: { x1: "5", y1: "12", x2: "19", y2: "12" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
               ]
             )
           ])
@@ -28182,15 +28233,14 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [
-                                  _c("option", [_vm._v("Food")]),
-                                  _vm._v(" "),
-                                  _c("option", [_vm._v("Transportation")]),
-                                  _vm._v(" "),
-                                  _c("option", [_vm._v("Music")]),
-                                  _vm._v(" "),
-                                  _c("option", [_vm._v("Miscellaneous")])
-                                ]
+                                _vm._l(_vm.month.categories, function(c) {
+                                  return _c(
+                                    "option",
+                                    { key: c.id, domProps: { value: c.id } },
+                                    [_vm._v(_vm._s(c.name))]
+                                  )
+                                }),
+                                0
                               ),
                               _vm._v(" "),
                               _c(
@@ -28285,7 +28335,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                  Create New\n                "
+                                "\n                    Create New\n                  "
                               )
                             ]
                           )
@@ -28409,7 +28459,7 @@ var render = function() {
                   staticClass: "bg-gray-900 w-32 h-10 text-gray-100",
                   on: { click: _vm.createItem }
                 },
-                [_vm._v("\n          Create Item\n        ")]
+                [_vm._v("\n            Create Item\n          ")]
               ),
               _vm._v(" "),
               _c(
@@ -28418,7 +28468,7 @@ var render = function() {
                   staticClass: "bg-gray-900 w-64 h-10 text-gray-100",
                   on: { click: _vm.createCategory }
                 },
-                [_vm._v("\n          Create Category\n        ")]
+                [_vm._v("\n            Create Category\n          ")]
               )
             ],
             1
