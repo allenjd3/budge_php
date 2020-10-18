@@ -10,10 +10,18 @@ class Item extends Model
     use HasFactory;
 
     public function setPlannedAttribute($value) {
-        $this->attributes['planned'] = $value * 100;
+
+        return $this->attributes['planned'] = $value * 100;
+    }
+    public function getPlannedAttribute($value) {
+        return number_format( ( $value / 100 ), 2 );
     }
 
     public function month() {
-        $this->belongsTo(Month::class);
+        return $this->belongsTo(Month::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 }

@@ -3738,23 +3738,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3770,10 +3753,16 @@ __webpack_require__.r(__webpack_exports__);
     return {
       showItemModal: false,
       showCategoryModal: false,
+      goTo: {
+        month: null,
+        year: null
+      },
       createItemForm: {
         name: null,
-        category: null,
-        isFund: null
+        planned: null,
+        category_id: null,
+        month_id: null,
+        is_fund: false
       },
       createCategoryForm: {
         name: null,
@@ -3782,23 +3771,29 @@ __webpack_require__.r(__webpack_exports__);
       item: ""
     };
   },
-  mounted: function mounted() {
-    console.log(this.categories);
-  },
   methods: {
     createItem: function createItem() {
       this.showItemModal = true;
     },
     createItemWithCategory: function createItemWithCategory(category) {
-      this.createItemForm.category = category;
+      this.createItemForm.category_id = category;
       this.showItemModal = true;
     },
     createCategory: function createCategory() {
       this.showCategoryModal = true;
     },
     storeItem: function storeItem() {
+      var _this = this;
+
+      this.createItemForm.month_id = this.month.id;
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/items", {
         item: this.createItemForm
+      }).then(function () {
+        _this.createItemForm.month_id = null;
+        _this.createItemForm.name = null;
+        _this.createItemForm.planned = null;
+        _this.createItemForm.category_id = null;
+        _this.createItemForm.is_fund = false;
       });
       this.showItemModal = false;
     },
@@ -3814,6 +3809,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeCategory: function closeCategory() {
       this.showCategoryModal = false;
+    },
+    goToMonth: function goToMonth() {
+      window.location = '/month/' + this.goTo.month + '/year/' + this.goTo.year;
     }
   }
 });
@@ -27730,7 +27728,7 @@ var render = function() {
                   staticClass:
                     "font-semibold text-xl text-gray-800 leading-tight"
                 },
-                [_vm._v("\n        Dashboard\n      ")]
+                [_vm._v("\n      Dashboard\n    ")]
               )
             ]
           },
@@ -27747,7 +27745,12 @@ var render = function() {
             { staticClass: "bg-white overflow-hidden shadow-xl sm:rounded-lg" },
             [
               _c("h1", { staticClass: "text-3xl m-4" }, [
-                _vm._v("Budget for October 2020")
+                _vm._v(
+                  "Budget for " +
+                    _vm._s(_vm.month.month) +
+                    " " +
+                    _vm._s(_vm.month.year)
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "flex items-center" }, [
@@ -27758,8 +27761,35 @@ var render = function() {
                     _c(
                       "select",
                       {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.goTo.month,
+                            expression: "goTo.month"
+                          }
+                        ],
                         staticClass:
-                          "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                          "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.goTo,
+                              "month",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
                       },
                       [
                         _c("option"),
@@ -27826,8 +27856,35 @@ var render = function() {
                   _c(
                     "select",
                     {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.goTo.year,
+                          expression: "goTo.year"
+                        }
+                      ],
                       staticClass:
-                        "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                        "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.goTo,
+                            "year",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
                     },
                     [
                       _c("option"),
@@ -27891,9 +27948,15 @@ var render = function() {
                   "button",
                   {
                     staticClass:
-                      "w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg"
+                      "w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.goToMonth($event)
+                      }
+                    }
                   },
-                  [_vm._v("\n              Go to Month\n            ")]
+                  [_vm._v("\n            Go to Month\n          ")]
                 )
               ]),
               _vm._v(" "),
@@ -28017,8 +28080,22 @@ var render = function() {
                       ]
                     )
                   ]
-                )
-              ]
+                ),
+                _vm._v(" "),
+                c.items
+                  ? _vm._l(c.items, function(item) {
+                      return _c("item-component", {
+                        key: item.id,
+                        attrs: {
+                          name: item.name,
+                          planned: item.planned,
+                          spent: "34.00"
+                        }
+                      })
+                    })
+                  : _vm._e()
+              ],
+              2
             )
           ])
         ])
@@ -28030,79 +28107,6 @@ var render = function() {
             "div",
             { staticClass: "bg-white overflow-hidden shadow-xl sm:rounded-lg" },
             [
-              _c("h2", { staticClass: "text-2xl m-4" }, [_vm._v("Food")]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "flex h-16 items-center shadow bg-gray-100 mx-8 my-4"
-                },
-                [
-                  _c("div", { staticClass: "flex-1 ml-4" }, [
-                    _c("a", { attrs: { href: "" } }, [_vm._v(" First Item ")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32 font-bold text-blue-600" }, [
-                    _vm._v("$100.00")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
-                    _vm._v("$120.00")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "flex h-16 items-center shadow bg-gray-100 mx-8 my-4"
-                },
-                [
-                  _c("div", { staticClass: "flex-1 ml-4" }, [
-                    _vm._v("First Item")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32 font-bold text-blue-600" }, [
-                    _vm._v("$100.00")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
-                    _vm._v("$120.00")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "flex h-16 items-center shadow bg-gray-100 mx-8 my-4"
-                },
-                [
-                  _c("div", { staticClass: "flex-1 ml-4" }, [
-                    _vm._v("First Item")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32 font-bold text-blue-600" }, [
-                    _vm._v("$100.00")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "w-32 font-bold text-red-600" }, [
-                    _vm._v("$80.00")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("item-component", {
-                attrs: {
-                  name: "My First Thing",
-                  planned: "200.00",
-                  spent: "34.00"
-                }
-              }),
-              _vm._v(" "),
               _c(
                 "Modal",
                 { ref: "new-item", attrs: { show: _vm.showItemModal } },
@@ -28191,6 +28195,36 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "my-2" }, [
+                          _c("label", [_vm._v("Planned")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.createItemForm.planned,
+                                expression: "createItemForm.planned"
+                              }
+                            ],
+                            staticClass: "w-full border p-2",
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.createItemForm.planned },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.createItemForm,
+                                  "planned",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
                           _c("div", [_c("label", [_vm._v("Category")])]),
                           _vm._v(" "),
                           _c(
@@ -28204,8 +28238,8 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.createItemForm.category,
-                                      expression: "createItemForm.category"
+                                      value: _vm.createItemForm.category_id,
+                                      expression: "createItemForm.category_id"
                                     }
                                   ],
                                   staticClass:
@@ -28225,7 +28259,7 @@ var render = function() {
                                         })
                                       _vm.$set(
                                         _vm.createItemForm,
-                                        "category",
+                                        "category_id",
                                         $event.target.multiple
                                           ? $$selectedVal
                                           : $$selectedVal[0]
@@ -28280,20 +28314,20 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.createItemForm.isFund,
-                                expression: "createItemForm.isFund"
+                                value: _vm.createItemForm.is_fund,
+                                expression: "createItemForm.is_fund"
                               }
                             ],
                             staticClass: "border",
                             attrs: { type: "checkbox" },
                             domProps: {
-                              checked: Array.isArray(_vm.createItemForm.isFund)
-                                ? _vm._i(_vm.createItemForm.isFund, null) > -1
-                                : _vm.createItemForm.isFund
+                              checked: Array.isArray(_vm.createItemForm.is_fund)
+                                ? _vm._i(_vm.createItemForm.is_fund, null) > -1
+                                : _vm.createItemForm.is_fund
                             },
                             on: {
                               change: function($event) {
-                                var $$a = _vm.createItemForm.isFund,
+                                var $$a = _vm.createItemForm.is_fund,
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
@@ -28303,21 +28337,21 @@ var render = function() {
                                     $$i < 0 &&
                                       _vm.$set(
                                         _vm.createItemForm,
-                                        "isFund",
+                                        "is_fund",
                                         $$a.concat([$$v])
                                       )
                                   } else {
                                     $$i > -1 &&
                                       _vm.$set(
                                         _vm.createItemForm,
-                                        "isFund",
+                                        "is_fund",
                                         $$a
                                           .slice(0, $$i)
                                           .concat($$a.slice($$i + 1))
                                       )
                                   }
                                 } else {
-                                  _vm.$set(_vm.createItemForm, "isFund", $$c)
+                                  _vm.$set(_vm.createItemForm, "is_fund", $$c)
                                 }
                               }
                             }
@@ -28331,11 +28365,12 @@ var render = function() {
                             "button",
                             {
                               staticClass:
-                                "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                                "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600",
+                              attrs: { type: "submit" }
                             },
                             [
                               _vm._v(
-                                "\n                    Create New\n                  "
+                                "\n                  Create New\n                "
                               )
                             ]
                           )
@@ -28459,7 +28494,7 @@ var render = function() {
                   staticClass: "bg-gray-900 w-32 h-10 text-gray-100",
                   on: { click: _vm.createItem }
                 },
-                [_vm._v("\n            Create Item\n          ")]
+                [_vm._v("\n          Create Item\n        ")]
               ),
               _vm._v(" "),
               _c(
@@ -28468,7 +28503,7 @@ var render = function() {
                   staticClass: "bg-gray-900 w-64 h-10 text-gray-100",
                   on: { click: _vm.createCategory }
                 },
-                [_vm._v("\n            Create Category\n          ")]
+                [_vm._v("\n          Create Category\n        ")]
               )
             ],
             1
@@ -46305,8 +46340,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })

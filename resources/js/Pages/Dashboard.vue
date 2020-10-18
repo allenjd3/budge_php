@@ -8,11 +8,12 @@
     <div class="pt-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-          <h1 class="text-3xl m-4">Budget for October 2020</h1>
+          <h1 class="text-3xl m-4">Budget for {{month.month}} {{month.year}}</h1>
           <div class="flex items-center">
             <div class="inline-block relative w-32 ml-4 mr-2">
               <select
                 class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                v-model="goTo.month"
               >
                 <option></option>
                 <option>January</option>
@@ -46,6 +47,7 @@
             <div class="inline-block relative w-32 mr-2">
               <select
                 class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                v-model="goTo.year"
               >
                 <option></option>
                 <option>2018</option>
@@ -77,6 +79,7 @@
             <div class="mr-4">Year</div>
             <button
               class="w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg"
+              @click.prevent="goToMonth"
             >
               Go to Month
             </button>
@@ -111,10 +114,13 @@
     <div class="py-12" v-for="c in month.categories" :key="c.id">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-<div class="flex justify-between items-center">
-          <h2 class="text-2xl m-4">{{c.name}}</h2>
-          <a href="" class="mr-8" @click.prevent="createItemWithCategory(c.id)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>
-</div>
+          <div class="flex justify-between items-center">
+            <h2 class="text-2xl m-4">{{c.name}}</h2>
+            <a href="" class="mr-8" @click.prevent="createItemWithCategory(c.id)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>
+          </div>
+          <template v-if="c.items">
+            <item-component v-for="item in c.items" :key="item.id" :name="item.name" :planned="item.planned" spent="34.00"/>
+          </template>
         </div>
       </div>
     </div>
@@ -122,29 +128,6 @@
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-          <h2 class="text-2xl m-4">Food</h2>
-          <div class="flex h-16 items-center shadow bg-gray-100 mx-8 my-4">
-            <div class="flex-1 ml-4">
-              <a href=""> First Item </a>
-            </div>
-            <div class="w-32 font-bold text-blue-600">$100.00</div>
-            <div class="w-32 font-bold text-green-600">$120.00</div>
-          </div>
-          <div class="flex h-16 items-center shadow bg-gray-100 mx-8 my-4">
-            <div class="flex-1 ml-4">First Item</div>
-            <div class="w-32 font-bold text-blue-600">$100.00</div>
-            <div class="w-32 font-bold text-green-600">$120.00</div>
-          </div>
-          <div class="flex h-16 items-center shadow bg-gray-100 mx-8 my-4">
-            <div class="flex-1 ml-4">First Item</div>
-            <div class="w-32 font-bold text-blue-600">$100.00</div>
-            <div class="w-32 font-bold text-red-600">$80.00</div>
-          </div>
-          <item-component
-            name="My First Thing"
-            planned="200.00"
-            spent="34.00"
-          />
           <Modal ref="new-item" :show="showItemModal">
             <div class="p-8 relative">
               <div
@@ -171,11 +154,11 @@
               <form @submit.prevent="storeItem">
                 <div class="my-2">
                   <label>Name</label>
-                  <input
-                    type="text"
-                    class="w-full border p-2"
-                    v-model="createItemForm.name"
-                  />
+                  <input type="text" class="w-full border p-2" v-model="createItemForm.name"/>
+                </div>
+                <div class="my-2">
+                  <label>Planned</label>
+                  <input type="number" step="0.01" class="w-full border p-2" v-model="createItemForm.planned"/>
                 </div>
                 <div class="my-2">
                   <div>
@@ -184,7 +167,7 @@
                   <div class="inline-block relative w-64 mr-2">
                     <select
                       class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
-                      v-model="createItemForm.category" 
+                      v-model="createItemForm.category_id" 
                     >
                       <option v-for="c in month.categories" :key="c.id" :value="c.id">{{c.name}}</option>
                     </select>
@@ -207,12 +190,12 @@
                   <input
                     type="checkbox"
                     class="border"
-                    v-model="createItemForm.isFund"
+                    v-model="createItemForm.is_fund"
                   />
                   <label>Fund?</label>
                 </div>
                 <div class="my-2">
-                  <button
+                  <button type="submit"
                     class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
                   >
                     Create New
@@ -292,10 +275,16 @@ export default {
     return {
       showItemModal: false,
       showCategoryModal: false,
+      goTo : {
+        month : null,
+        year : null
+      },
       createItemForm: {
         name : null,
-        category : null,
-        isFund : null
+        planned : null,
+        category_id : null,
+        month_id : null,
+        is_fund : false
       },
       createCategoryForm: {
         name : null,
@@ -304,22 +293,27 @@ export default {
       item : ""
     };
   },
-  mounted(){
-    console.log(this.categories);
-  },
   methods: {
     createItem() {
       this.showItemModal = true;
     },
     createItemWithCategory(category) {
-      this.createItemForm.category = category;
+      this.createItemForm.category_id = category;
       this.showItemModal = true;
     },
     createCategory() {
       this.showCategoryModal = true;
     },
     storeItem() {
-      Inertia.post("/items", {item : this.createItemForm})
+      this.createItemForm.month_id = this.month.id;
+      Inertia.post("/items", {item : this.createItemForm}).then(()=>{
+        this.createItemForm.month_id = null;
+        this.createItemForm.name = null;
+        this.createItemForm.planned = null;
+        this.createItemForm.category_id = null;
+        this.createItemForm.is_fund = false;
+      });
+    
       this.showItemModal = false;
     },
     storeCategory() {
@@ -333,6 +327,9 @@ export default {
     },
     closeCategory() {
       this.showCategoryModal = false;
+    },
+    goToMonth() {
+      window.location = '/month/'+this.goTo.month + '/year/' + this.goTo.year;
     }
 
   },
