@@ -3439,6 +3439,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3449,14 +3478,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       month: null,
-      year: null
+      year: null,
+      copymonth: null
     };
   },
   methods: {
     submitMonth: function submitMonth() {
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__["Inertia"].post('/months', {
         'month': this.month,
-        'year': this.year
+        'year': this.year,
+        'copymonth': this.copymonth
       });
     }
   }
@@ -27633,6 +27664,96 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
+                  _c("div", { staticClass: "my-2" }, [
+                    _c("label", { staticClass: "font-bold" }, [
+                      _vm._v("Copy Categories and Items from:")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.months === undefined || _vm.months == 0
+                    ? void 0
+                    : [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "inline-block relative w-32 mr-2 my-4"
+                          },
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.copymonth,
+                                    expression: "copymonth"
+                                  }
+                                ],
+                                staticClass:
+                                  "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.copymonth = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              _vm._l(_vm.months, function(m) {
+                                return _c(
+                                  "option",
+                                  { key: m.id, domProps: { value: m.id } },
+                                  [
+                                    _vm._v(
+                                      _vm._s(m.month) + " " + _vm._s(m.year)
+                                    )
+                                  ]
+                                )
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    staticClass: "fill-current h-4 w-4",
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      viewBox: "0 0 20 20"
+                                    }
+                                  },
+                                  [
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ],
+                  _vm._v(" "),
                   _c("div", { staticClass: "my-4" }, [
                     _c(
                       "button",
@@ -27643,7 +27764,8 @@ var render = function() {
                       [_vm._v("\n              Create New Month\n            ")]
                     )
                   ])
-                ]
+                ],
+                2
               )
             ]
           ),
@@ -46340,8 +46462,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })

@@ -20,10 +20,17 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $month = App\Models\Month::orderByDesc('id')->with('categories.items')->first();
-
-
+    if( $month === null){
+        return redirect('/months');
+    }
     return Inertia\Inertia::render('Dashboard', compact(['month']));
 })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', function ($m) {
+    $month = App\Models\Month::with('categories.items')->find($m);
+
+    return Inertia\Inertia::render('Dashboard', compact(['month']));
+})->name('dashboard-month');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', function() {
 
@@ -46,6 +53,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
     $months = App\Models\Month::all();
+    
     return Inertia\Inertia::render('CreateMonth', compact('months'));
 });
 Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(Request $request){
@@ -63,16 +71,44 @@ Route::middleware(['auth:sanctum','verified'])->get('/month/{month}/year/{year}'
     if( $month === null){
         return redirect('/months');
     }
-    return Inertia\Inertia::render('Dashboard', compact(['month']));
+    return redirect()->route('dashboard-month', ['m'=>$month->id]);
 
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Request $request){
-    $month = new App\Models\Month;
-    $month->month = $request->month;
-    $month->year = $request->year;
+    $month = App\Models\Month::firstOrNew([
+        'month'=>$request->month,
+        'year'=>$request->year
+    ]);
     $month->user_id = $request->user()->id;
     $month->save();
 
-    return redirect()->route('dashboard');
+    //if($request->copymonth === null) {
+    //    $month2 = App\Models\Month::find($request->copymonth);
+    //    ddd($month2->categories);
+
+    //    foreach($month2->categories as $category)
+    //    {
+    //        $c = new App\Models\Category();
+    //        $c->name = $category->name;
+    //        $c->user_id = $category->user_id;
+    //        $c->month_id = $month->id;
+    //        $c->save();
+    //        foreach($category->items as $item)
+    //        {
+    //            $i = new App\Models\Item();
+    //            $i->name = $item->name;
+    //            $i->planned = $item->planned;
+    //            $i->is_fund = $item->is_fund;
+    //            $i->user_id = $item->user_id;
+    //            $i->category_id = $c->id;
+    //            $i->month_id = $month->id;
+    //            $i->save();
+    //        }
+
+    //    }
+    //}
+     
+
+    return redirect()->route('dashboard-month', ['m'=>$month->id]);
 });

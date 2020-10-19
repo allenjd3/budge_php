@@ -9,6 +9,8 @@ class Month extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['month','year'];
+
     public function categories() {
         return $this->hasMany(Category::class);
     }
