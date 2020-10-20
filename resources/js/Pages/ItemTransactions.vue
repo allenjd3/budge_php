@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        New Transaction
+        New Transaction for {{month.month}} {{month.year}}
       </h2>
     </template>
     <div class="pt-12">
@@ -104,5 +104,6 @@ export default {
   components: {
     AppLayout,
   },
+  props: ['month']
 };
 </script>

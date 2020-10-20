@@ -3769,6 +3769,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3963,7 +3973,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
-  }
+  },
+  props: ['month']
 });
 
 /***/ }),
@@ -28608,28 +28619,42 @@ var render = function() {
                     ])
                   ])
                 ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "bg-gray-900 w-32 h-10 text-gray-100",
-                  on: { click: _vm.createItem }
-                },
-                [_vm._v("\n          Create Item\n        ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "bg-gray-900 w-64 h-10 text-gray-100",
-                  on: { click: _vm.createCategory }
-                },
-                [_vm._v("\n          Create Category\n        ")]
               )
             ],
             1
           )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "h-32 bg-indigo-300 flex items-center" }, [
+          _c("div", { staticClass: "w-1/2 flex justify-center mx-auto" }, [
+            _c(
+              "button",
+              {
+                staticClass: "bg-gray-900 w-40 h-10 text-gray-100 mr-2",
+                on: { click: _vm.createItem }
+              },
+              [_vm._v("\n          Create Item\n        ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "bg-gray-900 w-40 h-10 text-gray-100",
+                on: { click: _vm.createCategory }
+              },
+              [_vm._v("\n            Create Category\n          ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass:
+                  "bg-gray-900 w-40 h-10 text-gray-100 ml-2 flex items-center justify-center",
+                attrs: { href: "/create-transaction/" + _vm.month.id }
+              },
+              [_vm._v("\n            Create Transaction\n          ")]
+            )
+          ])
         ])
       ])
     ],
@@ -28672,7 +28697,15 @@ var render = function() {
                   staticClass:
                     "font-semibold text-xl text-gray-800 leading-tight"
                 },
-                [_vm._v("\n      New Transaction\n    ")]
+                [
+                  _vm._v(
+                    "\n      New Transaction for " +
+                      _vm._s(_vm.month.month) +
+                      " " +
+                      _vm._s(_vm.month.year) +
+                      "\n    "
+                  )
+                ]
               )
             ]
           },

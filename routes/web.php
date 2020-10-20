@@ -32,9 +32,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', function 
     return Inertia\Inertia::render('Dashboard', compact(['month']));
 })->name('dashboard-month');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction', function() {
+Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', function($month_id) {
 
-    return Inertia\Inertia::render('ItemTransactions');
+    $month = App\Models\Month::find($month_id);
+    
+    return Inertia\Inertia::render('ItemTransactions', compact('month'));
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
@@ -42,6 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request
 	$item = new App\Models\Item;
 	$item->name = $request->item['name'];
 	$item->planned = $request->item['planned'];
+    $item->remaining = $request->item['planned'];
 	$item->is_fund = $request->item['is_fund'];
 	$item->month_id = $request->item['month_id'];
 	$item->category_id = $request->item['category_id'];

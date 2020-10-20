@@ -17,6 +17,7 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('planned');
+            $table->integer('remaining');
             $table->boolean('is_fund');
             $table->integer('user_id');
             $table->integer('category_id');

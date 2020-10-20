@@ -240,18 +240,28 @@
               </div>
             </div>
           </Modal>
+        </div>
+      </div>
+      <div class="h-32 bg-indigo-300 flex items-center">
+        <div class="w-1/2 flex justify-center mx-auto">
           <button
-            class="bg-gray-900 w-32 h-10 text-gray-100"
+            class="bg-gray-900 w-40 h-10 text-gray-100 mr-2"
             @click="createItem"
-          >
+            >
             Create Item
           </button>
-          <button
-            class="bg-gray-900 w-64 h-10 text-gray-100"
-            @click="createCategory"
-          >
-            Create Category
-          </button>
+            <button
+              class="bg-gray-900 w-40 h-10 text-gray-100"
+              @click="createCategory"
+              >
+              Create Category
+            </button>
+            <a
+              class="bg-gray-900 w-40 h-10 text-gray-100 ml-2 flex items-center justify-center"
+              :href="'/create-transaction/' + month.id"
+              >
+              Create Transaction
+            </a>
         </div>
       </div>
     </div>
@@ -304,6 +314,7 @@ export default {
     createCategory() {
       this.showCategoryModal = true;
     },
+
     storeItem() {
       this.createItemForm.month_id = this.month.id;
       Inertia.post("/items", {item : this.createItemForm}).then(()=>{
