@@ -276,8 +276,8 @@ export default {
       showItemModal: false,
       showCategoryModal: false,
       goTo : {
-        month : null,
-        year : null
+        month : this.month.month,
+        year : this.month.year
       },
       createItemForm: {
         name : null,
