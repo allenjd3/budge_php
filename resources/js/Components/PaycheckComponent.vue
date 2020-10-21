@@ -3,25 +3,18 @@
     <div class="flex-1 ml-4">
       <a href="">{{name}}</a>
     </div>
-    <div class="w-32 font-bold text-blue-600">${{formattedPlanned}}</div>
     <div class="w-32 font-bold text-green-600">${{formattedSpent}}</div>
   </div>
 </template>
 <script>
 export default {
-    props : ['planned', 'spent', 'name'],
+    props : ['spent', 'name'],
     computed : {
-      formattedPlanned : {
-        get() {
-          return (this.planned /100).toFixed(2);
-        }
-      },
       formattedSpent : {
         get() {
-          return (this.spent /100).toFixed(2);
+          return (this.spent / 100).toFixed(2)
         }
-      },
-
+      }
     }
 
 };

@@ -20,17 +20,24 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    $month = Auth::user()->currentTeam->months()->orderByDesc('id')->with('categories.items')->first();
+    $month = Auth::user()->currentTeam->months()->orderByDesc('id')->with([ 'categories.items', 'paychecks' ])->first();
     if( $month === null){
         return redirect('/months');
     }
-    return Inertia\Inertia::render('Dashboard', compact(['month']));
+    $paid = $month->paychecks->sum('payday');
+    $tSum = App\Models\Transaction::where('month_id', '=', $month->id)->sum('spent');
+    $left = $paid-$tSum;
+    
+    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left']));
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', function ($m) {
-    $month = Auth::user()->currentTeam->months()->with('categories.items')->find($m);
-
-    return Inertia\Inertia::render('Dashboard', compact(['month']));
+    $month = Auth::user()->currentTeam->months()->with([ 'categories.items', 'paychecks' ])->find($m);
+    $paid = $month->paychecks->sum('payday');
+    $tSum = App\Models\Transaction::where('month_id', '=', $month->id)->sum('spent');
+    $left = $paid-$tSum;
+    
+    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left']));
 })->name('dashboard-month');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', function($month_id) {
@@ -53,7 +60,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', function(
 
     $item = $transaction->item;
 
-    $item->remaining = $item->remaining - $transaction->spent;
+    $item->remaining = ( $item->remaining - $transaction->spent )/100;
     $item->save();
 
     return redirect()->back();
@@ -141,6 +148,18 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/modify-planned', functio
     $month = App\Models\Month::find($request->month_id);
     $month->monthly_planned = $request->monthly_planned;
     $month->save();
+
+    return redirect()->back();
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/paychecks', function(Request $request){
+    $paycheck = new App\Models\Paycheck;
+    $paycheck->name = $request->paycheck['name'];
+    $paycheck->payday = $request->paycheck['payday'];
+    $paycheck->pay_date = $request->paycheck['pay_date'];
+    $paycheck->month_id = $request->paycheck['month_id'];
+
+    $paycheck->save();
 
     return redirect()->back();
 });

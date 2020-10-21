@@ -18,7 +18,6 @@ class CreatePaychecksTable extends Migration
             $table->string('name');
             $table->integer('payday');
             $table->date('pay_date');
-            $table->bigInteger('user_id');
             $table->bigInteger('month_id');
             $table->timestamps();
         });

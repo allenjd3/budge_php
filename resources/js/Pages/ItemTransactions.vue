@@ -77,7 +77,7 @@
             </tr>
             <tr v-for="transaction in transactions" :key="transaction.id">
                 <td class="border p-2 font-bold">{{transaction.name}}</td>
-                <td class="border p-2 font-bold">{{transaction.spent}}</td>
+                <td class="border p-2 font-bold">{{formattedSpent(transaction.spent)}}</td>
                 <td class="border p-2 font-bold">{{transaction.item.name}}</td>
                 <td class="border p-2 font-bold">{{transaction.spent_date}}</td>
             </tr>
@@ -117,8 +117,13 @@ export default {
 
             
         
+        },
+        formattedSpent(spent) {
+          return (spent/100).toFixed(2);
+
         }
-    }
+
+    },
 
 
 };

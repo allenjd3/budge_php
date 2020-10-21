@@ -19,14 +19,6 @@ class Item extends Model
         $this->attributes['remaining'] = $value * 100;
     }
 
-    public function getPlannedAttribute($value) {
-        return number_format( ( $value / 100 ), 2 );
-    }
-
-    public function getRemainingAttribute($value) {
-        return number_format( ( $value / 100 ), 2 );
-    }
-
     public function month() {
         return $this->belongsTo(Month::class);
     }

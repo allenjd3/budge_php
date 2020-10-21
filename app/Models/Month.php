@@ -18,6 +18,11 @@ class Month extends Model
     public function transactions() {
         return $this->hasMany(Transaction::class);
     }
+
+    public function paychecks() {
+        return $this->hasMany(Paycheck::class);
+    }
+
     public function setMonthlyPlannedAttribute($value) {
 
         $this->attributes['monthly_planned'] = $value * 100;

@@ -13,7 +13,7 @@ class Paycheck extends Model
         $this->attributes['payday'] = $value * 100;
     }
 
-    public function getPaydayAttribute($value) {
-        return number_format( ( $value / 100 ), 2 );
+    public function month() {
+        return $this->belongsTo(Month::class);
     }
 }

@@ -1944,7 +1944,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['planned', 'spent', 'name']
+  props: ['planned', 'spent', 'name'],
+  computed: {
+    formattedPlanned: {
+      get: function get() {
+        return (this.planned / 100).toFixed(2);
+      }
+    },
+    formattedSpent: {
+      get: function get() {
+        return (this.spent / 100).toFixed(2);
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/PaycheckComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Components/PaycheckComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['spent', 'name'],
+  computed: {
+    formattedSpent: {
+      get: function get() {
+        return (this.spent / 100).toFixed(2);
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -3506,9 +3548,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../Components/ItemComponent */ "./resources/js/Components/ItemComponent.vue");
-/* harmony import */ var _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../Jetstream/Modal */ "./resources/js/Jetstream/Modal.vue");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Components_PaycheckComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../Components/PaycheckComponent */ "./resources/js/Components/PaycheckComponent.vue");
+/* harmony import */ var _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../Jetstream/Modal */ "./resources/js/Jetstream/Modal.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__);
 //
 //
 //
@@ -3786,6 +3829,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -3794,13 +3886,15 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     ItemComponent: _Components_ItemComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Modal: _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Modal: _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_3__["default"],
+    PaycheckComponent: _Components_PaycheckComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: ['month'],
+  props: ['month', 'paid', 'left'],
   data: function data() {
     return {
       showItemModal: false,
       showCategoryModal: false,
+      showPaycheckModal: false,
       goTo: {
         month: this.month.month,
         year: this.month.year
@@ -3816,13 +3910,31 @@ __webpack_require__.r(__webpack_exports__);
         name: null,
         month_id: null
       },
+      createPaycheckForm: {
+        name: null,
+        payday: null,
+        pay_date: null,
+        month_id: null
+      },
       item: "",
       monthly_planned: null
     };
   },
+  computed: {
+    payAmount: {
+      get: function get() {
+        return (this.paid / 100).toFixed(2);
+      }
+    },
+    amountLeft: {
+      get: function get() {
+        return (this.left / 100).toFixed(2);
+      }
+    }
+  },
   methods: {
     storeMonthlyPlanned: function storeMonthlyPlanned() {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/modify-planned", {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/modify-planned", {
         monthly_planned: this.monthly_planned,
         month_id: this.month.id
       });
@@ -3837,11 +3949,14 @@ __webpack_require__.r(__webpack_exports__);
     createCategory: function createCategory() {
       this.showCategoryModal = true;
     },
+    createPaycheck: function createPaycheck() {
+      this.showPaycheckModal = true;
+    },
     storeItem: function storeItem() {
       var _this = this;
 
       this.createItemForm.month_id = this.month.id;
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/items", {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/items", {
         item: this.createItemForm
       }).then(function () {
         _this.createItemForm.month_id = null;
@@ -3854,16 +3969,26 @@ __webpack_require__.r(__webpack_exports__);
     },
     storeCategory: function storeCategory() {
       this.createCategoryForm.month_id = this.month.id;
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/categories", {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/categories", {
         category: this.createCategoryForm
       });
       this.showCategoryModal = false;
+    },
+    storePaycheck: function storePaycheck() {
+      this.createPaycheckForm.month_id = this.month.id;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/paychecks", {
+        paycheck: this.createPaycheckForm
+      });
+      this.showPaycheckModal = false;
     },
     closeItem: function closeItem() {
       this.showItemModal = false;
     },
     closeCategory: function closeCategory() {
       this.showCategoryModal = false;
+    },
+    closePaycheck: function closePaycheck() {
+      this.showPaycheckModal = false;
     },
     goToMonth: function goToMonth() {
       window.location = '/month/' + this.goTo.month + '/year/' + this.goTo.year;
@@ -4002,6 +4127,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.transactionForm.spent = null;
         _this.transactionForm.name = null;
       });
+    },
+    formattedSpent: function formattedSpent(spent) {
+      return (spent / 100).toFixed(2);
     }
   }
 });
@@ -24833,11 +24961,47 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "w-32 font-bold text-blue-600" }, [
-        _vm._v("$" + _vm._s(_vm.planned))
+        _vm._v("$" + _vm._s(_vm.formattedPlanned))
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
-        _vm._v("$" + _vm._s(_vm.spent))
+        _vm._v("$" + _vm._s(_vm.formattedSpent))
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/PaycheckComponent.vue?vue&type=template&id=41c2937c&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Components/PaycheckComponent.vue?vue&type=template&id=41c2937c& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "flex h-16 items-center shadow bg-gray-100 mx-8 my-4" },
+    [
+      _c("div", { staticClass: "flex-1 ml-4" }, [
+        _c("a", { attrs: { href: "" } }, [_vm._v(_vm._s(_vm.name))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
+        _vm._v("$" + _vm._s(_vm.formattedSpent))
       ])
     ]
   )
@@ -28181,13 +28345,24 @@ var render = function() {
               _vm._v(" "),
               _c("h2", { staticClass: "text-2xl m-4" }, [_vm._v("Paychecks")]),
               _vm._v(" "),
-              _c("item-component", {
-                attrs: {
-                  name: "First Paycheck",
-                  planned: "2000.00",
-                  spent: "34.00"
-                }
+              _vm._l(_vm.month.paychecks, function(paycheck) {
+                return _c("paycheck-component", {
+                  key: paycheck.id,
+                  attrs: { name: paycheck.name, spent: paycheck.payday }
+                })
               }),
+              _vm._v(" "),
+              _c("div", { staticClass: "ml-4" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "font-bold bg-indigo-400 w-40 h-10 rounded-lg hover:bg-indigo-600 text-gray-100",
+                    on: { click: _vm.createPaycheck }
+                  },
+                  [_vm._v("\n              Create Paycheck\n            ")]
+                )
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "flex justify-around my-8" }, [
                 _c(
@@ -28218,7 +28393,9 @@ var render = function() {
                       _vm._v("Total Paid")
                     ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-3xl" }, [_vm._v("230.00")])
+                    _c("p", { staticClass: "text-3xl" }, [
+                      _vm._v(_vm._s(_vm.payAmount))
+                    ])
                   ]
                 ),
                 _vm._v(" "),
@@ -28233,12 +28410,14 @@ var render = function() {
                       _vm._v("Amount Left")
                     ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-3xl" }, [_vm._v("230.00")])
+                    _c("p", { staticClass: "text-3xl" }, [
+                      _vm._v(_vm._s(_vm.amountLeft))
+                    ])
                   ]
                 )
               ])
             ],
-            1
+            2
           )
         ])
       ]),
@@ -28591,7 +28770,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                  Create New\n                "
+                                "\n                      Create New\n              "
                               )
                             ]
                           )
@@ -28707,6 +28886,181 @@ var render = function() {
                     ])
                   ])
                 ]
+              ),
+              _vm._v(" "),
+              _c(
+                "Modal",
+                { ref: "new-item", attrs: { show: _vm.showPaycheckModal } },
+                [
+                  _c("div", { staticClass: "p-8 relative" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
+                        on: { click: _vm.closePaycheck }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "feather feather-x",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("line", {
+                              attrs: { x1: "18", y1: "6", x2: "6", y2: "18" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "6", y1: "6", x2: "18", y2: "18" }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-8" }, [
+                      _c("h1", { staticClass: "text-2xl" }, [
+                        _vm._v("Create New Paycheck")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "form",
+                        {
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              return _vm.storePaycheck($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Name: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createPaycheckForm.name,
+                                  expression: "createPaycheckForm.name"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.createPaycheckForm.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createPaycheckForm,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Pay Date: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createPaycheckForm.pay_date,
+                                  expression: "createPaycheckForm.pay_date"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "date" },
+                              domProps: {
+                                value: _vm.createPaycheckForm.pay_date
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createPaycheckForm,
+                                    "pay_date",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Amount: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createPaycheckForm.payday,
+                                  expression: "createPaycheckForm.payday"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "number", step: "0.01" },
+                              domProps: {
+                                value: _vm.createPaycheckForm.payday
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createPaycheckForm,
+                                    "payday",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
+                              },
+                              [_vm._v("Create Paycheck")]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]
               )
             ],
             1
@@ -28721,7 +29075,7 @@ var render = function() {
                 staticClass: "bg-gray-900 w-40 h-10 text-gray-100",
                 on: { click: _vm.createCategory }
               },
-              [_vm._v("\n            Create Category\n          ")]
+              [_vm._v("\n          Create Category\n        ")]
             ),
             _vm._v(" "),
             _c(
@@ -29044,7 +29398,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "border p-2 font-bold" }, [
-                        _vm._v(_vm._s(transaction.spent))
+                        _vm._v(_vm._s(_vm.formattedSpent(transaction.spent)))
                       ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "border p-2 font-bold" }, [
@@ -43882,6 +44236,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemComponent_vue_vue_type_template_id_56a311ef___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ItemComponent_vue_vue_type_template_id_56a311ef___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Components/PaycheckComponent.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/Components/PaycheckComponent.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PaycheckComponent_vue_vue_type_template_id_41c2937c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaycheckComponent.vue?vue&type=template&id=41c2937c& */ "./resources/js/Components/PaycheckComponent.vue?vue&type=template&id=41c2937c&");
+/* harmony import */ var _PaycheckComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaycheckComponent.vue?vue&type=script&lang=js& */ "./resources/js/Components/PaycheckComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PaycheckComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PaycheckComponent_vue_vue_type_template_id_41c2937c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PaycheckComponent_vue_vue_type_template_id_41c2937c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Components/PaycheckComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Components/PaycheckComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/Components/PaycheckComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaycheckComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PaycheckComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/PaycheckComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaycheckComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Components/PaycheckComponent.vue?vue&type=template&id=41c2937c&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/Components/PaycheckComponent.vue?vue&type=template&id=41c2937c& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaycheckComponent_vue_vue_type_template_id_41c2937c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PaycheckComponent.vue?vue&type=template&id=41c2937c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Components/PaycheckComponent.vue?vue&type=template&id=41c2937c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaycheckComponent_vue_vue_type_template_id_41c2937c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaycheckComponent_vue_vue_type_template_id_41c2937c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
