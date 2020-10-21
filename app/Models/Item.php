@@ -13,7 +13,17 @@ class Item extends Model
 
         return $this->attributes['planned'] = $value * 100;
     }
+
+    public function setRemainingAttribute($value) {
+
+        return $this->attributes['remaining'] = $value * 100;
+    }
+
     public function getPlannedAttribute($value) {
+        return number_format( ( $value / 100 ), 2 );
+    }
+
+    public function getRemainingAttribute($value) {
         return number_format( ( $value / 100 ), 2 );
     }
 

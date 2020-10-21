@@ -17,6 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('user_id');
+            $table->bigInteger('item_id');
             $table->bigInteger('month_id');
             $table->integer('spent');
             $table->date('spent_date');

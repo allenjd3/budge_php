@@ -119,7 +119,7 @@
             <a href="" class="mr-8" @click.prevent="createItemWithCategory(c.id)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>
           </div>
           <template v-if="c.items">
-            <item-component v-for="item in c.items" :key="item.id" :name="item.name" :planned="item.planned" spent="34.00"/>
+            <item-component v-for="item in c.items" :key="item.id" :name="item.name" :planned="item.planned" :spent="item.remaining"/>
           </template>
         </div>
       </div>
@@ -244,12 +244,6 @@
       </div>
       <div class="h-32 bg-indigo-300 flex items-center">
         <div class="w-1/2 flex justify-center mx-auto">
-          <button
-            class="bg-gray-900 w-40 h-10 text-gray-100 mr-2"
-            @click="createItem"
-            >
-            Create Item
-          </button>
             <button
               class="bg-gray-900 w-40 h-10 text-gray-100"
               @click="createCategory"

@@ -3773,12 +3773,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3869,17 +3863,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -3970,11 +3955,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['month']
+  props: ['month', 'items', 'transactions'],
+  data: function data() {
+    return {
+      transactionForm: {
+        spent_date: null,
+        item_id: null,
+        month_id: this.month.id,
+        spent: null,
+        name: null
+      }
+    };
+  },
+  methods: {
+    newTransaction: function newTransaction() {
+      var _this = this;
+
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__["Inertia"].post('/transactions', {
+        'transaction': this.transactionForm
+      }).then(function () {
+        _this.transactionForm.spent = null;
+        _this.transactionForm.name = null;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -28222,7 +28231,7 @@ var render = function() {
                         attrs: {
                           name: item.name,
                           planned: item.planned,
-                          spent: "34.00"
+                          spent: item.remaining
                         }
                       })
                     })
@@ -28630,15 +28639,6 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "bg-gray-900 w-40 h-10 text-gray-100 mr-2",
-                on: { click: _vm.createItem }
-              },
-              [_vm._v("\n          Create Item\n        ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
                 staticClass: "bg-gray-900 w-40 h-10 text-gray-100",
                 on: { click: _vm.createCategory }
               },
@@ -28724,125 +28724,208 @@ var render = function() {
                 "bg-white overflow-hidden shadow-xl sm:rounded-lg p-8"
             },
             [
-              _c("form", [
-                _c("div", { staticClass: "flex" }, [
-                  _c("div", { staticClass: "mr-4" }, [
-                    _c("label", [_vm._v("Date")]),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.newTransaction($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "flex" }, [
+                    _c("div", { staticClass: "mr-4" }, [
+                      _c("label", [_vm._v("Date")]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.transactionForm.spent_date,
+                              expression: "transactionForm.spent_date"
+                            }
+                          ],
+                          staticClass: "w-64 border p-2 h-10",
+                          attrs: { type: "date" },
+                          domProps: { value: _vm.transactionForm.spent_date },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.transactionForm,
+                                "spent_date",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
                     _vm._v(" "),
-                    _c("div", [
+                    _c("div", { staticClass: "ml-4" }, [
+                      _c("div", [_c("label", [_vm._v("Budget Item")])]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "inline-block relative w-32 mr-2" },
+                        [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.transactionForm.item_id,
+                                  expression: "transactionForm.item_id"
+                                }
+                              ],
+                              staticClass:
+                                "block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline h-10",
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.transactionForm,
+                                    "item_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            _vm._l(_vm.items, function(item) {
+                              return _c(
+                                "option",
+                                { key: item.id, domProps: { value: item.id } },
+                                [_vm._v(_vm._s(item.name))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                            },
+                            [
+                              _c(
+                                "svg",
+                                {
+                                  staticClass: "fill-current h-4 w-4",
+                                  attrs: {
+                                    xmlns: "http://www.w3.org/2000/svg",
+                                    viewBox: "0 0 20 20"
+                                  }
+                                },
+                                [
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex" }, [
+                    _c("div", { staticClass: "my-2 mr-2 w-1/2" }, [
+                      _c("label", [_vm._v("Name")]),
+                      _vm._v(" "),
                       _c("input", {
-                        staticClass: "w-64 border p-2 h-10",
-                        attrs: { type: "date" }
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.transactionForm.name,
+                            expression: "transactionForm.name"
+                          }
+                        ],
+                        staticClass: "w-full border p-2",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.transactionForm.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.transactionForm,
+                              "name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "my-2 ml-2 w-1/2" }, [
+                      _c("label", [_vm._v("Spent")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.transactionForm.spent,
+                            expression: "transactionForm.spent"
+                          }
+                        ],
+                        staticClass: "w-full border p-2",
+                        attrs: { type: "number", step: "0.01" },
+                        domProps: { value: _vm.transactionForm.spent },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.transactionForm,
+                              "spent",
+                              $event.target.value
+                            )
+                          }
+                        }
                       })
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "ml-4" }, [
-                    _c("div", [_c("label", [_vm._v("Category")])]),
-                    _vm._v(" "),
+                  _c("div", { staticClass: "my-2" }, [
                     _c(
-                      "div",
-                      { staticClass: "inline-block relative w-32 mr-2" },
-                      [
-                        _c(
-                          "select",
-                          {
-                            staticClass:
-                              "block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline h-10"
-                          },
-                          [
-                            _c("option"),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("January")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("February")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("March")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("April")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("May")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("June")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("July")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("August")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("September")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("October")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("November")]),
-                            _vm._v(" "),
-                            _c("option", [_vm._v("December")])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-                          },
-                          [
-                            _c(
-                              "svg",
-                              {
-                                staticClass: "fill-current h-4 w-4",
-                                attrs: {
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  viewBox: "0 0 20 20"
-                                }
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    d:
-                                      "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                                  }
-                                })
-                              ]
-                            )
-                          ]
-                        )
-                      ]
+                      "button",
+                      {
+                        staticClass:
+                          "bg-indigo-400 text-white font-bold h-10 w-64 rounded-lg hover:bg-indigo-600",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("\n              New Transaction\n            ")]
                     )
                   ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex" }, [
-                  _c("div", { staticClass: "my-2 mr-2 w-1/2" }, [
-                    _c("label", [_vm._v("Name")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "w-full border p-2",
-                      attrs: { type: "text" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "my-2 ml-2 w-1/2" }, [
-                    _c("label", [_vm._v("Spent")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "w-full border p-2",
-                      attrs: { type: "number", step: "0.01" }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "my-2" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "bg-indigo-400 text-white font-bold h-10 w-64 rounded-lg hover:bg-indigo-600",
-                      attrs: { type: "submit" }
-                    },
-                    [_vm._v("\n              New Transaction\n            ")]
-                  )
-                ])
-              ])
+                ]
+              )
             ]
           )
         ])
@@ -28857,37 +28940,46 @@ var render = function() {
                 "bg-white overflow-hidden shadow-xl sm:rounded-lg p-8"
             },
             [
-              _c("table", { staticClass: "table-fixed w-full" }, [
-                _c("tr", [
-                  _c("th", { staticClass: "border w-1/2 p-2" }, [
-                    _vm._v("Name")
+              _c(
+                "table",
+                { staticClass: "table-fixed w-full" },
+                [
+                  _c("tr", [
+                    _c("th", { staticClass: "border w-1/2 p-2" }, [
+                      _vm._v("Name")
+                    ]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "border p-2" }, [_vm._v("Spent")]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "border p-2" }, [
+                      _vm._v("Category")
+                    ]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "border p-2" }, [_vm._v("Date")])
                   ]),
                   _vm._v(" "),
-                  _c("th", { staticClass: "border p-2" }, [_vm._v("Spent")]),
-                  _vm._v(" "),
-                  _c("th", { staticClass: "border p-2" }, [_vm._v("Category")]),
-                  _vm._v(" "),
-                  _c("th", { staticClass: "border p-2" }, [_vm._v("Date")])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", { staticClass: "border p-2 font-bold" }, [
-                    _vm._v("My amazing first Transaction")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "border p-2 font-bold" }, [
-                    _vm._v("23.34")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "border p-2 font-bold" }, [
-                    _vm._v("Restaurants")
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "border p-2 font-bold" }, [
-                    _vm._v("02-23-2020")
-                  ])
-                ])
-              ])
+                  _vm._l(_vm.transactions, function(transaction) {
+                    return _c("tr", { key: transaction.id }, [
+                      _c("td", { staticClass: "border p-2 font-bold" }, [
+                        _vm._v(_vm._s(transaction.name))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "border p-2 font-bold" }, [
+                        _vm._v(_vm._s(transaction.spent))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "border p-2 font-bold" }, [
+                        _vm._v(_vm._s(transaction.item.name))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "border p-2 font-bold" }, [
+                        _vm._v(_vm._s(transaction.spent_date))
+                      ])
+                    ])
+                  })
+                ],
+                2
+              )
             ]
           )
         ])
@@ -46495,8 +46587,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })

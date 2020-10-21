@@ -35,8 +35,30 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', function 
 Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', function($month_id) {
 
     $month = App\Models\Month::find($month_id);
+    $items = App\Models\Item::where('month_id','=',$month->id)->get();
+    $transactions = App\Models\Transaction::where('month_id','=', $month->id)->with('item')->get();
     
-    return Inertia\Inertia::render('ItemTransactions', compact('month'));
+    return Inertia\Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions' ]));
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', function(Request $request) {
+    $transaction = new App\Models\Transaction;
+    $transaction->name = $request->transaction['name'];
+    $transaction->user_id = $request->user()->id;
+    $transaction->item_id = $request->transaction['item_id'];
+    $transaction->month_id = $request->transaction['month_id'];
+    $transaction->spent = $request->transaction['spent'];
+    $transaction->spent_date = $request->transaction['spent_date'];
+    $transaction->save();
+
+    $item = $transaction->item;
+
+    $item->remaining = $item->remaining - $transaction->spent;
+    $item->save();
+
+    return redirect()->back();
+
+
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){

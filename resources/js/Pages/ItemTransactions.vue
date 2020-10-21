@@ -8,35 +8,24 @@
     <div class="pt-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
-          <form>
+          <form @submit.prevent="newTransaction">
             <div class="flex">
               <div class="mr-4">
                 <label>Date</label>
                 <div>
-                  <input type="date" class="w-64 border p-2 h-10" />
+                  <input type="date" v-model="transactionForm.spent_date" class="w-64 border p-2 h-10" />
                 </div>
               </div>
               <div class="ml-4">
                 <div>
-                  <label>Category</label>
+                  <label>Budget Item</label>
                 </div>
                 <div class="inline-block relative w-32 mr-2">
                   <select
                     class="block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline h-10"
-                  >
-                    <option></option>
-                    <option>January</option>
-                    <option>February</option>
-                    <option>March</option>
-                    <option>April</option>
-                    <option>May</option>
-                    <option>June</option>
-                    <option>July</option>
-                    <option>August</option>
-                    <option>September</option>
-                    <option>October</option>
-                    <option>November</option>
-                    <option>December</option>
+                    v-model="transactionForm.item_id"
+                    >
+                      <option v-for="item in items" :key="item.id" :value="item.id">{{item.name}}</option>
                   </select>
                   <div
                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -57,11 +46,11 @@
             <div class="flex">
               <div class="my-2 mr-2 w-1/2">
                 <label>Name</label>
-                <input type="text" class="w-full border p-2" />
+                <input type="text" v-model="transactionForm.name" class="w-full border p-2" />
               </div>
               <div class="my-2 ml-2 w-1/2">
                 <label>Spent</label>
-                <input type="number" step="0.01" class="w-full border p-2" />
+                <input type="number" step="0.01" v-model="transactionForm.spent" class="w-full border p-2" />
               </div>
             </div>
             <div class="my-2">
@@ -86,11 +75,11 @@
               <th class="border p-2">Category</th>
               <th class="border p-2">Date</th>
             </tr>
-            <tr>
-              <td class="border p-2 font-bold">My amazing first Transaction</td>
-              <td class="border p-2 font-bold">23.34</td>
-              <td class="border p-2 font-bold">Restaurants</td>
-              <td class="border p-2 font-bold">02-23-2020</td>
+            <tr v-for="transaction in transactions" :key="transaction.id">
+                <td class="border p-2 font-bold">{{transaction.name}}</td>
+                <td class="border p-2 font-bold">{{transaction.spent}}</td>
+                <td class="border p-2 font-bold">{{transaction.item.name}}</td>
+                <td class="border p-2 font-bold">{{transaction.spent_date}}</td>
             </tr>
           </table>
         </div>
@@ -100,10 +89,37 @@
 </template>
 <script>
 import AppLayout from "./../Layouts/AppLayout";
+import {Inertia} from "@inertiajs/inertia";
 export default {
   components: {
     AppLayout,
   },
-  props: ['month']
+  props: ['month', 'items', 'transactions'],
+    data() {
+        return {
+            transactionForm : {
+                spent_date: null,
+                item_id: null,
+                month_id: this.month.id,
+                spent: null,
+                name: null
+            }
+        
+        }
+    },
+    methods : {
+        newTransaction() {
+            Inertia.post('/transactions', {'transaction':this.transactionForm}).then(()=>{
+                this.transactionForm.spent = null;
+                this.transactionForm.name = null;
+            
+            });
+
+            
+        
+        }
+    }
+
+
 };
 </script>
