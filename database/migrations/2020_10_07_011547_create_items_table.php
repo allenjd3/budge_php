@@ -20,7 +20,6 @@ class CreateItemsTable extends Migration
             $table->integer('remaining');
             $table->integer('category_id');
             $table->boolean('is_fund');
-            $table->integer('user_id');
             $table->integer('month_id');
             $table->timestamps();
         });

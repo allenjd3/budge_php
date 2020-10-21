@@ -17,7 +17,8 @@ class CreateMonthsTable extends Migration
             $table->id();
             $table->string('month');
             $table->string('year');
-            $table->bigInteger('user_id');
+            $table->integer('monthly_planned')->nullable();
+            $table->bigInteger('team_id');
             $table->timestamps();
         });
     }
