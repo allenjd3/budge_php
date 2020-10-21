@@ -84,6 +84,19 @@
               Go to Month
             </button>
           </div>
+          <div class="bg-indigo-100 py-4 my-8">
+            <div class="ml-4">
+              <form @submit.prevent="storeMonthlyPlanned">
+                <label class="font-bold">Planned Income</label>
+                <div class="inline-block">
+                  <input type="number" step="0.01" v-model="monthly_planned" class="w-64 p-2 border rounded" />
+                </div>
+                <div class="inline-block">
+                  <button type="submit" class=" p-2 bg-indigo-400 text-white font-bold rounded-lg hover:bg-indigo-600">Add Planned Income</button>
+                </div>
+              </form>
+            </div>
+          </div>
           <h2 class="text-2xl m-4">Paychecks</h2>
           <item-component
             name="First Paycheck"
@@ -93,7 +106,7 @@
           <div class="flex justify-around my-8">
             <div class="mx-2 text-center pt-4 pb-8 bg-teal-100 w-64 rounded-lg">
               <h3 class="text-lg">Total Planned</h3>
-              <p class="text-3xl">230.00</p>
+              <p class="text-3xl">{{month.monthly_planned}}</p>
             </div>
             <div
               class="mx-2 text-center pt-4 pb-8 bg-indigo-100 w-64 rounded-lg"
@@ -294,10 +307,14 @@ export default {
         name : null,
         month_id : null
       },
-      item : ""
+      item : "",
+      monthly_planned : null
     };
   },
   methods: {
+    storeMonthlyPlanned() {
+      Inertia.post("/modify-planned", {monthly_planned : this.monthly_planned, month_id : this.month.id});
+    },
     createItem() {
       this.showItemModal = true;
     },

@@ -3773,6 +3773,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3803,10 +3816,17 @@ __webpack_require__.r(__webpack_exports__);
         name: null,
         month_id: null
       },
-      item: ""
+      item: "",
+      monthly_planned: null
     };
   },
   methods: {
+    storeMonthlyPlanned: function storeMonthlyPlanned() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__["Inertia"].post("/modify-planned", {
+        monthly_planned: this.monthly_planned,
+        month_id: this.month.id
+      });
+    },
     createItem: function createItem() {
       this.showItemModal = true;
     },
@@ -28102,6 +28122,63 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
+              _c("div", { staticClass: "bg-indigo-100 py-4 my-8" }, [
+                _c("div", { staticClass: "ml-4" }, [
+                  _c(
+                    "form",
+                    {
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.storeMonthlyPlanned($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("label", { staticClass: "font-bold" }, [
+                        _vm._v("Planned Income")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "inline-block" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.monthly_planned,
+                              expression: "monthly_planned"
+                            }
+                          ],
+                          staticClass: "w-64 p-2 border rounded",
+                          attrs: { type: "number", step: "0.01" },
+                          domProps: { value: _vm.monthly_planned },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.monthly_planned = $event.target.value
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "inline-block" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              " p-2 bg-indigo-400 text-white font-bold rounded-lg hover:bg-indigo-600",
+                            attrs: { type: "submit" }
+                          },
+                          [_vm._v("Add Planned Income")]
+                        )
+                      ])
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
               _c("h2", { staticClass: "text-2xl m-4" }, [_vm._v("Paychecks")]),
               _vm._v(" "),
               _c("item-component", {
@@ -28124,7 +28201,9 @@ var render = function() {
                       _vm._v("Total Planned")
                     ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "text-3xl" }, [_vm._v("230.00")])
+                    _c("p", { staticClass: "text-3xl" }, [
+                      _vm._v(_vm._s(_vm.month.monthly_planned))
+                    ])
                   ]
                 ),
                 _vm._v(" "),

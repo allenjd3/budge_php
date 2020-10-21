@@ -89,8 +89,8 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(re
 
     return redirect()->back();
 });
-Route::middleware(['auth:sanctum','verified'])->get('/month/{month}/year/{year}', function($month, $year){
-    $month = App\Models\Month::where('month','=',$month)->where('year','=',$year)->first();
+Route::middleware(['auth:sanctum','verified'])->get('/month/{m}/year/{year}', function($m, $year){
+    $month = Auth::user()->currentTeam->months()->where('month','=',$m)->where('year','=',$year)->first();
     if( $month === null){
         return redirect('/months');
     }
@@ -136,4 +136,11 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Reques
      
 
     return redirect()->route('dashboard-month', ['m'=>$month->id]);
+});
+Route::middleware(['auth:sanctum', 'verified'])->post('/modify-planned', function(Request $request){
+    $month = App\Models\Month::find($request->month_id);
+    $month->monthly_planned = $request->monthly_planned;
+    $month->save();
+
+    return redirect()->back();
 });
