@@ -99,7 +99,7 @@ Route::middleware(['auth:sanctum','verified'])->get('/month/{m}/year/{year}', fu
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Request $request){
-    $month = App\Models\Month::firstOrNew([
+    $month = Auth::user()->currentTeam->months()->firstOrNew([
         'month'=>$request->month,
         'year'=>$request->year
     ]);
