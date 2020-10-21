@@ -20,7 +20,7 @@ class Month extends Model
     }
     public function setMonthlyPlannedAttribute($value) {
 
-        return $this->attributes['monthly_planned'] = $value * 100;
+        $this->attributes['monthly_planned'] = $value * 100;
     }
 
     public function getMonthlyPlannedAttribute($value) {

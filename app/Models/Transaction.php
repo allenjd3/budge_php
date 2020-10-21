@@ -10,7 +10,7 @@ class Transaction extends Model
     use HasFactory;
 
     public function setSpentAttribute($value) {
-        return $this->attributes['spent'] = $value * 100;
+        $this->attributes['spent'] = $value * 100;
     }
 
     public function getSpentAttribute($value) {

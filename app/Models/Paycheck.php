@@ -12,4 +12,8 @@ class Paycheck extends Model
     public function setPaydayAttribute($value) {
         $this->attributes['payday'] = $value * 100;
     }
+
+    public function getPaydayAttribute($value) {
+        return number_format( ( $value / 100 ), 2 );
+    }
 }

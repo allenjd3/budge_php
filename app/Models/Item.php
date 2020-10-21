@@ -11,12 +11,12 @@ class Item extends Model
 
     public function setPlannedAttribute($value) {
 
-        return $this->attributes['planned'] = $value * 100;
+        $this->attributes['planned'] = $value * 100;
     }
 
     public function setRemainingAttribute($value) {
 
-        return $this->attributes['remaining'] = $value * 100;
+        $this->attributes['remaining'] = $value * 100;
     }
 
     public function getPlannedAttribute($value) {
