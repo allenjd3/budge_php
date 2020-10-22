@@ -3875,8 +3875,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -3889,7 +3887,7 @@ __webpack_require__.r(__webpack_exports__);
     Modal: _Jetstream_Modal__WEBPACK_IMPORTED_MODULE_3__["default"],
     PaycheckComponent: _Components_PaycheckComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: ['month', 'paid', 'left'],
+  props: ['month', 'paid', 'left', 'planning'],
   data: function data() {
     return {
       showItemModal: false,
@@ -3929,6 +3927,16 @@ __webpack_require__.r(__webpack_exports__);
     amountLeft: {
       get: function get() {
         return (this.left / 100).toFixed(2);
+      }
+    },
+    monthlyPlanned: {
+      get: function get() {
+        return (this.month.monthly_planned / 100).toFixed(2);
+      }
+    },
+    monthlyLeft: {
+      get: function get() {
+        return (this.planning / 100).toFixed(2);
       }
     }
   },
@@ -28364,58 +28372,64 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "flex justify-around my-8" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "mx-2 text-center pt-4 pb-8 bg-teal-100 w-64 rounded-lg"
-                  },
-                  [
-                    _c("h3", { staticClass: "text-lg" }, [
-                      _vm._v("Total Planned")
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-3xl" }, [
-                      _vm._v(_vm._s(_vm.month.monthly_planned))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "mx-2 text-center pt-4 pb-8 bg-indigo-100 w-64 rounded-lg"
-                  },
-                  [
-                    _c("h3", { staticClass: "text-lg" }, [
-                      _vm._v("Total Paid")
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-3xl" }, [
-                      _vm._v(_vm._s(_vm.payAmount))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "mx-2 text-center pt-4 pb-8 bg-purple-100 w-64 rounded-lg"
-                  },
-                  [
-                    _c("h3", { staticClass: "text-lg" }, [
-                      _vm._v("Amount Left")
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-3xl" }, [
-                      _vm._v(_vm._s(_vm.amountLeft))
-                    ])
-                  ]
-                )
-              ])
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "flex justify-around my-8 flex-wrap md:flex-no-wrap"
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "mx-2 text-center pt-4 pb-8 bg-teal-100 w-full mb-4 md:mb-0 md:w-1/3 rounded-lg"
+                    },
+                    [
+                      _c("h3", { staticClass: "text-lg" }, [
+                        _vm._v("Total Planned")
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-3xl" }, [
+                        _vm._v(_vm._s(_vm.monthlyPlanned))
+                      ]),
+                      _vm._v(" "),
+                      _c("h3", { staticClass: "text-lg" }, [
+                        _vm._v("Total Planned Remaining")
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-3xl" }, [
+                        _vm._v(_vm._s(_vm.monthlyLeft))
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "mx-2 text-center pt-4 pb-8 bg-indigo-100 w-full md:w-1/3 rounded-lg"
+                    },
+                    [
+                      _c("h3", { staticClass: "text-lg" }, [
+                        _vm._v("Total Paid")
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-3xl" }, [
+                        _vm._v(_vm._s(_vm.payAmount))
+                      ]),
+                      _vm._v(" "),
+                      _c("h3", { staticClass: "text-lg" }, [
+                        _vm._v("Amount Left")
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-3xl" }, [
+                        _vm._v(_vm._s(_vm.amountLeft))
+                      ])
+                    ]
+                  )
+                ]
+              )
             ],
             2
           )

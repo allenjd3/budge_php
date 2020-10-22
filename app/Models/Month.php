@@ -28,7 +28,4 @@ class Month extends Model
         $this->attributes['monthly_planned'] = $value * 100;
     }
 
-    public function getMonthlyPlannedAttribute($value) {
-        return number_format( ( $value / 100 ), 2 );
-    }
 }

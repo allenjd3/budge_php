@@ -107,20 +107,18 @@
                 Create Paycheck
               </button>
             </div>
-            <div class="flex justify-around my-8">
-              <div class="mx-2 text-center pt-4 pb-8 bg-teal-100 w-64 rounded-lg">
+            <div class="flex justify-around my-8 flex-wrap md:flex-no-wrap">
+              <div class="mx-2 text-center pt-4 pb-8 bg-teal-100 w-full mb-4 md:mb-0 md:w-1/3 rounded-lg">
                 <h3 class="text-lg">Total Planned</h3>
-                <p class="text-3xl">{{month.monthly_planned}}</p>
+                <p class="text-3xl">{{monthlyPlanned}}</p>
+                <h3 class="text-lg">Total Planned Remaining</h3>
+                <p class="text-3xl">{{monthlyLeft}}</p>
               </div>
               <div
-                class="mx-2 text-center pt-4 pb-8 bg-indigo-100 w-64 rounded-lg"
+                class="mx-2 text-center pt-4 pb-8 bg-indigo-100 w-full md:w-1/3 rounded-lg"
                 >
                 <h3 class="text-lg">Total Paid</h3>
                 <p class="text-3xl">{{payAmount}}</p>
-              </div>
-              <div
-                class="mx-2 text-center pt-4 pb-8 bg-purple-100 w-64 rounded-lg"
-                >
                 <h3 class="text-lg">Amount Left</h3>
                 <p class="text-3xl">{{amountLeft}}</p>
               </div>
@@ -337,7 +335,7 @@ export default {
     Modal,
     PaycheckComponent
   },
-  props: ['month', 'paid', 'left'],
+  props: ['month', 'paid', 'left', 'planning'],
   data() {
     return {
       showItemModal: false,
@@ -381,7 +379,19 @@ export default {
         return (this.left / 100).toFixed(2);
       }
 
+    },
+    monthlyPlanned : {
+      get() {
+        return (this.month.monthly_planned / 100).toFixed(2);
+      }
+
+    },
+    monthlyLeft : {
+      get() {
+        return (this.planning / 100).toFixed(2);
+      }
     }
+
 
   },
   methods: {

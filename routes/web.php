@@ -25,19 +25,30 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
         return redirect('/months');
     }
     $paid = $month->paychecks->sum('payday');
+    
+    $itemSum = 0;
+    foreach($month->categories as $cat) {
+        $itemSum += $cat->items->sum('planned');
+    }
+    $planning = $month->monthly_planned - $itemSum;
     $tSum = App\Models\Transaction::where('month_id', '=', $month->id)->sum('spent');
     $left = $paid-$tSum;
     
-    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left']));
+    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', function ($m) {
     $month = Auth::user()->currentTeam->months()->with([ 'categories.items', 'paychecks' ])->find($m);
     $paid = $month->paychecks->sum('payday');
+    $itemSum = 0;
+    foreach($month->categories as $cat) {
+        $itemSum += $cat->items->sum('planned');
+    }
+    $planning = $month->monthly_planned - $itemSum;
     $tSum = App\Models\Transaction::where('month_id', '=', $month->id)->sum('spent');
     $left = $paid-$tSum;
     
-    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left']));
+    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
 })->name('dashboard-month');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', function($month_id) {
