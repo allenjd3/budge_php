@@ -3875,6 +3875,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3891,8 +3967,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       showItemModal: false,
+      showModifyItemModal: false,
       showCategoryModal: false,
       showPaycheckModal: false,
+      itemFormId: null,
       goTo: {
         month: this.month.month,
         year: this.month.year
@@ -3950,6 +4028,15 @@ __webpack_require__.r(__webpack_exports__);
     createItem: function createItem() {
       this.showItemModal = true;
     },
+    createModifyItem: function createModifyItem(item) {
+      this.showModifyItemModal = true;
+      this.itemFormId = item.id;
+      this.createItemForm.name = item.name;
+      this.createItemForm.planned = (item.planned / 100).toFixed(2);
+      this.createItemForm.category_id = item.category_id;
+      this.createItemForm.month_id = item.month_id;
+      this.createItemForm.is_fund = item.is_fund;
+    },
     createItemWithCategory: function createItemWithCategory(category) {
       this.createItemForm.category_id = category;
       this.showItemModal = true;
@@ -3975,6 +4062,22 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.showItemModal = false;
     },
+    updateItem: function updateItem() {
+      var _this2 = this;
+
+      this.createItemForm.month_id = this.month.id;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].put("/items/" + this.itemFormId, {
+        item: this.createItemForm
+      }).then(function () {
+        _this2.createItemForm.month_id = null;
+        _this2.createItemForm.name = null;
+        _this2.createItemForm.planned = null;
+        _this2.createItemForm.category_id = null;
+        _this2.createItemForm.is_fund = false;
+        _this2.itemFormId = null;
+      });
+      this.showModifyItemModal = false;
+    },
     storeCategory: function storeCategory() {
       this.createCategoryForm.month_id = this.month.id;
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/categories", {
@@ -3991,6 +4094,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeItem: function closeItem() {
       this.showItemModal = false;
+    },
+    closeModifyItem: function closeModifyItem() {
+      this.showModifyItemModal = false;
     },
     closeCategory: function closeCategory() {
       this.showCategoryModal = false;
@@ -24965,7 +25071,19 @@ var render = function() {
     { staticClass: "flex h-16 items-center shadow bg-gray-100 mx-8 my-4" },
     [
       _c("div", { staticClass: "flex-1 ml-4" }, [
-        _c("a", { attrs: { href: "" } }, [_vm._v(_vm._s(_vm.name))])
+        _c(
+          "a",
+          {
+            attrs: { href: "" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.$emit("toggleModal")
+              }
+            }
+          },
+          [_vm._v(_vm._s(_vm.name))]
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "w-32 font-bold text-blue-600" }, [
@@ -28504,6 +28622,11 @@ var render = function() {
                           name: item.name,
                           planned: item.planned,
                           spent: item.remaining
+                        },
+                        on: {
+                          toggleModal: function($event) {
+                            return _vm.createModifyItem(item)
+                          }
                         }
                       })
                     })
@@ -28785,6 +28908,283 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                      Create New\n              "
+                              )
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "Modal",
+                {
+                  ref: "update-item",
+                  attrs: { show: _vm.showModifyItemModal }
+                },
+                [
+                  _c("div", { staticClass: "p-8 relative" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
+                        on: { click: _vm.closeModifyItem }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "feather feather-x",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("line", {
+                              attrs: { x1: "18", y1: "6", x2: "6", y2: "18" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "6", y1: "6", x2: "18", y2: "18" }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("h1", { staticClass: "text-2xl" }, [
+                      _vm._v("Update Item")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "form",
+                      {
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            return _vm.updateItem($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("label", [_vm._v("Name")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.createItemForm.name,
+                                expression: "createItemForm.name"
+                              }
+                            ],
+                            staticClass: "w-full border p-2",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.createItemForm.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.createItemForm,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("label", [_vm._v("Planned")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.createItemForm.planned,
+                                expression: "createItemForm.planned"
+                              }
+                            ],
+                            staticClass: "w-full border p-2",
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.createItemForm.planned },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.createItemForm,
+                                  "planned",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("div", [_c("label", [_vm._v("Category")])]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "inline-block relative w-64 mr-2" },
+                            [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.createItemForm.category_id,
+                                      expression: "createItemForm.category_id"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.createItemForm,
+                                        "category_id",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                _vm._l(_vm.month.categories, function(c) {
+                                  return _c(
+                                    "option",
+                                    { key: c.id, domProps: { value: c.id } },
+                                    [_vm._v(_vm._s(c.name))]
+                                  )
+                                }),
+                                0
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                                },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticClass: "fill-current h-4 w-4",
+                                      attrs: {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        viewBox: "0 0 20 20"
+                                      }
+                                    },
+                                    [
+                                      _c("path", {
+                                        attrs: {
+                                          d:
+                                            "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.createItemForm.is_fund,
+                                expression: "createItemForm.is_fund"
+                              }
+                            ],
+                            staticClass: "border",
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked: Array.isArray(_vm.createItemForm.is_fund)
+                                ? _vm._i(_vm.createItemForm.is_fund, null) > -1
+                                : _vm.createItemForm.is_fund
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.createItemForm.is_fund,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.createItemForm,
+                                        "is_fund",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.createItemForm,
+                                        "is_fund",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.createItemForm, "is_fund", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", [_vm._v("Fund?")])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "my-2" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600",
+                              attrs: { type: "submit" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                      Update\n              "
                               )
                             ]
                           )
@@ -47103,8 +47503,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })

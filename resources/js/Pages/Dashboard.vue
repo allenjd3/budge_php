@@ -134,7 +134,7 @@
             <a href="" class="mr-8" @click.prevent="createItemWithCategory(c.id)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>
           </div>
           <template v-if="c.items">
-            <item-component v-for="item in c.items" :key="item.id" :name="item.name" :planned="item.planned" :spent="item.remaining"/>
+            <item-component v-for="item in c.items" :key="item.id" :name="item.name" :planned="item.planned" :spent="item.remaining" @toggleModal="createModifyItem(item)"/>
           </template>
         </div>
       </div>
@@ -214,6 +214,82 @@
                         class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
                         >
                         Create New
+                </button>
+              </div>
+            </form>
+          </div>
+          </Modal>
+          <Modal ref="update-item" :show="showModifyItemModal">
+          <div class="p-8 relative">
+            <div
+              class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
+              @click="closeModifyItem"
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-x"
+                >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </div>
+            <h1 class="text-2xl">Update Item</h1>
+            <form @submit.prevent="updateItem">
+              <div class="my-2">
+                <label>Name</label>
+                <input type="text" class="w-full border p-2" v-model="createItemForm.name"/>
+              </div>
+              <div class="my-2">
+                <label>Planned</label>
+                <input type="number" step="0.01" class="w-full border p-2" v-model="createItemForm.planned"/>
+              </div>
+              <div class="my-2">
+                <div>
+                  <label>Category</label>
+                </div>
+                <div class="inline-block relative w-64 mr-2">
+                  <select
+                    class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+                    v-model="createItemForm.category_id" 
+                    >
+                    <option v-for="c in month.categories" :key="c.id" :value="c.id">{{c.name}}</option>
+                  </select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                    >
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                        />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="my-2">
+                <input
+                  type="checkbox"
+                  class="border"
+                  v-model="createItemForm.is_fund"
+                  />
+                <label>Fund?</label>
+              </div>
+              <div class="my-2">
+                <button type="submit"
+                        class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                        >
+                        Update
                 </button>
               </div>
             </form>
@@ -339,8 +415,10 @@ export default {
   data() {
     return {
       showItemModal: false,
+      showModifyItemModal: false,
       showCategoryModal: false,
       showPaycheckModal: false,
+      itemFormId : null,
       goTo : {
         month : this.month.month,
         year : this.month.year
@@ -401,6 +479,16 @@ export default {
     createItem() {
       this.showItemModal = true;
     },
+    createModifyItem(item) {
+        this.showModifyItemModal = true;
+        this.itemFormId = item.id;
+        this.createItemForm.name = item.name;
+        this.createItemForm.planned = (item.planned / 100).toFixed(2);
+        this.createItemForm.category_id = item.category_id;
+        this.createItemForm.month_id = item.month_id;
+        this.createItemForm.is_fund = item.is_fund;
+    
+    },
     createItemWithCategory(category) {
       this.createItemForm.category_id = category;
       this.showItemModal = true;
@@ -420,9 +508,23 @@ export default {
         this.createItemForm.planned = null;
         this.createItemForm.category_id = null;
         this.createItemForm.is_fund = false;
+          
       });
 
       this.showItemModal = false;
+    },
+    updateItem() {
+      this.createItemForm.month_id = this.month.id;
+      Inertia.put("/items/" + this.itemFormId, {item : this.createItemForm}).then(()=>{
+        this.createItemForm.month_id = null;
+        this.createItemForm.name = null;
+        this.createItemForm.planned = null;
+        this.createItemForm.category_id = null;
+        this.createItemForm.is_fund = false;
+        this.itemFormId = null;
+      });
+
+      this.showModifyItemModal = false;
     },
     storeCategory() {
       this.createCategoryForm.month_id = this.month.id;
@@ -437,6 +539,9 @@ export default {
     },
     closeItem() {
       this.showItemModal = false;
+    },
+    closeModifyItem() {
+      this.showModifyItemModal = false;
     },
     closeCategory() {
       this.showCategoryModal = false;

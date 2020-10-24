@@ -92,6 +92,22 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request
 
     return redirect()->back();
 });
+Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', function($item, Request $request){
+
+	$item = App\Models\Item::find($item);
+
+    $calculatedRemaining = $item->planned - $item->remaining;
+
+	$item->name = $request->item['name'];
+	$item->planned = $request->item['planned'];
+    $item->remaining = $request->item['planned'] - $calculatedRemaining/100;
+	$item->is_fund = $request->item['is_fund'];
+	$item->month_id = $request->item['month_id'];
+	$item->category_id = $request->item['category_id'];
+	$item->save();
+
+    return redirect()->back();
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
     $months = Auth::user()->currentTeam->months()->get();
