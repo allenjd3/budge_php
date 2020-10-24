@@ -114,11 +114,19 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
     
     return Inertia\Inertia::render('CreateMonth', compact('months'));
 });
-Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(request $request){
+Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(Request $request){
 
     $category = new App\Models\Category;
     $category->name = $request->category['name'];
     $category->month_id = $request->category['month_id'];
+    $category->save();
+
+    return redirect()->back();
+});
+Route::middleware(['auth:sanctum', 'verified'])->post('/categories/{category}', function($category, Request $request){
+
+    $category = App\Models\Category::find($category);
+    $category->name = $request->category['name'];
     $category->save();
 
     return redirect()->back();

@@ -3951,6 +3951,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3969,8 +4005,10 @@ __webpack_require__.r(__webpack_exports__);
       showItemModal: false,
       showModifyItemModal: false,
       showCategoryModal: false,
+      showModifyCategoryModal: false,
       showPaycheckModal: false,
       itemFormId: null,
+      categoryFormId: null,
       goTo: {
         month: this.month.month,
         year: this.month.year
@@ -4044,6 +4082,12 @@ __webpack_require__.r(__webpack_exports__);
     createCategory: function createCategory() {
       this.showCategoryModal = true;
     },
+    createModifyCategory: function createModifyCategory(category) {
+      this.showModifyCategoryModal = true;
+      this.createCategoryForm.month_id = category.month_id;
+      this.createCategoryForm.name = category.name;
+      this.categoryFormId = category.id;
+    },
     createPaycheck: function createPaycheck() {
       this.showPaycheckModal = true;
     },
@@ -4085,6 +4129,12 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.showCategoryModal = false;
     },
+    updateCategory: function updateCategory() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/categories/" + this.categoryFormId, {
+        category: this.createCategoryForm
+      });
+      this.showModifyCategoryModal = false;
+    },
     storePaycheck: function storePaycheck() {
       this.createPaycheckForm.month_id = this.month.id;
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/paychecks", {
@@ -4100,6 +4150,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeCategory: function closeCategory() {
       this.showCategoryModal = false;
+    },
+    closeModifyCategory: function closeModifyCategory() {
+      this.showModifyCategoryModal = false;
     },
     closePaycheck: function closePaycheck() {
       this.showPaycheckModal = false;
@@ -28567,9 +28620,19 @@ var render = function() {
                   "div",
                   { staticClass: "flex justify-between items-center" },
                   [
-                    _c("h2", { staticClass: "text-2xl m-4" }, [
-                      _vm._v(_vm._s(c.name))
-                    ]),
+                    _c(
+                      "h2",
+                      {
+                        staticClass: "text-2xl m-4 cursor-pointer",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.createModifyCategory(c)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(c.name))]
+                    ),
                     _vm._v(" "),
                     _c(
                       "a",
@@ -29293,6 +29356,116 @@ var render = function() {
                                   "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
                               },
                               [_vm._v("Create Category")]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "Modal",
+                {
+                  ref: "new-item",
+                  attrs: { show: _vm.showModifyCategoryModal }
+                },
+                [
+                  _c("div", { staticClass: "p-8 relative" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
+                        on: { click: _vm.closeModifyCategory }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "feather feather-x",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("line", {
+                              attrs: { x1: "18", y1: "6", x2: "6", y2: "18" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "6", y1: "6", x2: "18", y2: "18" }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-8" }, [
+                      _c("h1", { staticClass: "text-2xl" }, [
+                        _vm._v("Edit Category")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "form",
+                        {
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              return _vm.updateCategory($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Name: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createCategoryForm.name,
+                                  expression: "createCategoryForm.name"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.createCategoryForm.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createCategoryForm,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
+                              },
+                              [_vm._v("Update Category")]
                             )
                           ])
                         ]
