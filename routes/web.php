@@ -78,6 +78,26 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', function(
 
 
 });
+Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction}', function($transaction, Request $request) {
+    $transaction = App\Models\Transaction::find($transaction);
+    $item = $transaction->item;
+    $item->remaining = ($item->remaining + $transaction->spent)/100;
+
+    $transaction->name = $request->transaction['name'];
+    $transaction->item_id = $request->transaction['item_id'];
+    $transaction->month_id = $request->transaction['month_id'];
+    $transaction->spent = $request->transaction['spent'];
+    $transaction->spent_date = $request->transaction['spent_date'];
+    $transaction->save();
+
+
+    $item->remaining = ( $item->remaining - $transaction->spent )/100;
+    $item->save();
+
+    return redirect()->back();
+
+
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
 

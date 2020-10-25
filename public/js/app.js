@@ -4281,22 +4281,47 @@ __webpack_require__.r(__webpack_exports__);
         month_id: this.month.id,
         spent: null,
         name: null
-      }
+      },
+      transaction_id: null,
+      buttonMsg: "New Transaction"
     };
   },
   methods: {
     newTransaction: function newTransaction() {
       var _this = this;
 
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__["Inertia"].post('/transactions', {
-        'transaction': this.transactionForm
-      }).then(function () {
-        _this.transactionForm.spent = null;
-        _this.transactionForm.name = null;
-      });
+      if (this.transaction_id) {
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__["Inertia"].put('/transactions/' + this.transaction_id, {
+          'transaction': this.transactionForm
+        }).then(function () {
+          _this.transactionForm.spent = null;
+          _this.transactionForm.name = null;
+          _this.transactionForm.spent_date = null;
+          _this.transactionForm.item_id = null;
+          _this.transactionForm.month_id = null;
+          _this.transaction_id = null;
+          _this.buttonMsg = "New Transaction";
+        });
+      } else {
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__["Inertia"].post('/transactions', {
+          'transaction': this.transactionForm
+        }).then(function () {
+          _this.transactionForm.spent = null;
+          _this.transactionForm.name = null;
+        });
+      }
     },
     formattedSpent: function formattedSpent(spent) {
       return (spent / 100).toFixed(2);
+    },
+    transactionEdit: function transactionEdit(transaction) {
+      this.transactionForm.spent_date = transaction.spent_date;
+      this.transactionForm.item_id = transaction.item_id;
+      this.transactionForm.month_id = transaction.month_id;
+      this.transactionForm.spent = (transaction.spent / 100).toFixed(2);
+      this.transactionForm.name = transaction.name;
+      this.transaction_id = transaction.id;
+      this.buttonMsg = "Edit Transaction";
     }
   }
 });
@@ -29719,11 +29744,11 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n      New Transaction for " +
+                    "\n            New Transaction for " +
                       _vm._s(_vm.month.month) +
                       " " +
                       _vm._s(_vm.month.year) +
-                      "\n    "
+                      "\n        "
                   )
                 ]
               )
@@ -29941,7 +29966,13 @@ var render = function() {
                           "bg-indigo-400 text-white font-bold h-10 w-64 rounded-lg hover:bg-indigo-600",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("\n              New Transaction\n            ")]
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.buttonMsg) +
+                            "\n                        "
+                        )
+                      ]
                     )
                   ])
                 ]
@@ -29980,9 +30011,19 @@ var render = function() {
                   _vm._v(" "),
                   _vm._l(_vm.transactions, function(transaction) {
                     return _c("tr", { key: transaction.id }, [
-                      _c("td", { staticClass: "border p-2 font-bold" }, [
-                        _vm._v(_vm._s(transaction.name))
-                      ]),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "border p-2 font-bold cursor-pointer",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.transactionEdit(transaction)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(transaction.name))]
+                      ),
                       _vm._v(" "),
                       _c("td", { staticClass: "border p-2 font-bold" }, [
                         _vm._v(_vm._s(_vm.formattedSpent(transaction.spent)))
