@@ -3993,6 +3993,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4165,6 +4175,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToMonth: function goToMonth() {
       window.location = '/month/' + this.goTo.month + '/year/' + this.goTo.year;
+    },
+    deleteItem: function deleteItem(id) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"]["delete"]("/items/" + id);
+    },
+    deleteCategory: function deleteCategory(id) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"]["delete"]("/categories/" + id);
+    },
+    deletePaycheck: function deletePaycheck(id) {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"]["delete"]("/paychecks/" + id);
     }
   }
 });
@@ -29281,20 +29300,40 @@ var render = function() {
                           _c("label", [_vm._v("Fund?")])
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "my-2" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600",
-                              attrs: { type: "submit" }
-                            },
-                            [
-                              _vm._v(
-                                "\n                      Update\n              "
-                              )
-                            ]
-                          )
+                        _c("div", { staticClass: "flex justify-between" }, [
+                          _c("div", { staticClass: "my-2" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600",
+                                attrs: { type: "submit" }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Update\n                "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "flex justify-center items-center block bg-red-200 text-black w-32 h-10 font-bold hover:bg-red-400",
+                                attrs: { href: "" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.deleteItem(_vm.itemFormId)
+                                  }
+                                }
+                              },
+                              [_vm._v("Delete")]
+                            )
+                          ])
                         ])
                       ]
                     )
@@ -29502,15 +29541,36 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "my-2" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
-                              },
-                              [_vm._v("Update Category")]
-                            )
+                          _c("div", { staticClass: "flex justify-between" }, [
+                            _c("div", {}, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
+                                },
+                                [_vm._v("Update Category")]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", {}, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "bg-red-200 text-black w-64 h-10 font-bold hover:bg-red-400 block flex justify-center items-center",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.deleteCategory(
+                                        _vm.categoryFormId
+                                      )
+                                    }
+                                  }
+                                },
+                                [_vm._v("Delete Category")]
+                              )
+                            ])
                           ])
                         ]
                       )

@@ -285,12 +285,17 @@
                   />
                 <label>Fund?</label>
               </div>
-              <div class="my-2">
-                <button type="submit"
-                        class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
-                        >
-                        Update
-                </button>
+              <div class="flex justify-between">
+                <div class="my-2">
+                  <button type="submit"
+                          class="bg-indigo-400 text-white w-32 h-10 font-bold hover:bg-indigo-600"
+                          >
+                          Update
+                  </button>
+                </div>
+                <div class="my-2">
+                  <a href="" @click.prevent="deleteItem(itemFormId)" class="flex justify-center items-center block bg-red-200 text-black w-32 h-10 font-bold hover:bg-red-400">Delete</a>
+                </div>
               </div>
             </form>
           </div>
@@ -360,8 +365,13 @@
                   <label class="font-bold">Name: </label>
                   <input type="text" v-model="createCategoryForm.name" class="p-2 border w-full"/>
                 </div>
-                <div class="my-2">
-                  <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Update Category</button>
+                <div class="flex justify-between">
+                  <div class="">
+                    <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Update Category</button>
+                  </div>
+                  <div class="">
+                    <a @click.prevent="deleteCategory(categoryFormId)" class="bg-red-200 text-black w-64 h-10 font-bold hover:bg-red-400 block flex justify-center items-center">Delete Category</a>
+                  </div>
                 </div>
               </form>
             </div>
@@ -604,7 +614,16 @@ export default {
     },
     goToMonth() {
       window.location = '/month/'+this.goTo.month + '/year/' + this.goTo.year;
-    }
+    },
+    deleteItem(id) {
+      Inertia.delete("/items/"+id);
+    },
+    deleteCategory(id) {
+      Inertia.delete("/categories/"+id);
+    },
+    deletePaycheck(id) {
+      Inertia.delete("/paychecks/"+id);
+    },
 
   },
 };

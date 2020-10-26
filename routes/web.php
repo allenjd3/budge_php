@@ -129,6 +129,16 @@ Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', function($
     return redirect()->back();
 });
 
+Route::middleware(['auth:sanctum', 'verified'])->delete('/items/{item}', function($item, Request $request){
+
+    $item = App\Models\Item::find($item);
+    foreach($item->transactions as $transaction){
+        $transaction->delete();
+    }
+    $item->delete();
+    return redirect()->back();
+});
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
     $months = Auth::user()->currentTeam->months()->get();
     
@@ -148,6 +158,19 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/categories/{category}', 
     $category = App\Models\Category::find($category);
     $category->name = $request->category['name'];
     $category->save();
+
+    return redirect()->back();
+});
+Route::middleware(['auth:sanctum', 'verified'])->delete('/categories/{category}', function($category, Request $request){
+
+    $category = App\Models\Category::find($category);
+    foreach($category->items as $item) {
+        foreach($item->transactions as $transaction) {
+            $transaction->delete();
+        }
+        $item->delete();
+    }
+    $category->delete();
 
     return redirect()->back();
 });

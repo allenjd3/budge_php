@@ -18,6 +18,9 @@ class Item extends Model
 
         $this->attributes['remaining'] = $value * 100;
     }
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
 
     public function month() {
         return $this->belongsTo(Month::class);
