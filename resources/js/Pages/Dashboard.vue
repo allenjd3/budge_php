@@ -416,16 +416,16 @@
       <div class="h-32 bg-indigo-300 flex items-center">
         <div class="w-1/2 flex justify-center mx-auto">
           <button
-            class="bg-gray-900 w-40 h-10 text-gray-100"
+            class="bg-gray-900 w-56 h-10 text-gray-100"
             @click="createCategory"
             >
             Create Category
           </button>
             <a
-              class="bg-gray-900 w-40 h-10 text-gray-100 ml-2 flex items-center justify-center"
+              class="bg-gray-900 w-56 h-10 text-gray-100 ml-2 flex items-center justify-center"
               :href="'/create-transaction/' + month.id"
               >
-              Create Transaction
+              Create/View Transaction
             </a>
         </div>
       </div>

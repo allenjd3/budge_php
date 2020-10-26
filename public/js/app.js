@@ -29684,7 +29684,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "bg-gray-900 w-40 h-10 text-gray-100",
+                staticClass: "bg-gray-900 w-56 h-10 text-gray-100",
                 on: { click: _vm.createCategory }
               },
               [_vm._v("\n          Create Category\n        ")]
@@ -29694,10 +29694,10 @@ var render = function() {
               "a",
               {
                 staticClass:
-                  "bg-gray-900 w-40 h-10 text-gray-100 ml-2 flex items-center justify-center",
+                  "bg-gray-900 w-56 h-10 text-gray-100 ml-2 flex items-center justify-center",
                 attrs: { href: "/create-transaction/" + _vm.month.id }
               },
-              [_vm._v("\n            Create Transaction\n          ")]
+              [_vm._v("\n            Create/View Transaction\n          ")]
             )
           ])
         ])
