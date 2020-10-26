@@ -4024,7 +4024,7 @@ __webpack_require__.r(__webpack_exports__);
         planned: null,
         category_id: null,
         month_id: null,
-        is_fund: false
+        is_fund: 0
       },
       createCategoryForm: {
         name: null,
@@ -4079,7 +4079,7 @@ __webpack_require__.r(__webpack_exports__);
       this.createItemForm.planned = (item.planned / 100).toFixed(2);
       this.createItemForm.category_id = item.category_id;
       this.createItemForm.month_id = item.month_id;
-      this.createItemForm.is_fund = item.is_fund;
+      this.createItemForm.is_fund = item.is_fund == "0" ? false : true;
     },
     createItemWithCategory: function createItemWithCategory(category) {
       this.createItemForm.category_id = category;
@@ -4108,7 +4108,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.createItemForm.name = null;
         _this.createItemForm.planned = null;
         _this.createItemForm.category_id = null;
-        _this.createItemForm.is_fund = false;
+        _this.createItemForm.is_fund = 0;
       });
       this.showItemModal = false;
     },
@@ -4123,7 +4123,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.createItemForm.name = null;
         _this2.createItemForm.planned = null;
         _this2.createItemForm.category_id = null;
-        _this2.createItemForm.is_fund = false;
+        _this2.createItemForm.is_fund = 0;
         _this2.itemFormId = null;
       });
       this.showModifyItemModal = false;
@@ -29304,7 +29304,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Modal",
-                { ref: "new-item", attrs: { show: _vm.showCategoryModal } },
+                { ref: "new-category", attrs: { show: _vm.showCategoryModal } },
                 [
                   _c("div", { staticClass: "p-8 relative" }, [
                     _c(
@@ -29412,7 +29412,7 @@ var render = function() {
               _c(
                 "Modal",
                 {
-                  ref: "new-item",
+                  ref: "new-edit-category",
                   attrs: { show: _vm.showModifyCategoryModal }
                 },
                 [
@@ -29521,7 +29521,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "Modal",
-                { ref: "new-item", attrs: { show: _vm.showPaycheckModal } },
+                { ref: "new-paycheck", attrs: { show: _vm.showPaycheckModal } },
                 [
                   _c("div", { staticClass: "p-8 relative" }, [
                     _c(

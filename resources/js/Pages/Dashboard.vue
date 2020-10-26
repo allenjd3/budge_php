@@ -295,7 +295,7 @@
             </form>
           </div>
           </Modal>
-          <Modal ref="new-item" :show="showCategoryModal">
+          <Modal ref="new-category" :show="showCategoryModal">
           <div class="p-8 relative">
             <div
               class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
@@ -331,7 +331,7 @@
             </div>
           </div>
           </Modal>
-          <Modal ref="new-item" :show="showModifyCategoryModal">
+          <Modal ref="new-edit-category" :show="showModifyCategoryModal">
           <div class="p-8 relative">
             <div
               class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
@@ -367,7 +367,7 @@
             </div>
           </div>
           </Modal>
-          <Modal ref="new-item" :show="showPaycheckModal">
+          <Modal ref="new-paycheck" :show="showPaycheckModal">
           <div class="p-8 relative">
             <div
               class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
@@ -466,7 +466,7 @@ export default {
         planned : null,
         category_id : null,
         month_id : null,
-        is_fund : false
+        is_fund : 0
       },
       createCategoryForm: {
         name : null,
@@ -524,7 +524,8 @@ export default {
         this.createItemForm.planned = (item.planned / 100).toFixed(2);
         this.createItemForm.category_id = item.category_id;
         this.createItemForm.month_id = item.month_id;
-        this.createItemForm.is_fund = item.is_fund;
+      
+        this.createItemForm.is_fund = (item.is_fund == "0" ? false : true);
     
     },
     createItemWithCategory(category) {
@@ -551,7 +552,7 @@ export default {
         this.createItemForm.name = null;
         this.createItemForm.planned = null;
         this.createItemForm.category_id = null;
-        this.createItemForm.is_fund = false;
+        this.createItemForm.is_fund = 0;
           
       });
 
@@ -564,7 +565,7 @@ export default {
         this.createItemForm.name = null;
         this.createItemForm.planned = null;
         this.createItemForm.category_id = null;
-        this.createItemForm.is_fund = false;
+        this.createItemForm.is_fund = 0;
         this.itemFormId = null;
       });
 

@@ -183,8 +183,15 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Reques
                     {
                         $i = new App\Models\Item();
                         $i->name = $item->name;
-                        $i->planned = $item->planned;
+                        $i->planned = ( $item->planned )/100;
+                        
                         $i->is_fund = $item->is_fund;
+                        if($item->is_fund) {
+                            $i->remaining = ( $item->remaining + $i->planned )/100;
+                        }
+                        else {
+                            $i->remaining = ( $item->planned )/100;
+                        }
                         $i->category_id = $c->id;
                         $i->month_id = $month->id;
                         $i->save();
