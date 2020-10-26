@@ -4,7 +4,13 @@
       <a href="" @click.prevent="$emit('toggleModal')">{{name}}</a>
     </div>
     <div class="w-32 font-bold text-blue-600">${{formattedPlanned}}</div>
-    <div class="w-32 font-bold text-green-600">${{formattedSpent}}</div>
+    
+    <template v-if="formattedSpent > 0">
+      <div class="w-32 font-bold text-green-600">${{formattedSpent}}</div>
+    </template>
+    <template v-if="formattedSpent < 0">
+      <div class="w-32 font-bold text-red-600">${{formattedSpent}}</div>
+    </template>
   </div>
 </template>
 <script>

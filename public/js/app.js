@@ -1943,6 +1943,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['planned', 'spent', 'name'],
   computed: {
@@ -25168,10 +25174,23 @@ var render = function() {
         _vm._v("$" + _vm._s(_vm.formattedPlanned))
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
-        _vm._v("$" + _vm._s(_vm.formattedSpent))
-      ])
-    ]
+      _vm.formattedSpent > 0
+        ? [
+            _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
+              _vm._v("$" + _vm._s(_vm.formattedSpent))
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.formattedSpent < 0
+        ? [
+            _c("div", { staticClass: "w-32 font-bold text-red-600" }, [
+              _vm._v("$" + _vm._s(_vm.formattedSpent))
+            ])
+          ]
+        : _vm._e()
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -47717,8 +47736,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/jallen4/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/james/workspace/budge_php/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/james/workspace/budge_php/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })
