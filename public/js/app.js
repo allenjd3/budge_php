@@ -4003,6 +4003,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4022,9 +4064,11 @@ __webpack_require__.r(__webpack_exports__);
       showModifyItemModal: false,
       showCategoryModal: false,
       showModifyCategoryModal: false,
+      showModifyPaycheckModal: false,
       showPaycheckModal: false,
       itemFormId: null,
       categoryFormId: null,
+      paycheckFormId: null,
       goTo: {
         month: this.month.month,
         year: this.month.year
@@ -4091,6 +4135,11 @@ __webpack_require__.r(__webpack_exports__);
       this.createItemForm.month_id = item.month_id;
       this.createItemForm.is_fund = item.is_fund == "0" ? false : true;
     },
+    createModifyPaycheck: function createModifyPaycheck(paycheck) {
+      this.showModifyPaycheckModal = true;
+      this.paycheckFormId = paycheck.id;
+      this.createPaycheckForm.name = paycheck.name, this.createPaycheckForm.payday = (paycheck.payday / 100).toFixed(2), this.createPaycheckForm.pay_date = paycheck.pay_date, this.createPaycheckForm.month_id = paycheck.month_id;
+    },
     createItemWithCategory: function createItemWithCategory(category) {
       this.createItemForm.category_id = category;
       this.showItemModal = true;
@@ -4151,6 +4200,12 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.showModifyCategoryModal = false;
     },
+    updatePaycheck: function updatePaycheck() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].put("/paychecks/" + this.paycheckFormId, {
+        paycheck: this.createPaycheckForm
+      });
+      this.showModifyPaycheckModal = false;
+    },
     storePaycheck: function storePaycheck() {
       this.createPaycheckForm.month_id = this.month.id;
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/paychecks", {
@@ -4170,8 +4225,14 @@ __webpack_require__.r(__webpack_exports__);
     closeModifyCategory: function closeModifyCategory() {
       this.showModifyCategoryModal = false;
     },
+    closeConfirmationModal: function closeConfirmationModal() {
+      this.showConfirmationModal = false;
+    },
     closePaycheck: function closePaycheck() {
       this.showPaycheckModal = false;
+    },
+    closeUpdatePaycheck: function closeUpdatePaycheck() {
+      this.showModifyPaycheckModal = false;
     },
     goToMonth: function goToMonth() {
       window.location = '/month/' + this.goTo.month + '/year/' + this.goTo.year;
@@ -25239,7 +25300,19 @@ var render = function() {
     { staticClass: "flex h-16 items-center shadow bg-gray-100 mx-8 my-4" },
     [
       _c("div", { staticClass: "flex-1 ml-4" }, [
-        _c("a", { attrs: { href: "" } }, [_vm._v(_vm._s(_vm.name))])
+        _c(
+          "a",
+          {
+            attrs: { href: "" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.$emit("togglePaycheckModal")
+              }
+            }
+          },
+          [_vm._v(_vm._s(_vm.name))]
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
@@ -28457,10 +28530,6 @@ var render = function() {
                     [
                       _c("option"),
                       _vm._v(" "),
-                      _c("option", [_vm._v("2018")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2019")]),
-                      _vm._v(" "),
                       _c("option", [_vm._v("2020")]),
                       _vm._v(" "),
                       _c("option", [_vm._v("2021")]),
@@ -28590,7 +28659,12 @@ var render = function() {
               _vm._l(_vm.month.paychecks, function(paycheck) {
                 return _c("paycheck-component", {
                   key: paycheck.id,
-                  attrs: { name: paycheck.name, spent: paycheck.payday }
+                  attrs: { name: paycheck.name, spent: paycheck.payday },
+                  on: {
+                    togglePaycheckModal: function($event) {
+                      return _vm.createModifyPaycheck(paycheck)
+                    }
+                  }
                 })
               }),
               _vm._v(" "),
@@ -29322,7 +29396,7 @@ var render = function() {
                               "a",
                               {
                                 staticClass:
-                                  "flex justify-center items-center block bg-red-200 text-black w-32 h-10 font-bold hover:bg-red-400",
+                                  "flex justify-center items-center block border border-gray-800 text-black w-32 h-10 font-bold hover:bg-gray-800 hover:text-white",
                                 attrs: { href: "" },
                                 on: {
                                   click: function($event) {
@@ -29558,7 +29632,7 @@ var render = function() {
                                 "a",
                                 {
                                   staticClass:
-                                    "bg-red-200 text-black w-64 h-10 font-bold hover:bg-red-400 block flex justify-center items-center",
+                                    "border border-gray-800 text-black w-64 h-10 font-bold hover:bg-gray-800 hover:text-white block flex justify-center items-center",
                                   on: {
                                     click: function($event) {
                                       $event.preventDefault()
@@ -29745,6 +29819,184 @@ var render = function() {
                                   "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
                               },
                               [_vm._v("Create Paycheck")]
+                            )
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "Modal",
+                {
+                  ref: "update-paycheck",
+                  attrs: { show: _vm.showModifyPaycheckModal }
+                },
+                [
+                  _c("div", { staticClass: "p-8 relative" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer",
+                        on: { click: _vm.closeUpdatePaycheck }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "feather feather-x",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "currentColor",
+                              "stroke-width": "2",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("line", {
+                              attrs: { x1: "18", y1: "6", x2: "6", y2: "18" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "6", y1: "6", x2: "18", y2: "18" }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-8" }, [
+                      _c("h1", { staticClass: "text-2xl" }, [
+                        _vm._v("Update Paycheck")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "form",
+                        {
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              return _vm.updatePaycheck($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Name: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createPaycheckForm.name,
+                                  expression: "createPaycheckForm.name"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.createPaycheckForm.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createPaycheckForm,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Pay Date: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createPaycheckForm.pay_date,
+                                  expression: "createPaycheckForm.pay_date"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "date" },
+                              domProps: {
+                                value: _vm.createPaycheckForm.pay_date
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createPaycheckForm,
+                                    "pay_date",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c("label", { staticClass: "font-bold" }, [
+                              _vm._v("Amount: ")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.createPaycheckForm.payday,
+                                  expression: "createPaycheckForm.payday"
+                                }
+                              ],
+                              staticClass: "p-2 border w-full",
+                              attrs: { type: "number", step: "0.01" },
+                              domProps: {
+                                value: _vm.createPaycheckForm.payday
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.createPaycheckForm,
+                                    "payday",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "my-2" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
+                              },
+                              [_vm._v("Update Paycheck")]
                             )
                           ])
                         ]

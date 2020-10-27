@@ -248,3 +248,20 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/paychecks', function(Req
 
     return redirect()->back();
 });
+Route::middleware(['auth:sanctum', 'verified'])->put('/paychecks/{paycheck}', function($paycheck, Request $request){
+    $paycheck = App\Models\Paycheck::find($paycheck);
+    $paycheck->name = $request->paycheck['name'];
+    $paycheck->payday = $request->paycheck['payday'];
+    $paycheck->pay_date = $request->paycheck['pay_date'];
+    $paycheck->month_id = $request->paycheck['month_id'];
+
+    $paycheck->save();
+
+    return redirect()->back();
+});
+Route::middleware(['auth:sanctum', 'verified'])->delete('/paychecks/{paycheck}', function($paycheck, Request $request){
+    $paycheck = App\Models\Paycheck::find($paycheck);
+    $paycheck->delete();
+
+    return redirect()->back();
+});

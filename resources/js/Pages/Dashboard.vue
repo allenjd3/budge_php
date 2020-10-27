@@ -50,8 +50,6 @@
                 v-model="goTo.year"
                 >
                 <option></option>
-                <option>2018</option>
-                <option>2019</option>
                 <option>2020</option>
                 <option>2021</option>
                 <option>2022</option>
@@ -98,7 +96,7 @@
             </div>
           </div>
           <h2 class="text-2xl m-4">Paychecks</h2>
-          <paycheck-component v-for="paycheck in month.paychecks" :name="paycheck.name" :spent="paycheck.payday" :key="paycheck.id"/>
+          <paycheck-component v-for="paycheck in month.paychecks" :name="paycheck.name" :spent="paycheck.payday" :key="paycheck.id" @togglePaycheckModal="createModifyPaycheck(paycheck)"/>
             <div class="ml-4">
               <button
                 class="font-bold bg-indigo-400 w-40 h-10 rounded-lg hover:bg-indigo-600 text-gray-100"
@@ -294,7 +292,7 @@
                   </button>
                 </div>
                 <div class="my-2">
-                  <a href="" @click.prevent="deleteItem(itemFormId)" class="flex justify-center items-center block bg-red-200 text-black w-32 h-10 font-bold hover:bg-red-400">Delete</a>
+                  <a href="" @click.prevent="deleteItem(itemFormId)" class="flex justify-center items-center block border border-gray-800 text-black w-32 h-10 font-bold hover:bg-gray-800 hover:text-white">Delete</a>
                 </div>
               </div>
             </form>
@@ -370,7 +368,7 @@
                     <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Update Category</button>
                   </div>
                   <div class="">
-                    <a @click.prevent="deleteCategory(categoryFormId)" class="bg-red-200 text-black w-64 h-10 font-bold hover:bg-red-400 block flex justify-center items-center">Delete Category</a>
+                    <a @click.prevent="deleteCategory(categoryFormId)" class="border border-gray-800 text-black w-64 h-10 font-bold hover:bg-gray-800 hover:text-white block flex justify-center items-center">Delete Category</a>
                   </div>
                 </div>
               </form>
@@ -421,6 +419,50 @@
             </div>
           </div>
           </Modal>
+          <Modal ref="update-paycheck" :show="showModifyPaycheckModal">
+          <div class="p-8 relative">
+            <div
+              class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
+              @click="closeUpdatePaycheck"
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-x"
+                >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </div>
+            <div class="p-8">
+              <h1 class="text-2xl">Update Paycheck</h1>
+              <form @submit.prevent="updatePaycheck">
+                <div class="my-2">
+                  <label class="font-bold">Name: </label>
+                  <input type="text" v-model="createPaycheckForm.name" class="p-2 border w-full"/>
+                </div>
+                <div class="my-2">
+                  <label class="font-bold">Pay Date: </label>
+                  <input type="date" v-model="createPaycheckForm.pay_date" class="p-2 border w-full"/>
+                </div>
+                <div class="my-2">
+                  <label class="font-bold">Amount: </label>
+                  <input type="number" step="0.01" v-model="createPaycheckForm.payday" class="p-2 border w-full"/>
+                </div>
+                <div class="my-2">
+                  <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Update Paycheck</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          </Modal>
         </div>
       </div>
       <div class="h-32 bg-indigo-300 flex items-center">
@@ -464,9 +506,11 @@ export default {
       showModifyItemModal: false,
       showCategoryModal: false,
       showModifyCategoryModal: false,
+      showModifyPaycheckModal: false,
       showPaycheckModal: false,
       itemFormId : null,
       categoryFormId : null,
+      paycheckFormId : null,
       goTo : {
         month : this.month.month,
         year : this.month.year
@@ -538,6 +582,15 @@ export default {
         this.createItemForm.is_fund = (item.is_fund == "0" ? false : true);
     
     },
+    createModifyPaycheck(paycheck) {
+        this.showModifyPaycheckModal = true;
+        this.paycheckFormId = paycheck.id;
+        this.createPaycheckForm.name = paycheck.name,
+        this.createPaycheckForm.payday = ( ( paycheck.payday )/100 ).toFixed(2),
+        this.createPaycheckForm.pay_date = paycheck.pay_date,
+        this.createPaycheckForm.month_id = paycheck.month_id
+    
+    },
     createItemWithCategory(category) {
       this.createItemForm.category_id = category;
       this.showItemModal = true;
@@ -592,6 +645,10 @@ export default {
           this.showModifyCategoryModal = false;
       
       },
+      updatePaycheck() {
+          Inertia.put("/paychecks/" + this.paycheckFormId, {paycheck : this.createPaycheckForm});
+          this.showModifyPaycheckModal = false;
+      },
     storePaycheck() {
       this.createPaycheckForm.month_id = this.month.id;
       Inertia.post("/paychecks", {paycheck : this.createPaycheckForm})
@@ -609,13 +666,21 @@ export default {
     closeModifyCategory() {
       this.showModifyCategoryModal = false;
     },
+    closeConfirmationModal() {
+      this.showConfirmationModal = false;
+    },
     closePaycheck() {
       this.showPaycheckModal = false;
+    },
+    closeUpdatePaycheck() {
+        this.showModifyPaycheckModal = false;
+    
     },
     goToMonth() {
       window.location = '/month/'+this.goTo.month + '/year/' + this.goTo.year;
     },
     deleteItem(id) {
+      
       Inertia.delete("/items/"+id);
     },
     deleteCategory(id) {
