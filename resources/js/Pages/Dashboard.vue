@@ -168,10 +168,12 @@
               <div class="my-2">
                 <label>Name</label>
                 <input type="text" class="w-full border p-2" v-model="createItemForm.name"/>
+                <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
               </div>
               <div class="my-2">
                 <label>Planned</label>
                 <input type="number" step="0.01" class="w-full border p-2" v-model="createItemForm.planned"/>
+                <div v-if="errors.planned" v-text="errors.planned" class="text-md text-red-400 font-bold"></div>
               </div>
               <div class="my-2">
                 <div>
@@ -197,7 +199,9 @@
                         />
                     </svg>
                   </div>
+
                 </div>
+                <div v-if="errors.category_id" v-text="errors.category_id" class="text-md text-red-400 font-bold"></div>
               </div>
               <div class="my-2">
                 <input
@@ -326,6 +330,7 @@
                 <div class="my-2">
                   <label class="font-bold">Name: </label>
                   <input type="text" v-model="createCategoryForm.name" class="p-2 border w-full"/>
+                  <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
                 </div>
                 <div class="my-2">
                   <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Create Category</button>
@@ -403,14 +408,17 @@
                 <div class="my-2">
                   <label class="font-bold">Name: </label>
                   <input type="text" v-model="createPaycheckForm.name" class="p-2 border w-full"/>
+                  <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
                 </div>
                 <div class="my-2">
                   <label class="font-bold">Pay Date: </label>
                   <input type="date" v-model="createPaycheckForm.pay_date" class="p-2 border w-full"/>
+                  <div v-if="errors.pay_date" v-text="errors.pay_date" class="text-md text-red-400 font-bold"></div>
                 </div>
                 <div class="my-2">
                   <label class="font-bold">Amount: </label>
                   <input type="number" step="0.01" v-model="createPaycheckForm.payday" class="p-2 border w-full"/>
+                  <div v-if="errors.payday" v-text="errors.payday" class="text-md text-red-400 font-bold"></div>
                 </div>
                 <div class="my-2">
                   <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Create Paycheck</button>
@@ -465,6 +473,7 @@
           </Modal>
         </div>
       </div>
+    </div>
       <div class="h-32 bg-indigo-300 flex items-center">
         <div class="w-1/2 flex justify-center mx-auto">
           <button
@@ -481,7 +490,9 @@
             </a>
         </div>
       </div>
-    </div>
+        <div class="w-full h-16 bg-indigo-900 flex justify-center items-end">
+          <div class="mb-4 text-gray-100">Copyright {{ new Date().getFullYear()}} All rights reserved</div>
+          </div>
   </app-layout>
 </template>
 
@@ -499,7 +510,13 @@ export default {
     Modal,
     PaycheckComponent
   },
-  props: ['month', 'paid', 'left', 'planning'],
+  props: {
+    month : Object, 
+    paid : Number, 
+    left : Number, 
+    planning : Number, 
+    errors : Object
+    },
   data() {
     return {
       showItemModal: false,
@@ -610,34 +627,53 @@ export default {
 
     storeItem() {
       this.createItemForm.month_id = this.month.id;
-      Inertia.post("/items", {item : this.createItemForm}).then(()=>{
-        this.createItemForm.month_id = null;
-        this.createItemForm.name = null;
-        this.createItemForm.planned = null;
-        this.createItemForm.category_id = null;
-        this.createItemForm.is_fund = 0;
-          
+      Inertia.post("/items", this.createItemForm, {preserveState: true, preserveScroll : true}).then(()=>{
+        if(typeof this.errors.name !== 'undefined' || typeof this.errors.planned !== 'undefined' || typeof this.errors.category_id !== 'undefined') {
+          this.showItemModal = true;
+        }
+        else {
+          this.createItemForm.name = null,
+          this.createItemForm.planned = null,
+          this.createItemForm.category_id = null,
+          this.createItemForm.month_id = null,
+          this.createItemForm.is_fund = null,
+          this.showItemModal = false;
+        }
+
+
       });
 
-      this.showItemModal = false;
     },
     updateItem() {
       this.createItemForm.month_id = this.month.id;
-      Inertia.put("/items/" + this.itemFormId, {item : this.createItemForm}).then(()=>{
-        this.createItemForm.month_id = null;
-        this.createItemForm.name = null;
-        this.createItemForm.planned = null;
-        this.createItemForm.category_id = null;
-        this.createItemForm.is_fund = 0;
-        this.itemFormId = null;
+      Inertia.put("/items/" + this.itemFormId, this.createItemForm, {preserveScroll : true, preserveState : true}).then(()=>{
+        if(typeof this.errors.name !== 'undefined' || typeof this.errors.planned !== 'undefined' || typeof this.errors.category_id !== 'undefined') {
+          this.showItemModal = true;
+        }
+        else {
+          this.createItemForm.name = null,
+          this.createItemForm.planned = null,
+          this.createItemForm.category_id = null,
+          this.createItemForm.month_id = null,
+          this.createItemForm.is_fund = null,
+          this.showItemModal = false;
+        }
       });
 
       this.showModifyItemModal = false;
     },
     storeCategory() {
       this.createCategoryForm.month_id = this.month.id;
-      Inertia.post("/categories", {category : this.createCategoryForm})
-      this.showCategoryModal = false;
+      Inertia.post("/categories", this.createCategoryForm, {preserveState: true, preserveScroll : true}).then(()=>{
+        if(typeof this.errors.name !== 'undefined') {
+          this.showCategoryModal = true;
+        }
+        else {
+          this.createCategoryForm.name = null,
+          this.createCategoryForm.month_id = null,
+          this.showCategoryModal = false
+        }
+      });
 
     },
       updateCategory() {
@@ -651,16 +687,27 @@ export default {
       },
     storePaycheck() {
       this.createPaycheckForm.month_id = this.month.id;
-      Inertia.post("/paychecks", {paycheck : this.createPaycheckForm})
-      this.showPaycheckModal = false;
+      Inertia.post("/paychecks", {paycheck : this.createPaycheckForm}).then(()=>{
+        if(typeof this.errors.name !== 'undefined' || typeof this.errors.payday !== 'undefined' || typeof this.errors.pay_date !== 'undefined') {
+          this.showPaycheckModal = true;
+        }
+        else {
+          this.createPaycheckForm.name = null,
+          this.createPaycheckForm.payday = null,
+          this.createPaycheckForm.pay_date = null,
+          this.showPaycheckModal = false
+        }
+      });
     },
     closeItem() {
+      this.errors = Object.assign({name : null, planned : null, category : null});
       this.showItemModal = false;
     },
     closeModifyItem() {
       this.showModifyItemModal = false;
     },
     closeCategory() {
+      this.errors = Object.assign({name : null});
       this.showCategoryModal = false;
     },
     closeModifyCategory() {
@@ -670,6 +717,7 @@ export default {
       this.showConfirmationModal = false;
     },
     closePaycheck() {
+      this.errors = Object.assign({name : null, payday : null, pay_date : null});
       this.showPaycheckModal = false;
     },
     closeUpdatePaycheck() {
@@ -680,14 +728,19 @@ export default {
       window.location = '/month/'+this.goTo.month + '/year/' + this.goTo.year;
     },
     deleteItem(id) {
-      
-      Inertia.delete("/items/"+id);
+      Inertia.delete("/items/"+id, {preserveState : true, preserveScroll : true}).then(()=>{
+        this.showModifyItemModal = false;
+      });
     },
     deleteCategory(id) {
-      Inertia.delete("/categories/"+id);
+      Inertia.delete("/categories/"+id, {preserveState : true, preserveScroll : true}).then(()=>{
+        this.showModifyCategoryModal = false;
+      });
     },
     deletePaycheck(id) {
-      Inertia.delete("/paychecks/"+id);
+      Inertia.delete("/paychecks/"+id, {preserveState : true, preserveScroll : true}).then(()=>{
+        this.showModifyPaycheckModal = false;
+      });
     },
 
   },

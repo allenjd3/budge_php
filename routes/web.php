@@ -61,12 +61,18 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', function(Request $request) {
+    $request->validate([
+        'name'=>'required',
+        'item_id'=>'required|numeric',
+        'spent_date'=>'required|date',
+        'spent'=>'required|numeric'
+    ]);
     $transaction = new App\Models\Transaction;
-    $transaction->name = $request->transaction['name'];
-    $transaction->item_id = $request->transaction['item_id'];
-    $transaction->month_id = $request->transaction['month_id'];
-    $transaction->spent = $request->transaction['spent'];
-    $transaction->spent_date = $request->transaction['spent_date'];
+    $transaction->name = $request->name;
+    $transaction->item_id = $request->item_id;
+    $transaction->month_id = $request->month_id;
+    $transaction->spent = $request->spent;
+    $transaction->spent_date = $request->spent_date;
     $transaction->save();
 
     $item = $transaction->item;
@@ -76,6 +82,16 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', function(
 
     return redirect()->back();
 
+
+});
+Route::middleware(['auth:sanctum', 'verified'])->delete('/transactions/{transaction}', function($transaction, Request $request) {
+    $transaction = App\Models\Transaction::find($transaction);
+    $item = $transaction->item;
+    $item->remaining = ( $item->remaining + $transaction->spent )/100;
+    $item->save();
+    $transaction->delete();
+
+    return redirect()->back();
 
 });
 Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction}', function($transaction, Request $request) {
@@ -101,29 +117,40 @@ Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
 
+
+    $request->validate([
+        'name' =>'required',
+        'planned'=>'required|numeric',
+        'category_id'=>'required'
+    ]);
 	$item = new App\Models\Item;
-	$item->name = $request->item['name'];
-	$item->planned = $request->item['planned'];
-    $item->remaining = $request->item['planned'];
-	$item->is_fund = $request->item['is_fund'];
-	$item->month_id = $request->item['month_id'];
-	$item->category_id = $request->item['category_id'];
+	$item->name = $request->name;
+	$item->planned = $request->planned;
+    $item->remaining = $request->planned;
+	$item->is_fund = $request->is_fund;
+	$item->month_id = $request->month_id;
+	$item->category_id = $request->category_id;
 	$item->save();
 
     return redirect()->back();
 });
 Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', function($item, Request $request){
+    $request->validate([
+        'name' =>'required',
+        'planned'=>'required|numeric',
+        'category_id'=>'required'
+    ]);
 
 	$item = App\Models\Item::find($item);
 
     $calculatedRemaining = $item->planned - $item->remaining;
 
-	$item->name = $request->item['name'];
-	$item->planned = $request->item['planned'];
-    $item->remaining = $request->item['planned'] - $calculatedRemaining/100;
-	$item->is_fund = $request->item['is_fund'];
-	$item->month_id = $request->item['month_id'];
-	$item->category_id = $request->item['category_id'];
+	$item->name = $request->name;
+	$item->planned = $request->planned;
+    $item->remaining = $request->planned - $calculatedRemaining/100;
+	$item->is_fund = $request->is_fund;
+	$item->month_id = $request->month_id;
+	$item->category_id = $request->category_id;
 	$item->save();
 
     return redirect()->back();
@@ -146,9 +173,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
 });
 Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(Request $request){
 
+    $request->validate([
+        'name'=>'required'
+    ]);
     $category = new App\Models\Category;
-    $category->name = $request->category['name'];
-    $category->month_id = $request->category['month_id'];
+    $category->name = $request->name;
+    $category->month_id = $request->month_id;
     $category->save();
 
     return redirect()->back();
@@ -238,11 +268,16 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/modify-planned', functio
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/paychecks', function(Request $request){
+    $request->validate([
+       'name'=>'required',
+       'payday'=>'required|numeric',
+       'pay_date'=>'required|date' 
+    ]);
     $paycheck = new App\Models\Paycheck;
-    $paycheck->name = $request->paycheck['name'];
-    $paycheck->payday = $request->paycheck['payday'];
-    $paycheck->pay_date = $request->paycheck['pay_date'];
-    $paycheck->month_id = $request->paycheck['month_id'];
+    $paycheck->name = $request->name;
+    $paycheck->payday = $request->payday;
+    $paycheck->pay_date = $request->pay_date;
+    $paycheck->month_id = $request->month_id;
 
     $paycheck->save();
 

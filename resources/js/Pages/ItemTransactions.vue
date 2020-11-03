@@ -15,6 +15,7 @@
                                 <div>
                                     <input type="date" v-model="transactionForm.spent_date" class="w-64 border p-2 h-10" />
                                 </div>
+                                <div v-if="errors.spent_date" v-text="errors.spent_date" class="text-md text-red-400 font-bold"></div>
                             </div>
                             <div class="ml-4">
                                 <div>
@@ -41,16 +42,19 @@
                                         </svg>
                                     </div>
                                 </div>
+                                <div v-if="errors.item_id" v-text="errors.item_id" class="text-md text-red-400 font-bold"></div>
                             </div>
                         </div>
                         <div class="flex">
                             <div class="my-2 mr-2 w-1/2">
                                 <label>Name</label>
                                 <input type="text" v-model="transactionForm.name" class="w-full border p-2" />
+                                <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
                             </div>
                             <div class="my-2 ml-2 w-1/2">
                                 <label>Spent</label>
                                 <input type="number" step="0.01" v-model="transactionForm.spent" class="w-full border p-2" />
+                                <div v-if="errors.spent" v-text="errors.spent" class="text-md text-red-400 font-bold"></div>
                             </div>
                         </div>
                         <div class="my-2">
@@ -74,12 +78,14 @@
                             <th class="border p-2">Spent</th>
                             <th class="border p-2">Category</th>
                             <th class="border p-2">Date</th>
+                            <th class="border p-2">Delete</th>
                         </tr>
                         <tr v-for="transaction in transactions" :key="transaction.id">
                             <td class="border p-2 font-bold cursor-pointer" @click.prevent="transactionEdit(transaction)">{{transaction.name}}</td>
                             <td class="border p-2 font-bold">{{formattedSpent(transaction.spent)}}</td>
                             <td class="border p-2 font-bold">{{transaction.item.name}}</td>
                             <td class="border p-2 font-bold">{{transaction.spent_date}}</td>
+                            <td class="border p-2 font-bold"><a href="" @click.prevent="deleteTransaction(transaction.id)" class="font-bold text-red-400">Delete</a></td>
                         </tr>
                     </table>
                 </div>
@@ -94,7 +100,12 @@ export default {
     components: {
         AppLayout,
     },
-    props: ['month', 'items', 'transactions'],
+    props: { 
+        month : Object, 
+        items : Array, 
+        transactions: Array, 
+        errors : Object 
+        },
     data() {
         return {
             transactionForm : {
@@ -112,7 +123,7 @@ export default {
     methods : {
         newTransaction() {
             if(this.transaction_id){
-                Inertia.put('/transactions/'+this.transaction_id, {'transaction':this.transactionForm}).then(()=>{
+                Inertia.put('/transactions/'+this.transaction_id, this.transactionForm, {preserveScroll : true, preserveState : true}).then(()=>{
                     this.transactionForm.spent = null;
                     this.transactionForm.name = null;
                     this.transactionForm.spent_date = null;
@@ -124,7 +135,7 @@ export default {
                 });
 
             }else {
-                Inertia.post('/transactions', {'transaction':this.transactionForm}).then(()=>{
+                Inertia.post('/transactions', this.transactionForm, {preserveState : true, preserveScroll : true}).then(()=>{
                     this.transactionForm.spent = null;
                     this.transactionForm.name = null;
 
@@ -148,6 +159,9 @@ export default {
             this.buttonMsg = "Edit Transaction";
             
         
+        },
+        deleteTransaction(id) {
+            Inertia.delete('/transactions/'+id, {preserveScroll : true, preserveState : true});
         }
 
     },
