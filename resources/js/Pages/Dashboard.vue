@@ -701,16 +701,21 @@ export default {
     },
     closeItem() {
       this.errors = Object.assign({name : null, planned : null, category : null});
+      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : null});
+
       this.showItemModal = false;
     },
     closeModifyItem() {
+      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : null});
       this.showModifyItemModal = false;
     },
     closeCategory() {
       this.errors = Object.assign({name : null});
+      this.createCategoryForm = Object.assign({name : null});
       this.showCategoryModal = false;
     },
     closeModifyCategory() {
+      this.createCategoryForm = Object.assign({name : null});
       this.showModifyCategoryModal = false;
     },
     closeConfirmationModal() {
@@ -718,9 +723,11 @@ export default {
     },
     closePaycheck() {
       this.errors = Object.assign({name : null, payday : null, pay_date : null});
+      this.createPaycheckForm = Object.assign({name : null, payday : null, pay_date : null});
       this.showPaycheckModal = false;
     },
     closeUpdatePaycheck() {
+        this.createPaycheckForm = Object.assign({name : null, payday : null, pay_date : null});
         this.showModifyPaycheckModal = false;
     
     },

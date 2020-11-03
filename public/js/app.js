@@ -4249,18 +4249,38 @@ __webpack_require__.r(__webpack_exports__);
         planned: null,
         category: null
       });
+      this.createItemForm = Object.assign({
+        name: null,
+        planned: null,
+        category_id: null,
+        month_id: null,
+        is_fund: null
+      });
       this.showItemModal = false;
     },
     closeModifyItem: function closeModifyItem() {
+      this.createItemForm = Object.assign({
+        name: null,
+        planned: null,
+        category_id: null,
+        month_id: null,
+        is_fund: null
+      });
       this.showModifyItemModal = false;
     },
     closeCategory: function closeCategory() {
       this.errors = Object.assign({
         name: null
       });
+      this.createCategoryForm = Object.assign({
+        name: null
+      });
       this.showCategoryModal = false;
     },
     closeModifyCategory: function closeModifyCategory() {
+      this.createCategoryForm = Object.assign({
+        name: null
+      });
       this.showModifyCategoryModal = false;
     },
     closeConfirmationModal: function closeConfirmationModal() {
@@ -4272,9 +4292,19 @@ __webpack_require__.r(__webpack_exports__);
         payday: null,
         pay_date: null
       });
+      this.createPaycheckForm = Object.assign({
+        name: null,
+        payday: null,
+        pay_date: null
+      });
       this.showPaycheckModal = false;
     },
     closeUpdatePaycheck: function closeUpdatePaycheck() {
+      this.createPaycheckForm = Object.assign({
+        name: null,
+        payday: null,
+        pay_date: null
+      });
       this.showModifyPaycheckModal = false;
     },
     goToMonth: function goToMonth() {
