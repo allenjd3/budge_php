@@ -687,7 +687,7 @@ export default {
       },
     storePaycheck() {
       this.createPaycheckForm.month_id = this.month.id;
-      Inertia.post("/paychecks", {paycheck : this.createPaycheckForm}).then(()=>{
+      Inertia.post("/paychecks", this.createPaycheckForm).then(()=>{
         if(typeof this.errors.name !== 'undefined' || typeof this.errors.payday !== 'undefined' || typeof this.errors.pay_date !== 'undefined') {
           this.showPaycheckModal = true;
         }
