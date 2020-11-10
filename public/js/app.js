@@ -4233,9 +4233,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.createPaycheckForm.month_id = this.month.id;
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/paychecks", {
-        paycheck: this.createPaycheckForm
-      }).then(function () {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/paychecks", this.createPaycheckForm).then(function () {
         if (typeof _this4.errors.name !== 'undefined' || typeof _this4.errors.payday !== 'undefined' || typeof _this4.errors.pay_date !== 'undefined') {
           _this4.showPaycheckModal = true;
         } else {
