@@ -4,6 +4,8 @@ namespace App\Actions;
 
 use Lorisleiva\Actions\Action;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Transaction;
+use Inertia\Inertia;
 
 class ShowDashboardAction extends Action
 {
@@ -45,10 +47,10 @@ class ShowDashboardAction extends Action
             $itemSum += $cat->items->sum('planned');
         }
         $planning = $month->monthly_planned - $itemSum;
-        $tSum = App\Models\Transaction::where('month_id', '=', $month->id)->sum('spent');
+        $tSum = Transaction::where('month_id', '=', $month->id)->sum('spent');
         $left = $paid-$tSum;
     
-        return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
+        return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
             // Execute the action.
     }
 }
