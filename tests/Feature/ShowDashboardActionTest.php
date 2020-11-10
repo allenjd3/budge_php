@@ -17,11 +17,12 @@ class ShowDashboardActionTest extends TestCase
      */
     public function a_user_can_show_the_dashboard()
     {
-        $team = Team::factory()->create();
-        $month = Month::factory()->create();
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
+        $month = Month::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
+        $response->assertStatus(302);
         $this->assertDatabaseHas('months', [
             'month'=>'January',
             'year'=>'2020',
