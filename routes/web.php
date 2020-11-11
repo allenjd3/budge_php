@@ -19,23 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    $month = Auth::user()->currentTeam->months()->orderByDesc('id')->with([ 'categories.items', 'paychecks' ])->first();
-    if( $month === null){
-        return redirect('/months');
-    }
-    $paid = $month->paychecks->sum('payday');
-    
-    $itemSum = 0;
-    foreach($month->categories as $cat) {
-        $itemSum += $cat->items->sum('planned');
-    }
-    $planning = $month->monthly_planned - $itemSum;
-    $tSum = App\Models\Transaction::where('month_id', '=', $month->id)->sum('spent');
-    $left = $paid-$tSum;
-    
-    return Inertia\Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', '\App\Actions\ShowDashboardAction')->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', function ($m) {
     $month = Auth::user()->currentTeam->months()->with([ 'categories.items', 'paychecks' ])->find($m);

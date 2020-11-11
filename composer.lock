@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f84b1cc5c148127682076a520aabd45",
+    "content-hash": "26436d37a67490fa3a7e977f0c23c9c0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1623,6 +1623,64 @@
             ],
             "description": "Mime-type detection for Flysystem",
             "time": "2020-09-21T18:10:53+00:00"
+        },
+        {
+            "name": "lorisleiva/laravel-actions",
+            "version": "v1.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lorisleiva/laravel-actions.git",
+                "reference": "cfcfc3d38d18399edbaaf7a873f759cd318d8f74"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/cfcfc3d38d18399edbaaf7a873f759cd318d8f74",
+                "reference": "cfcfc3d38d18399edbaaf7a873f759cd318d8f74",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.7|^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lorisleiva\\Actions\\ActionServiceProvider"
+                    ],
+                    "aliases": {
+                        "Actions": "Lorisleiva\\Actions\\Facades\\Actions"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lorisleiva\\Actions\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Loris LEIVA",
+                    "email": "loris.leiva@gmail.com",
+                    "homepage": "https://lorisleiva.com"
+                }
+            ],
+            "description": "Laravel components that take care of one specific task",
+            "homepage": "https://github.com/lorisleiva/laravel-actions",
+            "keywords": [
+                "action",
+                "component",
+                "controller",
+                "job",
+                "laravel"
+            ],
+            "time": "2020-11-07T18:58:07+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",

@@ -25345,7 +25345,7 @@ var render = function() {
     "div",
     { staticClass: "flex h-16 items-center shadow bg-gray-100 mx-8 my-4" },
     [
-      _c("div", { staticClass: "flex-1 ml-4" }, [
+      _c("div", { staticClass: "w-40 md:flex-1 ml-4" }, [
         _c(
           "a",
           {
@@ -25361,21 +25361,23 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-32 font-bold text-blue-600" }, [
+      _c("div", { staticClass: "w-16 md:w-32 font-bold text-blue-600" }, [
         _vm._v("$" + _vm._s(_vm.formattedPlanned))
       ]),
       _vm._v(" "),
       _vm.formattedSpent > 0
         ? [
-            _c("div", { staticClass: "w-32 font-bold text-green-600" }, [
-              _vm._v("$" + _vm._s(_vm.formattedSpent))
-            ])
+            _c(
+              "div",
+              { staticClass: "w-16 md:w-32 font-bold text-green-600" },
+              [_vm._v("$" + _vm._s(_vm.formattedSpent))]
+            )
           ]
         : _vm._e(),
       _vm._v(" "),
       _vm.formattedSpent < 0
         ? [
-            _c("div", { staticClass: "w-32 font-bold text-red-600" }, [
+            _c("div", { staticClass: "w-16 md:w-32 font-bold text-red-600" }, [
               _vm._v("$" + _vm._s(_vm.formattedSpent))
             ])
           ]
@@ -28500,208 +28502,222 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "flex items-center" }, [
-                _c(
-                  "div",
-                  { staticClass: "inline-block relative w-32 ml-4 mr-2" },
-                  [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.goTo.month,
-                            expression: "goTo.month"
-                          }
-                        ],
-                        staticClass:
-                          "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.goTo,
-                              "month",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("option"),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("January")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("February")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("March")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("April")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("May")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("June")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("July")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("August")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("September")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("October")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("November")]),
-                        _vm._v(" "),
-                        _c("option", [_vm._v("December")])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "fill-current h-4 w-4",
-                            attrs: {
-                              xmlns: "http://www.w3.org/2000/svg",
-                              viewBox: "0 0 20 20"
-                            }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                              }
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "mr-4" }, [_vm._v("Month")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "inline-block relative w-32 mr-2" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.goTo.year,
-                          expression: "goTo.year"
-                        }
-                      ],
-                      staticClass:
-                        "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.goTo,
-                            "year",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
-                    [
-                      _c("option"),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2020")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2021")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2022")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2023")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2024")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2025")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2026")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2027")]),
-                      _vm._v(" "),
-                      _c("option", [_vm._v("2028")])
-                    ]
-                  ),
+              _c(
+                "div",
+                { staticClass: "flex flex-wrap items-center px-2 md:p-0" },
+                [
+                  _c("div", { staticClass: "md:mr-4 mt-2 md:ml-4" }, [
+                    _vm._v("Month")
+                  ]),
                   _vm._v(" "),
                   _c(
                     "div",
                     {
-                      staticClass:
-                        "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                      staticClass: "inline-block relative w-full md:w-32 mr-2"
                     },
                     [
                       _c(
-                        "svg",
+                        "select",
                         {
-                          staticClass: "fill-current h-4 w-4",
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            viewBox: "0 0 20 20"
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.goTo.month,
+                              expression: "goTo.month"
+                            }
+                          ],
+                          staticClass:
+                            "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.goTo,
+                                "month",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
                           }
                         },
                         [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                            }
-                          })
+                          _c("option"),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("January")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("February")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("March")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("April")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("May")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("June")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("July")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("August")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("September")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("October")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("November")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("December")])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "fill-current h-4 w-4",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                viewBox: "0 0 20 20"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                }
+                              })
+                            ]
+                          )
                         ]
                       )
                     ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "mr-4" }, [_vm._v("Year")]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg",
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.goToMonth($event)
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "md:mr-4 mt-4" }, [_vm._v("Year")]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "inline-block relative w-full md:w-32 mr-2"
+                    },
+                    [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.goTo.year,
+                              expression: "goTo.year"
+                            }
+                          ],
+                          staticClass:
+                            "block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.goTo,
+                                "year",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option"),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2020")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2021")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2022")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2023")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2024")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2025")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2026")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2027")]),
+                          _vm._v(" "),
+                          _c("option", [_vm._v("2028")])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "fill-current h-4 w-4",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                viewBox: "0 0 20 20"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "mt-2 md:mt-0 w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.goToMonth($event)
+                        }
                       }
-                    }
-                  },
-                  [_vm._v("\n            Go to Month\n          ")]
-                )
-              ]),
+                    },
+                    [_vm._v("\n            Go to Month\n          ")]
+                  )
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "bg-indigo-100 py-4 my-8" }, [
                 _c("div", { staticClass: "ml-4" }, [
@@ -28744,7 +28760,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "inline-block" }, [
+                      _c("div", { staticClass: "inline-block mt-2 md:mt-0" }, [
                         _c(
                           "button",
                           {
@@ -29552,7 +29568,7 @@ var render = function() {
                 "Modal",
                 { ref: "new-category", attrs: { show: _vm.showCategoryModal } },
                 [
-                  _c("div", { staticClass: "p-8 relative" }, [
+                  _c("div", { staticClass: "p-2 md:p-8 relative" }, [
                     _c(
                       "div",
                       {
@@ -29652,7 +29668,7 @@ var render = function() {
                               "button",
                               {
                                 staticClass:
-                                  "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
+                                  "bg-indigo-400 text-white w-full md:w-64 h-10 font-bold hover:bg-indigo-600"
                               },
                               [_vm._v("Create Category")]
                             )
@@ -29671,7 +29687,7 @@ var render = function() {
                   attrs: { show: _vm.showModifyCategoryModal }
                 },
                 [
-                  _c("div", { staticClass: "p-8 relative" }, [
+                  _c("div", { staticClass: "p-2 md:p-8 relative" }, [
                     _c(
                       "div",
                       {
@@ -29757,37 +29773,44 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "flex justify-between" }, [
-                            _c("div", {}, [
-                              _c(
-                                "button",
-                                {
-                                  staticClass:
-                                    "bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600"
-                                },
-                                [_vm._v("Update Category")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", {}, [
-                              _c(
-                                "a",
-                                {
-                                  staticClass:
-                                    "border border-gray-800 text-black w-64 h-10 font-bold hover:bg-gray-800 hover:text-white block flex justify-center items-center",
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.deleteCategory(
-                                        _vm.categoryFormId
-                                      )
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex flex-col md:flex-row justify-between"
+                            },
+                            [
+                              _c("div", {}, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "bg-indigo-400 text-white w-full md:w-64 h-10 font-bold hover:bg-indigo-600"
+                                  },
+                                  [_vm._v("Update Category")]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", {}, [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "border border-gray-800 text-black w-full mt-2 md:mt-0 md:w-64 h-10 font-bold hover:bg-gray-800 hover:text-white block flex justify-center items-center",
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.deleteCategory(
+                                          _vm.categoryFormId
+                                        )
+                                      }
                                     }
-                                  }
-                                },
-                                [_vm._v("Delete Category")]
-                              )
-                            ])
-                          ])
+                                  },
+                                  [_vm._v("Delete Category")]
+                                )
+                              ])
+                            ]
+                          )
                         ]
                       )
                     ])
@@ -30181,26 +30204,34 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "h-32 bg-indigo-300 flex items-center" }, [
-        _c("div", { staticClass: "w-1/2 flex justify-center mx-auto" }, [
-          _c(
-            "button",
-            {
-              staticClass: "bg-gray-900 w-56 h-10 text-gray-100",
-              on: { click: _vm.createCategory }
-            },
-            [_vm._v("\n          Create Category\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass:
-                "bg-gray-900 w-56 h-10 text-gray-100 ml-2 flex items-center justify-center",
-              attrs: { href: "/create-transaction/" + _vm.month.id }
-            },
-            [_vm._v("\n            Create/View Transaction\n          ")]
-          )
-        ])
+        _c(
+          "div",
+          {
+            staticClass:
+              "w-3/4 md:w-1/2 flex flex-col md:flex-row justify-center mx-auto"
+          },
+          [
+            _c(
+              "button",
+              {
+                staticClass:
+                  "w-full mb-2 md:mb-0 bg-gray-900 w-56 h-10 text-gray-100",
+                on: { click: _vm.createCategory }
+              },
+              [_vm._v("\n          Create Category\n        ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass:
+                  "w-full bg-gray-900 w-56 h-10 text-gray-100 ml-0 md:ml-2 flex items-center justify-center",
+                attrs: { href: "/create-transaction/" + _vm.month.id }
+              },
+              [_vm._v("\n            Create/View Transaction\n          ")]
+            )
+          ]
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -30296,8 +30327,8 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "flex" }, [
-                    _c("div", { staticClass: "mr-4" }, [
+                  _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                    _c("div", { staticClass: "md:mr-4" }, [
                       _c("label", [_vm._v("Date")]),
                       _vm._v(" "),
                       _c("div", [
@@ -30310,7 +30341,7 @@ var render = function() {
                               expression: "transactionForm.spent_date"
                             }
                           ],
-                          staticClass: "w-64 border p-2 h-10",
+                          staticClass: "w-full md:w-64 border p-2 h-10",
                           attrs: { type: "date" },
                           domProps: { value: _vm.transactionForm.spent_date },
                           on: {
@@ -30338,12 +30369,15 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "ml-4" }, [
+                    _c("div", { staticClass: "mt-2 md:mt-0 md:ml-4" }, [
                       _c("div", [_c("label", [_vm._v("Budget Item")])]),
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "inline-block relative w-32 mr-2" },
+                        {
+                          staticClass:
+                            "inline-block relative w-full md:w-32 md:mr-2"
+                        },
                         [
                           _c(
                             "select",
@@ -30430,8 +30464,8 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "flex" }, [
-                    _c("div", { staticClass: "my-2 mr-2 w-1/2" }, [
+                  _c("div", { staticClass: "flex flex-col md:flex-row" }, [
+                    _c("div", { staticClass: "my-2 md:mr-2 w-full md:w-1/2" }, [
                       _c("label", [_vm._v("Name")]),
                       _vm._v(" "),
                       _c("input", {
@@ -30468,7 +30502,7 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "my-2 ml-2 w-1/2" }, [
+                    _c("div", { staticClass: "my-2 md:ml-2 w-full md:w-1/2" }, [
                       _c("label", [_vm._v("Spent")]),
                       _vm._v(" "),
                       _c("input", {
@@ -30511,7 +30545,7 @@ var render = function() {
                       "button",
                       {
                         staticClass:
-                          "bg-indigo-400 text-white font-bold h-10 w-64 rounded-lg hover:bg-indigo-600",
+                          "bg-indigo-400 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600",
                         attrs: { type: "submit" }
                       },
                       [
@@ -30536,12 +30570,12 @@ var render = function() {
             "div",
             {
               staticClass:
-                "bg-white overflow-hidden shadow-xl sm:rounded-lg p-8"
+                "bg-white overflow-scroll md:overflow-hidden shadow-xl sm:rounded-lg p-8"
             },
             [
               _c(
                 "table",
-                { staticClass: "table-fixed w-full" },
+                { staticClass: "table-fixed md:w-full" },
                 [
                   _c("tr", [
                     _c("th", { staticClass: "border w-1/2 p-2" }, [
