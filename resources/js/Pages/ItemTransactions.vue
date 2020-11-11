@@ -9,19 +9,19 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
                     <form @submit.prevent="newTransaction">
-                        <div class="flex">
-                            <div class="mr-4">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="md:mr-4">
                                 <label>Date</label>
                                 <div>
-                                    <input type="date" v-model="transactionForm.spent_date" class="w-64 border p-2 h-10" />
+                                    <input type="date" v-model="transactionForm.spent_date" class="w-full md:w-64 border p-2 h-10" />
                                 </div>
                                 <div v-if="errors.spent_date" v-text="errors.spent_date" class="text-md text-red-400 font-bold"></div>
                             </div>
-                            <div class="ml-4">
+                            <div class="mt-2 md:mt-0 md:ml-4">
                                 <div>
                                     <label>Budget Item</label>
                                 </div>
-                                <div class="inline-block relative w-32 mr-2">
+                                <div class="inline-block relative w-full md:w-32 md:mr-2">
                                     <select
                                         class="block appearance-none p-2 w-full bg-white border border-gray-300 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline h-10"
                                         v-model="transactionForm.item_id"
@@ -45,13 +45,13 @@
                                 <div v-if="errors.item_id" v-text="errors.item_id" class="text-md text-red-400 font-bold"></div>
                             </div>
                         </div>
-                        <div class="flex">
-                            <div class="my-2 mr-2 w-1/2">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="my-2 md:mr-2 w-full md:w-1/2">
                                 <label>Name</label>
                                 <input type="text" v-model="transactionForm.name" class="w-full border p-2" />
                                 <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
                             </div>
-                            <div class="my-2 ml-2 w-1/2">
+                            <div class="my-2 md:ml-2 w-full md:w-1/2">
                                 <label>Spent</label>
                                 <input type="number" step="0.01" v-model="transactionForm.spent" class="w-full border p-2" />
                                 <div v-if="errors.spent" v-text="errors.spent" class="text-md text-red-400 font-bold"></div>
@@ -60,7 +60,7 @@
                         <div class="my-2">
                             <button
                                 type="submit"
-                                class="bg-indigo-400 text-white font-bold h-10 w-64 rounded-lg hover:bg-indigo-600"
+                                class="bg-indigo-400 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600"
                                 >
                                 {{buttonMsg}}
                             </button>
@@ -71,8 +71,8 @@
         </div>
         <div class="pt-12 mb-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
-                    <table class="table-fixed w-full">
+                <div class="bg-white overflow-scroll md:overflow-hidden shadow-xl sm:rounded-lg p-8">
+                    <table class="table-fixed md:w-full">
                         <tr>
                             <th class="border w-1/2 p-2">Name</th>
                             <th class="border p-2">Spent</th>

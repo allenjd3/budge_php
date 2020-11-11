@@ -9,8 +9,9 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
           <h1 class="text-3xl m-4">Budget for {{month.month}} {{month.year}}</h1>
-          <div class="flex items-center">
-            <div class="inline-block relative w-32 ml-4 mr-2">
+          <div class="flex flex-wrap items-center px-2 md:p-0">
+            <div class="md:mr-4 mt-2 md:ml-4">Month</div>
+            <div class="inline-block relative w-full md:w-32 mr-2">
               <select
                 class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
                 v-model="goTo.month"
@@ -43,8 +44,8 @@
                 </svg>
               </div>
             </div>
-            <div class="mr-4">Month</div>
-            <div class="inline-block relative w-32 mr-2">
+            <div class="md:mr-4 mt-4">Year</div>
+            <div class="inline-block relative w-full md:w-32 mr-2">
               <select
                 class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
                 v-model="goTo.year"
@@ -74,9 +75,8 @@
                 </svg>
               </div>
             </div>
-            <div class="mr-4">Year</div>
             <button
-              class="w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg"
+              class="mt-2 md:mt-0 w-32 h-10 bg-indigo-400 text-white font-bold hover:bg-indigo-600 rounded-lg"
               @click.prevent="goToMonth"
               >
               Go to Month
@@ -89,7 +89,7 @@
                 <div class="inline-block">
                   <input type="number" step="0.01" v-model="monthly_planned" class="w-64 p-2 border rounded" />
                 </div>
-                <div class="inline-block">
+                <div class="inline-block mt-2 md:mt-0">
                   <button type="submit" class=" p-2 bg-indigo-400 text-white font-bold rounded-lg hover:bg-indigo-600">Add Planned Income</button>
                 </div>
               </form>
@@ -303,7 +303,7 @@
           </div>
           </Modal>
           <Modal ref="new-category" :show="showCategoryModal">
-          <div class="p-8 relative">
+          <div class="p-2 md:p-8 relative">
             <div
               class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
               @click="closeCategory"
@@ -333,14 +333,14 @@
                   <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
                 </div>
                 <div class="my-2">
-                  <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Create Category</button>
+                  <button class="bg-indigo-400 text-white w-full md:w-64 h-10 font-bold hover:bg-indigo-600">Create Category</button>
                 </div>
               </form>
             </div>
           </div>
           </Modal>
           <Modal ref="new-edit-category" :show="showModifyCategoryModal">
-          <div class="p-8 relative">
+          <div class="p-2 md:p-8 relative">
             <div
               class="absolute right-0 top-0 mr-2 mt-2 text-gray-700 hover:text-gray-900 cursor-pointer"
               @click="closeModifyCategory"
@@ -368,12 +368,12 @@
                   <label class="font-bold">Name: </label>
                   <input type="text" v-model="createCategoryForm.name" class="p-2 border w-full"/>
                 </div>
-                <div class="flex justify-between">
+                <div class="flex flex-col md:flex-row justify-between">
                   <div class="">
-                    <button class="bg-indigo-400 text-white w-64 h-10 font-bold hover:bg-indigo-600">Update Category</button>
+                    <button class="bg-indigo-400 text-white w-full md:w-64 h-10 font-bold hover:bg-indigo-600">Update Category</button>
                   </div>
                   <div class="">
-                    <a @click.prevent="deleteCategory(categoryFormId)" class="border border-gray-800 text-black w-64 h-10 font-bold hover:bg-gray-800 hover:text-white block flex justify-center items-center">Delete Category</a>
+                    <a @click.prevent="deleteCategory(categoryFormId)" class="border border-gray-800 text-black w-full mt-2 md:mt-0 md:w-64 h-10 font-bold hover:bg-gray-800 hover:text-white block flex justify-center items-center">Delete Category</a>
                   </div>
                 </div>
               </form>
@@ -475,15 +475,15 @@
       </div>
     </div>
       <div class="h-32 bg-indigo-300 flex items-center">
-        <div class="w-1/2 flex justify-center mx-auto">
+        <div class="w-3/4 md:w-1/2 flex flex-col md:flex-row justify-center mx-auto">
           <button
-            class="bg-gray-900 w-56 h-10 text-gray-100"
+            class="w-full mb-2 md:mb-0 bg-gray-900 w-56 h-10 text-gray-100"
             @click="createCategory"
             >
             Create Category
           </button>
             <a
-              class="bg-gray-900 w-56 h-10 text-gray-100 ml-2 flex items-center justify-center"
+              class="w-full bg-gray-900 w-56 h-10 text-gray-100 ml-0 md:ml-2 flex items-center justify-center"
               :href="'/create-transaction/' + month.id"
               >
               Create/View Transaction
