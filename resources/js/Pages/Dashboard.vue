@@ -636,7 +636,7 @@ export default {
           this.createItemForm.planned = null,
           this.createItemForm.category_id = null,
           this.createItemForm.month_id = null,
-          this.createItemForm.is_fund = null,
+          this.createItemForm.is_fund = false,
           this.showItemModal = false;
         }
 
@@ -655,7 +655,7 @@ export default {
           this.createItemForm.planned = null,
           this.createItemForm.category_id = null,
           this.createItemForm.month_id = null,
-          this.createItemForm.is_fund = null,
+          this.createItemForm.is_fund = false,
           this.showItemModal = false;
         }
       });
