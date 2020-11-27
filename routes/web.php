@@ -1,7 +1,12 @@
 <?php
 
+use App\Actions\CreateTransactionByMonthAction;
+use App\Actions\DeleteTransactionAction;
 use App\Actions\ShowDashboardAction;
 use App\Actions\ShowDashboardByMonthAction;
+use App\Actions\StoreNewItemAction;
+use App\Actions\StoreNewTransactionAction;
+use App\Actions\UpdateTransactionAction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -25,89 +30,16 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', ShowDashboard
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', ShowDashboardByMonthAction::class)->name('dashboard-month');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', function($month_id) {
+Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', CreateTransactionByMonthAction::class);
 
-    $month = App\Models\Month::find($month_id);
-    $items = App\Models\Item::where('month_id','=',$month->id)->get();
-    $transactions = App\Models\Transaction::where('month_id','=', $month->id)->with('item')->get();
-    
-    return Inertia\Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions' ]));
-});
+Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', StoreNewTransactionAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', function(Request $request) {
-    $request->validate([
-        'name'=>'required',
-        'item_id'=>'required|numeric',
-        'spent_date'=>'required|date',
-        'spent'=>'required|numeric'
-    ]);
-    $transaction = new App\Models\Transaction;
-    $transaction->name = $request->name;
-    $transaction->item_id = $request->item_id;
-    $transaction->month_id = $request->month_id;
-    $transaction->spent = $request->spent;
-    $transaction->spent_date = $request->spent_date;
-    $transaction->save();
+Route::middleware(['auth:sanctum', 'verified'])->delete('/transactions/{transaction}', DeleteTransactionAction::class);
 
-    $item = $transaction->item;
+Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction}', UpdateTransactionAction::class);
 
-    $item->remaining = ( $item->remaining - $transaction->spent )/100;
-    $item->save();
+Route::middleware(['auth:sanctum', 'verified'])->post('/items', StoreNewItemAction::class);
 
-    return redirect()->back();
-
-
-});
-Route::middleware(['auth:sanctum', 'verified'])->delete('/transactions/{transaction}', function($transaction, Request $request) {
-    $transaction = App\Models\Transaction::find($transaction);
-    $item = $transaction->item;
-    $item->remaining = ( $item->remaining + $transaction->spent )/100;
-    $item->save();
-    $transaction->delete();
-
-    return redirect()->back();
-
-});
-Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction}', function($transaction, Request $request) {
-    $transaction = App\Models\Transaction::find($transaction);
-    $item = $transaction->item;
-    $item->remaining = ($item->remaining + $transaction->spent)/100;
-
-    $transaction->name = $request->transaction['name'];
-    $transaction->item_id = $request->transaction['item_id'];
-    $transaction->month_id = $request->transaction['month_id'];
-    $transaction->spent = $request->transaction['spent'];
-    $transaction->spent_date = $request->transaction['spent_date'];
-    $transaction->save();
-
-
-    $item->remaining = ( $item->remaining - $transaction->spent )/100;
-    $item->save();
-
-    return redirect()->back();
-
-
-});
-
-Route::middleware(['auth:sanctum', 'verified'])->post('/items', function(Request $request){
-
-
-    $request->validate([
-        'name' =>'required',
-        'planned'=>'required|numeric',
-        'category_id'=>'required'
-    ]);
-	$item = new App\Models\Item;
-	$item->name = $request->name;
-	$item->planned = $request->planned;
-    $item->remaining = $request->planned;
-	$item->is_fund = $request->is_fund;
-	$item->month_id = $request->month_id;
-	$item->category_id = $request->category_id;
-	$item->save();
-
-    return redirect()->back();
-});
 Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', function($item, Request $request){
     $request->validate([
         'name' =>'required',
