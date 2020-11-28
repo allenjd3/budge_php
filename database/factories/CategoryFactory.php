@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Month;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class MonthFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Month::class;
+    protected $model = Category::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,8 @@ class MonthFactory extends Factory
     public function definition()
     {
         return [
-            'month'=>$this->faker->monthName(),
-            'year'=>(string) $this->faker->numberBetween(2020,2025),
-            'team_id'=>1
+           'name'=>$this->faker->word,
+           'month_id'=>Month::factory()
         ];
     }
 }

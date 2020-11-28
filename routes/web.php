@@ -1,11 +1,23 @@
 <?php
 
 use App\Actions\CreateTransactionByMonthAction;
+use App\Actions\DeleteCategoryAction;
+use App\Actions\DeleteItemAction;
+use App\Actions\DeletePaychecksAction;
 use App\Actions\DeleteTransactionAction;
+use App\Actions\GetAllMonthsByUserTeamAction;
+use App\Actions\ModifyMonthlyPlannedAction;
+use App\Actions\QueryMonthByMonthAndYearAction;
 use App\Actions\ShowDashboardAction;
 use App\Actions\ShowDashboardByMonthAction;
+use App\Actions\StoreCategoryAction;
+use App\Actions\StoreMonthAction;
 use App\Actions\StoreNewItemAction;
 use App\Actions\StoreNewTransactionAction;
+use App\Actions\StorePaychecksAction;
+use App\Actions\UpdateCategoryAction;
+use App\Actions\UpdateItemAction;
+use App\Actions\UpdatePaychecksAction;
 use App\Actions\UpdateTransactionAction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,169 +52,26 @@ Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/items', StoreNewItemAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', function($item, Request $request){
-    $request->validate([
-        'name' =>'required',
-        'planned'=>'required|numeric',
-        'category_id'=>'required'
-    ]);
+Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', UpdateItemAction::class);
 
-	$item = App\Models\Item::find($item);
+Route::middleware(['auth:sanctum', 'verified'])->delete('/items/{item}', DeleteItemAction::class);
 
-    $calculatedRemaining = $item->planned - $item->remaining;
+Route::middleware(['auth:sanctum', 'verified'])->get('/months', GetAllMonthsByUserTeamAction::class);
 
-	$item->name = $request->name;
-	$item->planned = $request->planned;
-    $item->remaining = $request->planned - $calculatedRemaining/100;
-	$item->is_fund = $request->is_fund;
-	$item->month_id = $request->month_id;
-	$item->category_id = $request->category_id;
-	$item->save();
+Route::middleware(['auth:sanctum', 'verified'])->post('/categories', StoreCategoryAction::class );
 
-    return redirect()->back();
-});
+Route::middleware(['auth:sanctum', 'verified'])->post('/categories/{category}', UpdateCategoryAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->delete('/items/{item}', function($item, Request $request){
+Route::middleware(['auth:sanctum', 'verified'])->delete('/categories/{category}', DeleteCategoryAction::class);
 
-    $item = App\Models\Item::find($item);
-    foreach($item->transactions as $transaction){
-        $transaction->delete();
-    }
-    $item->delete();
-    return redirect()->back();
-});
+Route::middleware(['auth:sanctum','verified'])->get('/month/{m}/year/{year}', QueryMonthByMonthAndYearAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/months', function(){
-    $months = Auth::user()->currentTeam->months()->get();
-    
-    return Inertia\Inertia::render('CreateMonth', compact('months'));
-});
-Route::middleware(['auth:sanctum', 'verified'])->post('/categories', function(Request $request){
+Route::middleware(['auth:sanctum', 'verified'])->post('/months', StoreMonthAction::class);
 
-    $request->validate([
-        'name'=>'required'
-    ]);
-    $category = new App\Models\Category;
-    $category->name = $request->name;
-    $category->month_id = $request->month_id;
-    $category->save();
+Route::middleware(['auth:sanctum', 'verified'])->post('/modify-planned', ModifyMonthlyPlannedAction::class);
 
-    return redirect()->back();
-});
-Route::middleware(['auth:sanctum', 'verified'])->post('/categories/{category}', function($category, Request $request){
+Route::middleware(['auth:sanctum', 'verified'])->post('/paychecks', StorePaychecksAction::class);
 
-    $category = App\Models\Category::find($category);
-    $category->name = $request->category['name'];
-    $category->save();
+Route::middleware(['auth:sanctum', 'verified'])->put('/paychecks/{paycheck}', UpdatePaychecksAction::class);
 
-    return redirect()->back();
-});
-Route::middleware(['auth:sanctum', 'verified'])->delete('/categories/{category}', function($category, Request $request){
-
-    $category = App\Models\Category::find($category);
-    foreach($category->items as $item) {
-        foreach($item->transactions as $transaction) {
-            $transaction->delete();
-        }
-        $item->delete();
-    }
-    $category->delete();
-
-    return redirect()->back();
-});
-Route::middleware(['auth:sanctum','verified'])->get('/month/{m}/year/{year}', function($m, $year){
-    $month = Auth::user()->currentTeam->months()->where('month','=',$m)->where('year','=',$year)->first();
-    if( $month === null){
-        return redirect('/months');
-    }
-    return redirect()->route('dashboard-month', ['m'=>$month->id]);
-
-});
-
-Route::middleware(['auth:sanctum', 'verified'])->post('/months', function(Request $request){
-    $month = Auth::user()->currentTeam->months()->firstOrNew([
-        'month'=>$request->month,
-        'year'=>$request->year
-    ]);
-    $month->team_id = $request->user()->currentTeam->id;
-    $month->save();
-
-    if($request->copymonth !== null) {
-        $month2 = App\Models\Month::find($request->copymonth);
-
-        if($month2->categories()->exists()) {
-            foreach($month2->categories as $category)
-            {
-                $c = new App\Models\Category();
-                $c->name = $category->name;
-                $c->month_id = $month->id;
-                $c->save();
-                if($category->items()->exists()) {
-                    foreach($category->items as $item)
-                    {
-                        $i = new App\Models\Item();
-                        $i->name = $item->name;
-                        $i->planned = ( $item->planned )/100;
-                        
-                        $i->is_fund = $item->is_fund;
-                        if($item->is_fund) {
-                            $i->remaining = ( $item->remaining + $i->planned )/100;
-                        }
-                        else {
-                            $i->remaining = ( $item->planned )/100;
-                        }
-                        $i->category_id = $c->id;
-                        $i->month_id = $month->id;
-                        $i->save();
-                    }
-                }
-
-            }
-
-        } 
-    }
-     
-
-    return redirect()->route('dashboard-month', ['m'=>$month->id]);
-});
-Route::middleware(['auth:sanctum', 'verified'])->post('/modify-planned', function(Request $request){
-    $month = App\Models\Month::find($request->month_id);
-    $month->monthly_planned = $request->monthly_planned;
-    $month->save();
-
-    return redirect()->back();
-});
-
-Route::middleware(['auth:sanctum', 'verified'])->post('/paychecks', function(Request $request){
-    $request->validate([
-       'name'=>'required',
-       'payday'=>'required|numeric',
-       'pay_date'=>'required|date' 
-    ]);
-    $paycheck = new App\Models\Paycheck;
-    $paycheck->name = $request->name;
-    $paycheck->payday = $request->payday;
-    $paycheck->pay_date = $request->pay_date;
-    $paycheck->month_id = $request->month_id;
-
-    $paycheck->save();
-
-    return redirect()->back();
-});
-Route::middleware(['auth:sanctum', 'verified'])->put('/paychecks/{paycheck}', function($paycheck, Request $request){
-    $paycheck = App\Models\Paycheck::find($paycheck);
-    $paycheck->name = $request->paycheck['name'];
-    $paycheck->payday = $request->paycheck['payday'];
-    $paycheck->pay_date = $request->paycheck['pay_date'];
-    $paycheck->month_id = $request->paycheck['month_id'];
-
-    $paycheck->save();
-
-    return redirect()->back();
-});
-Route::middleware(['auth:sanctum', 'verified'])->delete('/paychecks/{paycheck}', function($paycheck, Request $request){
-    $paycheck = App\Models\Paycheck::find($paycheck);
-    $paycheck->delete();
-
-    return redirect()->back();
-});
+Route::middleware(['auth:sanctum', 'verified'])->delete('/paychecks/{paycheck}', DeletePaychecksAction::class);
