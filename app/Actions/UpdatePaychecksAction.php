@@ -34,11 +34,11 @@ class UpdatePaychecksAction extends Action
      */
     public function handle()
     {
-        $paycheck = Paycheck::find($paycheck);
-        $paycheck->name = $this->paycheck['name'];
-        $paycheck->payday = $this->paycheck['payday'];
-        $paycheck->pay_date = $this->paycheck['pay_date'];
-        $paycheck->month_id = $this->paycheck['month_id'];
+        $paycheck = Paycheck::find($this->paycheck);
+        $paycheck->name = $this->name;
+        $paycheck->payday = $this->payday;
+        $paycheck->pay_date = $this->pay_date;
+        $paycheck->month_id = $this->month_id;
 
         $paycheck->save();
 
