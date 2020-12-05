@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use Illuminate\Support\Facades\Auth;
 use Lorisleiva\Actions\Action;
 
 class QueryMonthByMonthAndYearAction extends Action
