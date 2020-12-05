@@ -2,21 +2,20 @@
 
 namespace Tests\Feature;
 
+use App\Models\Month;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Month;
-use App\Models\User;
-use App\Models\Team;
 
-class ShowDashboardActionTest extends TestCase
+class ShowDashboardByMonthActionTest extends TestCase
 {
     use RefreshDatabase;
     /**
      * @test
      */
-    public function a_user_can_show_the_dashboard()
-    {
+    public function a_user_can_show_a_dashboard_by_month() {
         $this->withoutExceptionHandling();
         
         $user = User::factory()->create();
@@ -27,7 +26,12 @@ class ShowDashboardActionTest extends TestCase
             'year'=>'2020',
             'team_id'=>1
         ]);
-        $response = $this->actingAs($user)->get('/dashboard');
+        $month = Month::factory()->create([
+            'month'=>'February',
+            'year'=>'2020',
+            'team_id'=>1
+        ]);
+        $response = $this->actingAs($user)->get('/dashboard/1');
 
         $response->assertSee('January');
 
@@ -50,4 +54,6 @@ class ShowDashboardActionTest extends TestCase
         return $team;
     
     }
+    
+
 }
