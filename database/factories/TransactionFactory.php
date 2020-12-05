@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Item;
+use App\Models\Month;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,8 +25,8 @@ class TransactionFactory extends Factory
     {
         return [
             'name'=>$this->faker->sentence(3),
-            'item_id'=>Item::factory(),
-            'month_id'=>Month::factory(),
+            'item_id'=> Item::factory(),
+            'month_id'=> Month::factory(),
             'spent'=>$this->faker->randomNumber(4,true),
             'spent_date'=>$this->faker->date()
         ];

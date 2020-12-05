@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Item;
+use App\Models\Month;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ItemFactory extends Factory
@@ -25,9 +27,9 @@ class ItemFactory extends Factory
             'name'=>$this->faker->sentence(3),
             'planned'=>$this->faker->randomNumber(7, true),
             'remaining'=>$this->faker->randomNumber(4, true),
-            'category_id'=>Category::factory(),
-            'is_fund'=>[true, false],
-            'month_id'=>Month::factory()
+            'category_id'=> Category::factory(),
+            'is_fund'=> false,
+            'month_id'=> Month::factory()
         ];
     }
 }

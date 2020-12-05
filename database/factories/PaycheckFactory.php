@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Month;
 use App\Models\Paycheck;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,10 +23,10 @@ class PaycheckFactory extends Factory
     public function definition()
     {
         return [
-            'name'=>$this->faker->word;
-            'payday'=>$this->faker->randomNumber(7, true),
-            'pay_date'=>$this->faker->date(),
-            'month_id'=>Month::factory()
+            'name'=> $this->faker->word;
+            'payday'=> $this->faker->randomNumber(7, true),
+            'pay_date'=> $this->faker->date(),
+            'month_id'=> Month::factory()
         ];
     }
 }
