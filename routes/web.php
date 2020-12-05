@@ -60,7 +60,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/months', GetAllMonthsByUs
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/categories', StoreCategoryAction::class );
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/categories/{category}', UpdateCategoryAction::class);
+Route::middleware(['auth:sanctum', 'verified'])->put('/categories/{category}', UpdateCategoryAction::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->delete('/categories/{category}', DeleteCategoryAction::class);
 

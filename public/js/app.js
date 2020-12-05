@@ -4218,15 +4218,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateCategory: function updateCategory() {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].post("/categories/" + this.categoryFormId, {
-        category: this.createCategoryForm
-      });
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].put("/categories/" + this.categoryFormId, this.createCategoryForm);
       this.showModifyCategoryModal = false;
     },
     updatePaycheck: function updatePaycheck() {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].put("/paychecks/" + this.paycheckFormId, {
-        paycheck: this.createPaycheckForm
-      });
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__["Inertia"].put("/paychecks/" + this.paycheckFormId, this.createPaycheckForm);
       this.showModifyPaycheckModal = false;
     },
     storePaycheck: function storePaycheck() {

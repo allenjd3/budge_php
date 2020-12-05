@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\Category;
 use Lorisleiva\Actions\Action;
 
 class UpdateCategoryAction extends Action
@@ -35,7 +36,7 @@ class UpdateCategoryAction extends Action
     {
 
         $category = Category::find($this->category);
-        $category->name = $this->category['name'];
+        $category->name = $this->name;
         $category->save();
 
         return redirect()->back();

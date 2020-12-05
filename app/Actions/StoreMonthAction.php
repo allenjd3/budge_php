@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Month;
+use Illuminate\Support\Facades\Auth;
 use Lorisleiva\Actions\Action;
 
 class StoreMonthAction extends Action

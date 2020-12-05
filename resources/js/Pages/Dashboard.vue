@@ -677,12 +677,11 @@ export default {
 
     },
       updateCategory() {
-          Inertia.post("/categories/" + this.categoryFormId, {category : this.createCategoryForm});
+          Inertia.put("/categories/" + this.categoryFormId, this.createCategoryForm);
           this.showModifyCategoryModal = false;
-      
       },
       updatePaycheck() {
-          Inertia.put("/paychecks/" + this.paycheckFormId, {paycheck : this.createPaycheckForm});
+          Inertia.put("/paychecks/" + this.paycheckFormId, this.createPaycheckForm);
           this.showModifyPaycheckModal = false;
       },
     storePaycheck() {
