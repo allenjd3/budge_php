@@ -38,23 +38,21 @@ class StoreMonthActionTest extends TestCase
 
         
     }
-
     /**
-    * 
+    * @test
+    */
     function a_user_can_copy_a_months_categories_and_transactions()
     {
         $user = User::factory()->create();
         $this->create_team_by_user($user);
 
-        $month1 = Month::factory()->create();
-        $categories = Category::factory()->count(3)->create([
-            'month_id'=>$month1->id
-        ]);
-        $items = Item::factory()->count(3)->create([
-            'month_id'=>$month1->id
-        ]);
-        $transactions = Transaction::factory()->count(3)->create([
-            'month_id'=>$month1->id
+        $month1 = Month::factory()->hasCategories(3)->create();
+        $category = Category::first();
+
+
+        $this->assertDatabaseMissing('categories', [
+            'name'=> $category->name,
+            'month_id'=> 2
         ]);
 
         $month2 = Month::factory()->make();
@@ -67,13 +65,11 @@ class StoreMonthActionTest extends TestCase
 
         $response->assertStatus(302);
 
-        dd(Month::all());
-        $this->assertDatabaseHas('transactions', [
-            'name'=>$transactions[0]->name,
+        $this->assertDatabaseHas('categories', [
+            'name'=> $category->name,
             'month_id'=> 2
         ]);
     }
-    */
     
 
     public function create_team_by_user($user) {
