@@ -23,7 +23,7 @@ class PaycheckFactory extends Factory
     public function definition()
     {
         return [
-            'name'=> $this->faker->word;
+            'name'=> $this->faker->word,
             'payday'=> $this->faker->randomNumber(7, true),
             'pay_date'=> $this->faker->date(),
             'month_id'=> Month::factory()
