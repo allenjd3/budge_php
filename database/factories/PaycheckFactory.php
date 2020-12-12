@@ -24,7 +24,7 @@ class PaycheckFactory extends Factory
     {
         return [
             'name'=> $this->faker->word,
-            'payday'=> $this->faker->randomNumber(7, true),
+            'payday'=> $this->faker->randomNumber(4, true),
             'pay_date'=> $this->faker->date(),
             'month_id'=> Month::factory()
         ];

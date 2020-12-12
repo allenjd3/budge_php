@@ -27,7 +27,7 @@ class TransactionFactory extends Factory
             'name'=>$this->faker->sentence(3),
             'item_id'=> Item::factory(),
             'month_id'=> Month::factory(),
-            'spent'=>$this->faker->randomNumber(4,true),
+            'spent'=>$this->faker->randomNumber(3,true),
             'spent_date'=>$this->faker->date()
         ];
     }

@@ -35,12 +35,12 @@ class DeleteCategoryAction extends Action
     public function handle()
     {
         $category = Category::find($this->category);
-        foreach($category->items as $item) {
-            foreach($item->transactions as $transaction) {
-                $transaction->delete();
-            }
-            $item->delete();
-        }
+        //foreach($category->items as $item) {
+        //    foreach($item->transactions as $transaction) {
+        //        $transaction->delete();
+        //    }
+        //    $item->delete();
+        //}
         $category->delete();
 
         return redirect()->back();

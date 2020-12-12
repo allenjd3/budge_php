@@ -18,7 +18,8 @@ class CreatePaychecksTable extends Migration
             $table->string('name');
             $table->integer('payday');
             $table->date('pay_date');
-            $table->bigInteger('month_id');
+            $table->bigInteger('month_id')->unsigned()->index();
+            $table->foreign('month_id')->references('id')->on('months')->onDelete('cascade');
             $table->timestamps();
         });
     }

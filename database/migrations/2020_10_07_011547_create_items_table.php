@@ -18,9 +18,11 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->integer('planned');
             $table->integer('remaining');
-            $table->integer('category_id');
+            $table->bigInteger('category_id')->unsigned()->index();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->boolean('is_fund');
-            $table->integer('month_id');
+            $table->bigInteger('month_id')->unsigned()->index();
+            $table->foreign('month_id')->references('id')->on('months');
             $table->timestamps();
         });
     }

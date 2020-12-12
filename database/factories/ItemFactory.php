@@ -25,8 +25,8 @@ class ItemFactory extends Factory
     {
         return [
             'name'=>$this->faker->sentence(3),
-            'planned'=>$this->faker->randomNumber(7, true),
-            'remaining'=>$this->faker->randomNumber(4, true),
+            'planned'=>$this->faker->randomNumber(4, true),
+            'remaining'=>$this->faker->randomNumber(3, true),
             'category_id'=> Category::factory(),
             'is_fund'=> false,
             'month_id'=> Month::factory()

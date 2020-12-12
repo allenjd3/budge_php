@@ -37,9 +37,9 @@ class DeleteItemAction extends Action
     {
 
         $item = Item::find($this->item);
-        foreach($item->transactions as $transaction){
-            $transaction->delete();
-        }
+        //foreach($item->transactions as $transaction){
+        //    $transaction->delete();
+        //}
         $item->delete();
         return redirect()->back();
 
