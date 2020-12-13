@@ -38,8 +38,10 @@ class CreateTransactionByMonthAction extends Action
     public function handle()
     {
         $month = Month::find($this->month_id);
-        $items = Item::where('month_id','=',$month->id)->get();
-        $transactions = Transaction::where('month_id','=', $month->id)->with('item')->get();
+        $items = Item::where('month_id','=',$month->id)->latest()->get();
+
+        $transactions = Transaction::where('month_id','=', $month->id)->with('item')->latest()->paginate(20);
+        
 
         return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions' ]));
     }

@@ -72,6 +72,7 @@
         <div class="pt-12 mb-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-scroll md:overflow-hidden shadow-xl sm:rounded-lg p-8">
+                    <span>Page <span v-text="transactions.current_page"></span> of <span v-text="transactions.last_page"></span></span>
                     <table class="table-fixed md:w-full">
                         <tr>
                             <th class="border w-1/2 p-2">Name</th>
@@ -80,7 +81,7 @@
                             <th class="border p-2">Date</th>
                             <th class="border p-2">Delete</th>
                         </tr>
-                        <tr v-for="transaction in transactions" :key="transaction.id">
+                        <tr v-for="transaction in transactions.data" :key="transaction.id">
                             <td class="border p-2 font-bold cursor-pointer" @click.prevent="transactionEdit(transaction)">{{transaction.name}}</td>
                             <td class="border p-2 font-bold">{{formattedSpent(transaction.spent)}}</td>
                             <td class="border p-2 font-bold">{{transaction.item.name}}</td>
@@ -88,6 +89,12 @@
                             <td class="border p-2 font-bold"><a href="" @click.prevent="deleteTransaction(transaction.id)" class="font-bold text-red-400">Delete</a></td>
                         </tr>
                     </table>
+                    <div class="flex mt-8">
+                        <a class="block border py-2 px-4 font-bold" v-bind:href="transactions.first_page_url">First</a>
+                        <a class="block border-t border-b py-2 px-4 font-bold" v-bind:class="transactions.current_page == 1 ? 'text-gray-400 cursor-not-allowed' : 'text-black'" v-bind:href="transactions.prev_page_url">Previous</a>
+                        <a class="block border-l border-t border-b py-2 px-4 font-bold" v-bind:href="transactions.next_page_url">Next</a>
+                        <a class="block border py-2 px-4 font-bold" v-bind:href="transactions.last_page_url">Last</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,7 +110,7 @@ export default {
     props: { 
         month : Object, 
         items : Array, 
-        transactions: Array, 
+        transactions: Object, 
         errors : Object 
         },
     data() {
@@ -119,6 +126,7 @@ export default {
             buttonMsg : "New Transaction"
 
         }
+
     },
     methods : {
         newTransaction() {
