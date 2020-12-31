@@ -537,7 +537,7 @@ export default {
         planned : null,
         category_id : null,
         month_id : null,
-        is_fund : 0
+        is_fund : false
       },
       createCategoryForm: {
         name : null,
@@ -700,12 +700,12 @@ export default {
     },
     closeItem() {
       this.errors = Object.assign({name : null, planned : null, category : null});
-      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : null});
+      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : false});
 
       this.showItemModal = false;
     },
     closeModifyItem() {
-      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : null});
+      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : false});
       this.showModifyItemModal = false;
     },
     closeCategory() {
