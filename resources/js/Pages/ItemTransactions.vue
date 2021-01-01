@@ -22,7 +22,7 @@
                                     <label>Budget Item</label>
                                 </div>
                                 <div class="inline-block relative w-full md:w-64 md:mr-2">
-                                    <v-select label="name" :options="items"></v-select>
+                                    <v-select label="name" :options="items" :reduce="name => name.id" v-model="transactionForm.item_id"></v-select>
                                 </div>
                                 <div v-if="errors.item_id" v-text="errors.item_id" class="text-md text-red-400 font-bold"></div>
                             </div>
