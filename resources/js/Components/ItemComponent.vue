@@ -5,7 +5,7 @@
     </div>
     <div class="w-16 md:w-32 font-bold text-blue-600">${{formattedPlanned}}</div>
     
-    <template v-if="formattedSpent > 0">
+    <template v-if="formattedSpent >= 0">
       <div class="w-16 md:w-32 font-bold text-green-600">${{formattedSpent}}</div>
     </template>
     <template v-if="formattedSpent < 0">
