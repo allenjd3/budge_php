@@ -7,7 +7,7 @@
         </template>
         <div class="pt-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8">
+                <div class="bg-white shadow-xl sm:rounded-lg p-8">
                     <form @submit.prevent="newTransaction">
                         <div class="flex flex-col md:flex-row">
                             <div class="md:mr-4">
@@ -21,7 +21,7 @@
                                 <div>
                                     <label>Budget Item</label>
                                 </div>
-                                <div class="inline-block relative w-full md:w-64 md:mr-2">
+                                <div class="inline-block relative w-full md:w-64 md:mr-2 z-40">
                                     <v-select label="name" :options="items" :reduce="name => name.id" v-model="transactionForm.item_id"></v-select>
                                 </div>
                                 <div v-if="errors.item_id" v-text="errors.item_id" class="text-md text-red-400 font-bold"></div>
