@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Models\Transaction;
 use Lorisleiva\Actions\Action;
+use App\Models\Item;
 
 class UpdateTransactionAction extends Action
 {
@@ -24,7 +25,12 @@ class UpdateTransactionAction extends Action
      */
     public function rules()
     {
-        return [];
+        return [
+            'name'=>'required',
+            'item_id'=>'required|numeric',
+            'spent_date'=>'required|date',
+            'spent'=>'required|numeric'
+        ];
     }
 
     /**
@@ -35,19 +41,28 @@ class UpdateTransactionAction extends Action
     public function handle()
     {
         $transaction = Transaction::find($this->transaction);
-        $item = $transaction->item;
-        $item->remaining = ($item->remaining + $transaction->spent)/100;
+        // This will reset the item so that if we change it it will change the amount on the frontend
+        $resetItem = $transaction->item;
+        $resetItem->remaining = ( $resetItem->remaining + $transaction->spent) / 100;
+        if($resetItem->save())
+        {
+            $transaction->name = $this->name;
+            $transaction->item_id = $this->item_id;
+            $transaction->month_id = $this->month_id;
+            $transaction->spent = $this->spent;
+            $transaction->spent_date = $this->spent_date;
+            if($transaction->save())
+            {
+                $item = Item::find($transaction->item_id);
 
-        $transaction->name = $this->name;
-        $transaction->item_id = $this->item_id;
-        $transaction->month_id = $this->month_id;
-        $transaction->spent = $this->spent;
-        $transaction->spent_date = $this->spent_date;
-        $transaction->save();
+                $item->remaining = ( $item->remaining - $transaction->spent )/100;
+                $item->save();
 
+            }
+        }
 
-        $item->remaining = ( $item->remaining - $transaction->spent )/100;
-        $item->save();
+        // This is the actual updating.
+
 
         return redirect()->back();
 
