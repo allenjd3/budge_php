@@ -3,10 +3,11 @@
 namespace App\Actions;
 
 use App\Models\Item;
+use Inertia\Inertia;
 use App\Models\Month;
 use App\Models\Transaction;
-use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
+use Illuminate\Support\Facades\Request;
 
 class CreateTransactionByMonthAction extends Action
 {
@@ -39,10 +40,20 @@ class CreateTransactionByMonthAction extends Action
     {
         $month = Month::find($this->month_id);
         $items = Item::where('month_id','=',$month->id)->latest()->get();
+        $thefilter = null;
 
-        $transactions = Transaction::where('month_id','=', $month->id)->with('item')->latest()->paginate(20);
+        if(Request::has('filter')) {
+            $filter = Request::get('filter');
+            $thefilter = $filter;
+            $transactions = Transaction::where('month_id','=', $month->id)->whereHas('item', function($query) use($filter){
+                $query->where('name', 'LIKE', '%' . $filter . '%');
+            })->with('item')->latest()->paginate(20);
+        }
+        else {
+            $transactions = Transaction::where('month_id','=', $month->id)->with('item')->latest()->paginate(20);
+        }
         
 
-        return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions' ]));
+        return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions', 'thefilter' ]));
     }
 }

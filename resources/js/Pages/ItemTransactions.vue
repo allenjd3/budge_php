@@ -8,6 +8,7 @@
         <div class="pt-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white shadow-xl sm:rounded-lg p-8">
+
                     <form @submit.prevent="newTransaction">
                         <div class="flex flex-col md:flex-row">
                             <div class="md:mr-4">
@@ -51,9 +52,36 @@
                 </div>
             </div>
         </div>
+        <div class="pt-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white shadow-xl sm:rounded-lg p-8">
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        Filter Transactions 
+                    </h2>
+                    <div class="my-2">
+                        <div class="inline-block relative w-full md:w-64 md:mr-2 z-40">
+                            <form @submit.prevent="filterTransactions">
+                                <v-select label="name" :options="items" :reduce="name => name.name" v-model="filterTransaction.name"></v-select>
+                                <div class="my-2">
+                                    <button
+                                        type="submit"
+                                        class="bg-indigo-400 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600"
+                                        >
+                                        Filter Transactions
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="pt-12 mb-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-scroll md:overflow-hidden shadow-xl sm:rounded-lg p-8">
+                    <div v-if="thefilter" class="my-2">
+                        <span class="text-xl" v-text="'Filtering by: ' + thefilter"> </span>  <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer">Clear Filter</a>
+                    </div>
                     <span>Page <span v-text="transactions.current_page"></span> of <span v-text="transactions.last_page"></span></span>
                     <table class="table-fixed md:w-full">
                         <tr>
@@ -94,10 +122,14 @@ export default {
         month : Object, 
         items : Array, 
         transactions: Object, 
-        errors : Object 
+        errors : Object,
+        thefilter : String
         },
     data() {
         return {
+            filterTransaction: {
+                name: null
+            },
             transactionForm : {
                 spent_date: null,
                 item_id: null,
@@ -134,6 +166,12 @@ export default {
 
 
 
+        },
+        filterTransactions() {
+            Inertia.visit('/create-transaction/'+ this.month.id + "?filter=" + this.filterTransaction.name, {method: 'get', preserveScroll: 'true', preserveState: 'true'});
+        },
+        clearFilter(){
+            Inertia.visit('/create-transaction/' + this.month.id, {method: 'get', preserveScroll: 'true', preserveState: 'true'});
         },
         formattedSpent(spent) {
             return (spent/100).toFixed(2);

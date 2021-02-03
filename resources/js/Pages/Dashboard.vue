@@ -296,6 +296,13 @@
                   </button>
                 </div>
                 <div class="my-2">
+                  <a :href="'/create-transaction/'+ month.id + '?filter=' + createItemForm.name"
+                          class="flex justify-center items-center block border-2 border-indigo-400 text-indigo-400 w-64 h-10 font-bold hover:bg-indigo-400 hover:text-white"
+                          >
+                          Show Transactions
+                  </a>
+                </div>
+                <div class="my-2">
                   <a href="" @click.prevent="deleteItem(itemFormId)" class="flex justify-center items-center block border border-gray-800 text-black w-32 h-10 font-bold hover:bg-gray-800 hover:text-white">Delete</a>
                 </div>
               </div>
