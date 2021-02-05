@@ -12,38 +12,38 @@
                     <form @submit.prevent="newTransaction">
                         <div class="flex flex-col md:flex-row">
                             <div class="md:mr-4">
-                                <label>Date</label>
+                                <label for="date">Date</label>
                                 <div>
-                                    <input type="date" v-model="transactionForm.spent_date" class="w-full md:w-64 border p-2 h-10" />
+                                    <input id="date" type="date" v-model="transactionForm.spent_date" class="w-full md:w-64 border p-2 h-10" />
                                 </div>
                                 <div v-if="errors.spent_date" v-text="errors.spent_date" class="text-md text-red-400 font-bold"></div>
                             </div>
                             <div class="mt-2 md:mt-0 md:ml-4">
                                 <div>
-                                    <label>Budget Item</label>
+                                    <label for="budget_item">Budget Item</label>
                                 </div>
                                 <div class="inline-block relative w-full md:w-64 md:mr-2 z-40">
-                                    <v-select label="name" :options="items" :reduce="name => name.id" v-model="transactionForm.item_id"></v-select>
+                                    <v-select id="budget_item" label="name" :options="items" :reduce="name => name.id" v-model="transactionForm.item_id"></v-select>
                                 </div>
                                 <div v-if="errors.item_id" v-text="errors.item_id" class="text-md text-red-400 font-bold"></div>
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row">
                             <div class="my-2 md:mr-2 w-full md:w-1/2">
-                                <label>Name</label>
-                                <input type="text" v-model="transactionForm.name" class="w-full border p-2" />
+                                <label for="name">Name</label>
+                                <input id="name" type="text" v-model="transactionForm.name" class="w-full border p-2" />
                                 <div v-if="errors.name" v-text="errors.name" class="text-md text-red-400 font-bold"></div>
                             </div>
                             <div class="my-2 md:ml-2 w-full md:w-1/2">
-                                <label>Spent</label>
-                                <input type="number" step="0.01" v-model="transactionForm.spent" class="w-full border p-2" />
+                                <label for="spent">Spent</label>
+                                <input id="spent" type="number" step="0.01" v-model="transactionForm.spent" class="w-full border p-2" />
                                 <div v-if="errors.spent" v-text="errors.spent" class="text-md text-red-400 font-bold"></div>
                             </div>
                         </div>
                         <div class="my-2">
                             <button
                                 type="submit"
-                                class="bg-indigo-400 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600"
+                                class="bg-indigo-500 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600"
                                 >
                                 {{buttonMsg}}
                             </button>
@@ -65,14 +65,18 @@
                                 <div class="my-2">
                                     <button
                                         type="submit"
-                                        class="bg-indigo-400 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600"
+                                        class="bg-indigo-500 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600"
                                         >
                                         Filter Transactions
                                     </button>
+
                                 </div>
                             </form>
                         </div>
                     </div>
+                    <template v-if="thefilter">
+                      <item-component :name=" ( transactions.data[0] ).item.name" :planned="( transactions.data[0] ).item.planned" :spent="( transactions.data[0] ).item.remaining" @toggleModal="createModifyItem(( transactions.data[0] ).item)"/>
+                    </template>
                 </div>
             </div>
         </div>
@@ -114,9 +118,11 @@
 import AppLayout from "./../Layouts/AppLayout";
 import {Inertia} from "@inertiajs/inertia";
 import 'vue-select/dist/vue-select.css';
+import ItemComponent from "./../Components/ItemComponent";
 export default {
     components: {
         AppLayout,
+        ItemComponent
     },
     props: { 
         month : Object, 
