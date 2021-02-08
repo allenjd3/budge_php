@@ -287,7 +287,7 @@
                   />
                 <label for="update_is_fund">Fund?</label>
               </div>
-              <div class="flex justify-between">
+              <div class="flex flex-wrap sm:flex-nowrap justify-between">
                 <div class="my-2">
                   <button type="submit"
                           class="bg-indigo-500 text-white w-32 h-10 font-bold hover:bg-indigo-600"
@@ -296,7 +296,7 @@
                   </button>
                 </div>
                 <div class="my-2">
-                  <a :href="'/create-transaction/'+ month.id + '?filter=' + createItemForm.name"
+                  <a :href="'/create-transaction/'+ month.id + '?filter=' + createItemForm.name + '#transactions'"
                           class="flex justify-center items-center block border-2 border-indigo-500 text-indigo-500 w-64 h-10 font-bold hover:bg-indigo-500 hover:text-white"
                           >
                           Show Transactions

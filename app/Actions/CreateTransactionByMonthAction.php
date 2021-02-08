@@ -49,7 +49,7 @@ class CreateTransactionByMonthAction extends Action
                 $query->where('name', 'LIKE', '%' . $filter . '%');
             })->with('item')->latest()->paginate(20);
             if(!$transactions->count()){
-                return redirect('/create-transaction/' . $month->id)->with('message', 'There are no transactions with that filter.');
+                return redirect('/create-transaction/' . $month->id);
             }
         }
         else {
