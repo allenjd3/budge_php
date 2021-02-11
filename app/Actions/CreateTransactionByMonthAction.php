@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Item;
+use App\Notifications\NoTransactionsFromFilter;
 use Inertia\Inertia;
 use App\Models\Month;
 use App\Models\Transaction;
@@ -38,6 +39,7 @@ class CreateTransactionByMonthAction extends Action
      */
     public function handle()
     {
+        $userId = auth()->user()->id;
         $month = Month::find($this->month_id);
         $items = Item::where('month_id','=',$month->id)->latest()->get();
         $thefilter = null;
@@ -49,6 +51,7 @@ class CreateTransactionByMonthAction extends Action
                 $query->where('name', 'LIKE', '%' . $filter . '%');
             })->with('item')->latest()->paginate(20);
             if(!$transactions->count()){
+                auth()->user()->notify(new NoTransactionsFromFilter($filter));
                 return redirect('/create-transaction/' . $month->id);
             }
         }
@@ -57,6 +60,6 @@ class CreateTransactionByMonthAction extends Action
         }
         
 
-        return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions', 'thefilter' ]));
+        return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions', 'thefilter', 'userId' ]));
     }
 }

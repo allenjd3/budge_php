@@ -5,6 +5,7 @@
                 New Transaction for {{month.month}} {{month.year}}
             </h2>
         </template>
+        <div class="relative">
             <div class="pt-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white shadow-xl sm:rounded-lg p-8">
@@ -112,6 +113,10 @@
                     </div>
                 </div>
             </div>
+            <div v-if="themessage.open" class="fixed bottom-0 right-0 mb-4 mr-4 w-64 h-auto rounded-full bg-red-400 p-8">
+                {{themessage.message}}
+            </div>
+        </div>
     </app-layout>
 </template>
 <script>
@@ -130,6 +135,7 @@ export default {
         transactions: Object, 
         errors : Object,
         thefilter : String,
+        userId : Number,
         },
     data() {
         return {
@@ -144,9 +150,28 @@ export default {
                 name: null
             },
             transaction_id : null,
+            themessage : {
+                message: "",
+                open: false
+            },
+
             buttonMsg : "New Transaction",
         }
 
+    },
+    mounted(){
+        Echo.private('App.Models.User.' + this.userId)
+            .notification((notification) => {
+                this.themessage.open = true;
+                this.themessage.message = notification.message
+                setTimeout(() =>{
+                    this.themessage.open = false,
+                    this.message = ""
+                }, 5000);
+                
+            });
+            
+        
     },
     methods : {
         newTransaction() {
