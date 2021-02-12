@@ -51,8 +51,9 @@ class CreateTransactionByMonthAction extends Action
                 $query->where('name', 'LIKE', '%' . $filter . '%');
             })->with('item')->latest()->paginate(20);
             if(!$transactions->count()){
-                auth()->user()->notify(new NoTransactionsFromFilter($filter));
-                return redirect('/create-transaction/' . $month->id);
+                $thefilter = null;
+                $transactions = Transaction::where('month_id','=', $month->id)->with('item')->latest()->paginate(20);
+                return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions', 'thefilter', 'userId' ]))->with('message', 'There are no Transactions associated with that Filter');
             }
         }
         else {

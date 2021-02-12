@@ -84,6 +84,7 @@
             <div id="transactions" class="pt-12 pb-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-scroll md:overflow-hidden shadow-xl sm:rounded-lg p-8">
+                        <div v-if="$page.message" class="text-red-600">{{$page.message}} <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer text-gray-900">Clear Filter</a></div>
                         <div v-if="thefilter" class="my-2">
                             <span class="text-xl" v-text="'Filtering by: ' + thefilter"> </span>  <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer">Clear Filter</a>
                         </div>
@@ -112,9 +113,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div v-if="themessage.open" class="fixed bottom-0 right-0 mb-4 mr-4 w-64 h-auto rounded-full bg-red-400 p-8">
-                {{themessage.message}}
             </div>
         </div>
     </app-layout>
@@ -159,20 +157,6 @@ export default {
         }
 
     },
-    mounted(){
-        Echo.private('App.Models.User.' + this.userId)
-            .notification((notification) => {
-                this.themessage.open = true;
-                this.themessage.message = notification.message
-                setTimeout(() =>{
-                    this.themessage.open = false,
-                    this.message = ""
-                }, 5000);
-                
-            });
-            
-        
-    },
     methods : {
         newTransaction() {
             if(this.transaction_id){
@@ -199,10 +183,10 @@ export default {
 
         },
         filterTransactions() {
-            Inertia.visit('/create-transaction/'+ this.month.id + "?filter=" + this.filterTransaction.name, {method: 'get', preserveScroll: 'true', preserveState: 'true'});
+            Inertia.visit('/create-transaction/'+ this.month.id + "?filter=" + this.filterTransaction.name, {method: 'get', preserveScroll: 'true'});
         },
         clearFilter(){
-            Inertia.visit('/create-transaction/' + this.month.id, {method: 'get', preserveScroll: 'true', preserveState: 'true'});
+            Inertia.visit('/create-transaction/' + this.month.id, {method: 'get', preserveScroll: 'true'});
         },
         formattedSpent(spent) {
             return (spent/100).toFixed(2);
