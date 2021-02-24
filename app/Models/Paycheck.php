@@ -9,10 +9,6 @@ class Paycheck extends Model
 {
     use HasFactory;
 
-    public function setPaydayAttribute($value) {
-        $this->attributes['payday'] = $value * 100;
-    }
-
     public function month() {
         return $this->belongsTo(Month::class);
     }

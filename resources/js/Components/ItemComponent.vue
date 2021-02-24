@@ -3,13 +3,13 @@
     <div class="w-40 md:flex-1 ml-4">
       <a href="" @click.prevent="$emit('toggleModal')">{{name}}</a>
     </div>
-    <div class="w-16 md:w-32 text-sm sm:text-base font-bold text-blue-600">${{formattedPlanned}}</div>
+    <div class="w-16 md:w-32 text-sm sm:text-base font-bold text-blue-600">${{getPlanned}}</div>
     
-    <template v-if="formattedSpent >= 0">
-      <div class="w-16 md:w-32 text-sm sm:text-base font-bold text-green-600">${{formattedSpent}}</div>
+    <template v-if="spent >= 0">
+      <div class="w-16 md:w-32 text-sm sm:text-base font-bold text-green-600">${{getSpent}}</div>
     </template>
-    <template v-if="formattedSpent < 0">
-      <div class="w-16 md:w-32 text-sm sm:text-base font-bold text-red-600">${{formattedSpent}}</div>
+    <template v-if="spent < 0">
+      <div class="w-16 md:w-32 text-sm sm:text-base font-bold text-red-600">${{getSpent}}</div>
     </template>
   </div>
 </template>
@@ -17,19 +17,13 @@
 export default {
     props : ['planned', 'spent', 'name'],
     computed : {
-      formattedPlanned : {
-        get() {
-          return (this.planned /100).toFixed(2);
+        getPlanned() {
+            return (this.spent / 100).toFixed(2);
+        },
+        getSpent() {
+            return (this.planned / 100).toFixed(2);
         }
-      },
-      formattedSpent : {
-        get() {
-          return (this.spent /100).toFixed(2);
-        }
-      },
-
-    },
-
+    }
 
 };
 </script>

@@ -28,9 +28,5 @@ class Month extends Model
         return $this->hasMany(Paycheck::class);
     }
 
-    public function setMonthlyPlannedAttribute($value) {
-
-        $this->attributes['monthly_planned'] = $value * 100;
-    }
 
 }

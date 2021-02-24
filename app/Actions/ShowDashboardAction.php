@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Feature\BudgetMath;
 use Lorisleiva\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transaction;
@@ -40,17 +41,16 @@ class ShowDashboardAction extends Action
         if( $month === null){
             return redirect('/months');
         }
-        $paid = $month->paychecks->sum('payday');
-    
-        $itemSum = 0;
-        foreach($month->categories as $cat) {
-            $itemSum += $cat->items->sum('planned');
-        }
-        $planning = $month->monthly_planned - $itemSum;
+        $pay = $month->paychecks->sum('payday');
+        $itemSum = $month->items->sum('planned');
         $tSum = Transaction::where('month_id', '=', $month->id)->sum('spent');
-        $left = $paid-$tSum;
+
+        $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum);
+        $paid = BudgetMath::init()->stringifyNumber($pay);
+        $planning = BudgetMath::init()->removeValueFromTotal($month->monthly_planned, $itemSum);
+        $monthlyPlanned = BudgetMath::init()->stringifyNumber($month->monthly_planned);
     
-        return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
+        return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning', 'monthlyPlanned']));
             // Execute the action.
     }
 }

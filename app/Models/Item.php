@@ -9,15 +9,6 @@ class Item extends Model
 {
     use HasFactory;
 
-    public function setPlannedAttribute($value) {
-
-        $this->attributes['planned'] = $value * 100;
-    }
-
-    public function setRemainingAttribute($value) {
-
-        $this->attributes['remaining'] = $value * 100;
-    }
     public function transactions() {
         return $this->hasMany(Transaction::class);
     }
@@ -29,4 +20,6 @@ class Item extends Model
     public function category() {
         return $this->belongsTo(Category::class);
     }
+
+    
 }

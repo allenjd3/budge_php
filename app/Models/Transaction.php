@@ -9,10 +9,6 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    public function setSpentAttribute($value) {
-        $this->attributes['spent'] = $value * 100;
-    }
-
     public function month() {
         return $this->belongsTo(Month::class);
     }

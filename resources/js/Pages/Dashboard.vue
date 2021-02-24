@@ -110,15 +110,15 @@
                 <h3 class="text-lg">Total Planned</h3>
                 <p class="text-3xl">{{monthlyPlanned}}</p>
                 <h3 class="text-lg">Total Planned Remaining</h3>
-                <p class="text-3xl">{{monthlyLeft}}</p>
+                <p class="text-3xl">{{planning}}</p>
               </div>
               <div
                 class="mx-2 text-center pt-4 pb-8 bg-indigo-100 w-full md:w-1/3 rounded-lg"
                 >
                 <h3 class="text-lg">Total Paid</h3>
-                <p class="text-3xl">{{payAmount}}</p>
+                <p class="text-3xl">{{paid}}</p>
                 <h3 class="text-lg">Amount Left</h3>
-                <p class="text-3xl">{{amountLeft}}</p>
+                <p class="text-3xl">{{left}}</p>
               </div>
             </div>
         </div>
@@ -519,10 +519,11 @@ export default {
   },
   props: {
     month : Object, 
-    paid : Number, 
-    left : Number, 
-    planning : Number, 
-    errors : Object
+    paid : String, 
+    left : String, 
+    planning : String, 
+    errors : Object,
+    monthlyPlanned : String
     },
   data() {
     return {
@@ -559,34 +560,6 @@ export default {
       item : "",
       monthly_planned : null
     };
-  },
-  computed : {
-    payAmount : {
-      get() {
-        return ( this.paid / 100 ).toFixed(2);
-      }
-
-    },
-    amountLeft : {
-      get() {
-
-        return (this.left / 100).toFixed(2);
-      }
-
-    },
-    monthlyPlanned : {
-      get() {
-        return (this.month.monthly_planned / 100).toFixed(2);
-      }
-
-    },
-    monthlyLeft : {
-      get() {
-        return (this.planning / 100).toFixed(2);
-      }
-    }
-
-
   },
   methods: {
     storeMonthlyPlanned() {
