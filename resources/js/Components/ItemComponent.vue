@@ -18,10 +18,10 @@ export default {
     props : ['planned', 'spent', 'name'],
     computed : {
         getPlanned() {
-            return (this.spent / 100).toFixed(2);
-        },
-        getSpent() {
             return (this.planned / 100).toFixed(2);
+        },
+        getSpent(){
+            return (this.spent / 100).toFixed(2);
         }
     }
 

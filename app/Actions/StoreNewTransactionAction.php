@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Feature\BudgetMath;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Lorisleiva\Actions\Action;
@@ -44,13 +45,13 @@ class StoreNewTransactionAction extends Action
         $transaction->name = $this->name;
         $transaction->item_id = $this->item_id;
         $transaction->month_id = $this->month_id;
-        $transaction->spent = $this->spent;
+        $transaction->spent = BudgetMath::init()->setString($this->spent)->getInteger();
         $transaction->spent_date = $this->spent_date;
         $transaction->save();
 
         $item = $transaction->item;
 
-        $item->remaining = ( $item->remaining - $transaction->spent )/100;
+        $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned, $item->transactions->sum('spent'))->getInteger();
         $item->save();
 
         return redirect()->back();

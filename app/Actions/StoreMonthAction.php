@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Feature\BudgetMath;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Month;
@@ -59,14 +60,16 @@ class StoreMonthAction extends Action
                     {
                         $i = new Item();
                         $i->name = $item->name;
-                        $i->planned = ( $item->planned )/100;
                         
                         $i->is_fund = $item->is_fund;
                         if($item->is_fund) {
-                            $i->remaining = ( $item->remaining + $i->planned )/100;
+                            $i->fund_planned = $item->fund_planned;
+                            $i->planned = BudgetMath::init()->arraySum([$item->fund_planned, $item->remaining])->getInteger();
+                            $i->remaining = $i->planned;
                         }
                         else {
-                            $i->remaining = ( $item->planned )/100;
+                            $i->planned = $item->planned;
+                            $i->remaining = $item->planned;
                         }
                         $i->category_id = $c->id;
                         $i->month_id = $month->id;

@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Feature\BudgetMath;
 use App\Models\Transaction;
 use Lorisleiva\Actions\Action;
 
@@ -36,7 +37,7 @@ class DeleteTransactionAction extends Action
     {
         $transaction = Transaction::find($this->transaction);
         $item = $transaction->item;
-        $item->remaining = ( $item->remaining + $transaction->spent )/100;
+        $item->remaining = BudgetMath::init()->arraySum([ $item->remaining, $transaction->spent ])->getInteger();
         $item->save();
         $transaction->delete();
 

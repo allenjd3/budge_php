@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Feature\BudgetMath;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -37,15 +38,15 @@ class ShowDashboardByMonthAction extends Action
     public function handle()
     {
         $month = Auth::user()->currentTeam->months()->with([ 'categories.items', 'paychecks' ])->find($this->m);
-        $paid = $month->paychecks->sum('payday');
-        $itemSum = 0;
-        foreach($month->categories as $cat) {
-            $itemSum += $cat->items->sum('planned');
-        }
-        $planning = $month->monthly_planned - $itemSum;
+        $pay = $month->paychecks->sum('payday');
         $tSum = Transaction::where('month_id', '=', $month->id)->sum('spent');
-        $left = $paid-$tSum;
+        $itemSum = $month->items->sum('planned');
 
-        return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning']));
+        $paid = BudgetMath::init()->setNumber($pay)->getString();
+        $planning = BudgetMath::init()->removeValueFromTotal($month->monthly_planned, $itemSum)->getString();
+        $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum)->getString();
+        $monthlyPlanned = BudgetMath::init()->setNumber($month->monthly_planned)->getString();
+
+        return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning', 'monthlyPlanned']));
     }
 }

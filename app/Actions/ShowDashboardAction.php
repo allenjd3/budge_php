@@ -45,10 +45,10 @@ class ShowDashboardAction extends Action
         $itemSum = $month->items->sum('planned');
         $tSum = Transaction::where('month_id', '=', $month->id)->sum('spent');
 
-        $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum);
-        $paid = BudgetMath::init()->stringifyNumber($pay);
-        $planning = BudgetMath::init()->removeValueFromTotal($month->monthly_planned, $itemSum);
-        $monthlyPlanned = BudgetMath::init()->stringifyNumber($month->monthly_planned);
+        $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum)->getString();
+        $paid = BudgetMath::init()->setNumber($pay)->getString();
+        $planning = BudgetMath::init()->removeValueFromTotal($month->monthly_planned, $itemSum)->getString();
+        $monthlyPlanned = BudgetMath::init()->setNumber($month->monthly_planned)->getString();
     
         return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning', 'monthlyPlanned']));
             // Execute the action.

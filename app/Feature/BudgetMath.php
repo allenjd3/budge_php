@@ -4,48 +4,62 @@ namespace App\Feature;
 
 class BudgetMath
 {
+    public $number;
+
+    public $value;
+
     public static function init() : self
     {
        return new self;
     
     }
 
-    public function stringifyNumber($num) : String
+    public function setNumber($number) : self
     {
-        $number = ($num /100);
+        $this->number = $number;
+        return $this;
+
+    
+    }
+    public function setString($str) : self
+    {
+        $this->value = $str;
+        $this->number = $str * 100;
+        return $this;
+    }
+
+    public function getString() : String
+    {
+        $number = ($this->number /100);
         return "$" . number_format((float)$number, 2, '.', '');
     
+
     } 
 
-    public function getArraySum($arry) : String
+    public function getInteger() : int
+    {
+        return  $this->number;
+    }
+
+    public function arraySum($arry) : self
     {
         $total = 0;
         foreach($arry as $a) {
             $total += $a;
         }
+        $this->number = $total;
 
-        return $this->stringifyNumber($total);
+        return $this;
     
     }
 
-    public function integerifyString($strg) : int
-    {
-        return  $strg * 100;
-    }
 
-    public function integerifyStringWithDollarSign($strg) : int
-    {
-        $val = explode('$', $strg);
-        return $val[1] * 100;
-    
-    }
 
-    public function removeValueFromTotal($total, $val) : String
+    public function removeValueFromTotal($total, $val) : self
     {
-        return $this->stringifyNumber($total-$val);
-    
+        $this->setNumber($total-$val);
+        return $this;
     }
-
     
 
 }
