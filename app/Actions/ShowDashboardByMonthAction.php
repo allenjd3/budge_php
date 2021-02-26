@@ -3,7 +3,7 @@
 namespace App\Actions;
 
 use App\Feature\BudgetMath;
-use App\Models\Transaction;
+use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
@@ -39,7 +39,11 @@ class ShowDashboardByMonthAction extends Action
     {
         $month = Auth::user()->currentTeam->months()->with([ 'categories.items', 'paychecks' ])->find($this->m);
         $pay = $month->paychecks->sum('payday');
-        $tSum = Transaction::where('month_id', '=', $month->id)->sum('spent');
+        $transactions = Item::where('month_id', '=', $month->id)->where('is_fund', false)->with('transactions')->get()->pluck('transactions')->flatten();
+        $fund_planned = Item::where('month_id', '=', $month->id)->where('is_fund', true)->sum('fund_planned');
+ 
+        $tSum = $transactions->sum('spent') + $fund_planned;
+ 
         $itemSum = $month->items->sum('planned');
 
         $paid = BudgetMath::init()->setNumber($pay)->getString();

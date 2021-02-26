@@ -47,7 +47,7 @@ class UpdateItemAction extends Action
         $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned,$item->transactions->sum('spent'))->getInteger();
         $item->is_fund = $this->is_fund;
         if($item->is_fund) {
-            $item->fund_planned = BudgetMath::init()->setString( $this->planned )->getInteger();
+            $item->fund_planned = BudgetMath::init()->setString( $this->fund_planned )->getInteger();
         }
         $item->month_id = $this->month_id;
         $item->category_id = $this->category_id;

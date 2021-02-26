@@ -3,9 +3,9 @@
 namespace App\Actions;
 
 use App\Feature\BudgetMath;
+use App\Models\Item;
 use Lorisleiva\Actions\Action;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Transaction;
 use Inertia\Inertia;
 
 class ShowDashboardAction extends Action
@@ -43,7 +43,10 @@ class ShowDashboardAction extends Action
         }
         $pay = $month->paychecks->sum('payday');
         $itemSum = $month->items->sum('planned');
-        $tSum = Transaction::where('month_id', '=', $month->id)->sum('spent');
+        $transactions = Item::where('month_id', '=', $month->id)->where('is_fund', false)->with('transactions')->get()->pluck('transactions')->flatten();
+        $fund_planned = Item::where('month_id', '=', $month->id)->where('is_fund', true)->sum('fund_planned');
+ 
+        $tSum = $transactions->sum('spent') + $fund_planned;
 
         $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum)->getString();
         $paid = BudgetMath::init()->setNumber($pay)->getString();

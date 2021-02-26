@@ -211,6 +211,10 @@
                   />
                 <label for="is_fund">Fund?</label>
               </div>
+              <div class="my-2" v-show="createItemForm.is_fund">
+                <label for="fund_planned">Fund Per Month</label>
+                <input type="number" step="0.01" id="fund_planned" class="w-full border p-2" v-model="createItemForm.fund_planned"/>
+              </div>
               <div class="my-2">
                 <button type="submit"
                         class="bg-indigo-500 text-white w-32 h-10 font-bold hover:bg-indigo-600"
@@ -286,6 +290,10 @@
                   v-model="createItemForm.is_fund"
                   />
                 <label for="update_is_fund">Fund?</label>
+              </div>
+              <div class="my-2" v-show="createItemForm.is_fund">
+                <label for="fund_planned">Fund Per Month</label>
+                <input type="number" step="0.01" id="fund_planned" class="w-full border p-2" v-model="createItemForm.fund_planned"/>
               </div>
               <div class="flex flex-wrap sm:flex-nowrap justify-between">
                 <div class="my-2">
@@ -545,7 +553,8 @@ export default {
         planned : null,
         category_id : null,
         month_id : null,
-        is_fund : false
+        is_fund : false,
+        fund_planned: null
       },
       createCategoryForm: {
         name : null,
@@ -577,6 +586,7 @@ export default {
         this.createItemForm.month_id = item.month_id;
       
         this.createItemForm.is_fund = (item.is_fund == "0" ? false : true);
+        this.createItemForm.fund_planned = ( item.fund_planned / 100 ).toFixed(2);
     
     },
     createModifyPaycheck(paycheck) {
