@@ -519,226 +519,251 @@ import Modal from "./../Jetstream/Modal";
 import {Inertia} from "@inertiajs/inertia";
 
 export default {
-  components: {
-    AppLayout,
-    ItemComponent,
-    Modal,
-    PaycheckComponent
-  },
-  props: {
-    month : Object, 
-    paid : String, 
-    left : String, 
-    planning : String, 
-    errors : Object,
-    monthlyPlanned : String
+    components: {
+        AppLayout,
+        ItemComponent,
+        Modal,
+        PaycheckComponent
     },
-  data() {
-    return {
-      showItemModal: false,
-      showModifyItemModal: false,
-      showCategoryModal: false,
-      showModifyCategoryModal: false,
-      showModifyPaycheckModal: false,
-      showPaycheckModal: false,
-      itemFormId : null,
-      categoryFormId : null,
-      paycheckFormId : null,
-      goTo : {
-        month : this.month.month,
-        year : this.month.year
-      },
-      createItemForm: {
-        name : null,
-        planned : null,
-        category_id : null,
-        month_id : null,
-        is_fund : false,
-        fund_planned: null
-      },
-      createCategoryForm: {
-        name : null,
-        month_id : null
-      },
-      createPaycheckForm: {
-        name: null,
-        payday : null,
-        pay_date: null,
-        month_id : null
-      },
-      item : "",
-      monthly_planned : null
-    };
-  },
-  methods: {
-    storeMonthlyPlanned() {
-      Inertia.post("/modify-planned", {monthly_planned : this.monthly_planned, month_id : this.month.id});
+    props: {
+        month : Object, 
+        paid : String, 
+        left : String, 
+        planning : String, 
+        errors : Object,
+        monthlyPlanned : String
     },
-    createItem() {
-      this.showItemModal = true;
+    data() {
+        return {
+            showItemModal: false,
+            showModifyItemModal: false,
+            showCategoryModal: false,
+            showModifyCategoryModal: false,
+            showModifyPaycheckModal: false,
+            showPaycheckModal: false,
+            itemFormId : null,
+            categoryFormId : null,
+            paycheckFormId : null,
+            goTo : {
+                month : this.month.month,
+                year : this.month.year
+            },
+            createItemForm: {
+                name : null,
+                planned : null,
+                category_id : null,
+                month_id : null,
+                is_fund : false,
+                fund_planned: null
+            },
+            createCategoryForm: {
+                name : null,
+                month_id : null
+            },
+            createPaycheckForm: {
+                name: null,
+                payday : null,
+                pay_date: null,
+                month_id : null
+            },
+            item : "",
+            monthly_planned : null
+        };
     },
-    createModifyItem(item) {
-        this.showModifyItemModal = true;
-        this.itemFormId = item.id;
-        this.createItemForm.name = item.name;
-        this.createItemForm.planned = (item.planned / 100).toFixed(2);
-        this.createItemForm.category_id = item.category_id;
-        this.createItemForm.month_id = item.month_id;
-      
-        this.createItemForm.is_fund = (item.is_fund == "0" ? false : true);
-        this.createItemForm.fund_planned = ( item.fund_planned / 100 ).toFixed(2);
-    
-    },
-    createModifyPaycheck(paycheck) {
-        this.showModifyPaycheckModal = true;
-        this.paycheckFormId = paycheck.id;
-        this.createPaycheckForm.name = paycheck.name,
-        this.createPaycheckForm.payday = ( ( paycheck.payday )/100 ).toFixed(2),
-        this.createPaycheckForm.pay_date = paycheck.pay_date,
-        this.createPaycheckForm.month_id = paycheck.month_id
-    
-    },
-    createItemWithCategory(category) {
-      this.createItemForm.category_id = category;
-      this.showItemModal = true;
-    },
-    createCategory() {
-      this.showCategoryModal = true;
-    },
-    createModifyCategory(category) {
-      this.showModifyCategoryModal = true;
-      this.createCategoryForm.month_id = category.month_id;
-      this.createCategoryForm.name = category.name;
-      this.categoryFormId = category.id;
-    },
-    createPaycheck() {
-      this.showPaycheckModal = true;
-    },
+    methods: {
+        storeMonthlyPlanned() {
+            Inertia.post("/modify-planned", {monthly_planned : this.monthly_planned, month_id : this.month.id});
+        },
+        createItem() {
+            this.showItemModal = true;
+        },
+        createModifyItem(item) {
+            this.showModifyItemModal = true;
+            this.itemFormId = item.id;
+            this.createItemForm.name = item.name;
+            this.createItemForm.planned = (item.planned / 100).toFixed(2);
+            this.createItemForm.category_id = item.category_id;
+            this.createItemForm.month_id = item.month_id;
 
-    storeItem() {
-      this.createItemForm.month_id = this.month.id;
-      Inertia.post("/items", this.createItemForm, {preserveState: true, preserveScroll : true}).then(()=>{
-        if(typeof this.errors.name !== 'undefined' || typeof this.errors.planned !== 'undefined' || typeof this.errors.category_id !== 'undefined') {
-          this.showItemModal = true;
-        }
-        else {
-          this.createItemForm.name = null,
-          this.createItemForm.planned = null,
-          this.createItemForm.category_id = null,
-          this.createItemForm.month_id = null,
-          this.createItemForm.is_fund = false,
-          this.showItemModal = false;
-        }
+            this.createItemForm.is_fund = (item.is_fund == "0" ? false : true);
+            this.createItemForm.fund_planned = ( item.fund_planned / 100 ).toFixed(2);
 
+        },
+        createModifyPaycheck(paycheck) {
+            this.showModifyPaycheckModal = true;
+            this.paycheckFormId = paycheck.id;
+            this.createPaycheckForm.name = paycheck.name,
+                this.createPaycheckForm.payday = ( ( paycheck.payday )/100 ).toFixed(2),
+                this.createPaycheckForm.pay_date = paycheck.pay_date,
+                this.createPaycheckForm.month_id = paycheck.month_id
 
-      });
+        },
+        createItemWithCategory(category) {
+            this.createItemForm.category_id = category;
+            this.showItemModal = true;
+        },
+        createCategory() {
+            this.showCategoryModal = true;
+        },
+        createModifyCategory(category) {
+            this.showModifyCategoryModal = true;
+            this.createCategoryForm.month_id = category.month_id;
+            this.createCategoryForm.name = category.name;
+            this.categoryFormId = category.id;
+        },
+        createPaycheck() {
+            this.showPaycheckModal = true;
+        },
+
+        storeItem() {
+            this.createItemForm.month_id = this.month.id;
+            Inertia.post("/items", this.createItemForm, {
+                preserveScroll : true,
+                preserveState : true,
+                onSuccess: ()=> {
+                    if(typeof this.errors.name !== 'undefined' || typeof this.errors.planned !== 'undefined' || typeof this.errors.category_id !== 'undefined') {
+                        this.showItemModal = true;
+                    }
+                    else {
+                        this.createItemForm.name = null,
+                            this.createItemForm.planned = null,
+                            this.createItemForm.category_id = null,
+                            this.createItemForm.month_id = null,
+                            this.createItemForm.is_fund = false,
+                            this.showItemModal = false;
+                    }
+                }
+            });
+
+        },
+        updateItem() {
+            this.createItemForm.month_id = this.month.id;
+            Inertia.put("/items/" + this.itemFormId, this.createItemForm, {
+                preserveScroll : true, 
+                preserveState : true,
+                onSuccess:()=> {
+                    if(typeof this.errors.name !== 'undefined' || typeof this.errors.planned !== 'undefined' || typeof this.errors.category_id !== 'undefined') {
+                        this.showItemModal = true;
+                    }
+                    else {
+                        this.createItemForm.name = null,
+                            this.createItemForm.planned = null,
+                            this.createItemForm.category_id = null,
+                            this.createItemForm.month_id = null,
+                            this.createItemForm.is_fund = false,
+                            this.showItemModal = false;
+                    }
+                }
+            });
+
+            this.showModifyItemModal = false;
+        },
+        storeCategory() {
+            this.createCategoryForm.month_id = this.month.id;
+            Inertia.post("/categories", this.createCategoryForm, {
+                preserveState: true, 
+                preserveScroll : true,
+                onSuccess: ()=> {
+                    if(typeof this.errors.name !== 'undefined') {
+                        this.showCategoryModal = true;
+                    }
+                    else {
+                        this.createCategoryForm.name = null,
+                            this.createCategoryForm.month_id = null,
+                            this.showCategoryModal = false
+                    }
+                }
+            });
+
+        },
+        updateCategory() {
+            Inertia.put("/categories/" + this.categoryFormId, this.createCategoryForm);
+            this.showModifyCategoryModal = false;
+        },
+        updatePaycheck() {
+            Inertia.put("/paychecks/" + this.paycheckFormId, this.createPaycheckForm);
+            this.showModifyPaycheckModal = false;
+        },
+        storePaycheck() {
+            this.createPaycheckForm.month_id = this.month.id;
+            Inertia.post("/paychecks", this.createPaycheckForm, {
+                onSuccess: ()=> {
+                    if(typeof this.errors.name !== 'undefined' || typeof this.errors.payday !== 'undefined' || typeof this.errors.pay_date !== 'undefined') {
+                        this.showPaycheckModal = true;
+                    }
+                    else {
+                        this.createPaycheckForm.name = null,
+                            this.createPaycheckForm.payday = null,
+                            this.createPaycheckForm.pay_date = null,
+                            this.showPaycheckModal = false
+                    }
+                }
+
+            });
+        },
+        closeItem() {
+            this.errors = Object.assign({name : null, planned : null, category : null});
+            this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : false});
+
+            this.showItemModal = false;
+        },
+        closeModifyItem() {
+            this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : false});
+            this.showModifyItemModal = false;
+        },
+        closeCategory() {
+            this.errors = Object.assign({name : null});
+            this.createCategoryForm = Object.assign({name : null});
+            this.showCategoryModal = false;
+        },
+        closeModifyCategory() {
+            this.createCategoryForm = Object.assign({name : null});
+            this.showModifyCategoryModal = false;
+        },
+        closeConfirmationModal() {
+            this.showConfirmationModal = false;
+        },
+        closePaycheck() {
+            this.errors = Object.assign({name : null, payday : null, pay_date : null});
+            this.createPaycheckForm = Object.assign({name : null, payday : null, pay_date : null});
+            this.showPaycheckModal = false;
+        },
+        closeUpdatePaycheck() {
+            this.createPaycheckForm = Object.assign({name : null, payday : null, pay_date : null});
+            this.showModifyPaycheckModal = false;
+
+        },
+        goToMonth() {
+            window.location = '/month/'+this.goTo.month + '/year/' + this.goTo.year;
+        },
+        deleteItem(id) {
+            Inertia.delete("/items/"+id, {
+                preserveState : true, 
+                preserveScroll : true,
+                onSuccess: ()=> {
+                    this.showModifyItemModal = false;
+                }
+            });
+        },
+        deleteCategory(id) {
+            Inertia.delete("/categories/"+id, {
+                preserveState : true, 
+                preserveScroll : true,
+                onSuccess:()=> {
+                    this.showModifyCategoryModal = false;
+                }
+            });
+        },
+        deletePaycheck(id) {
+            Inertia.delete("/paychecks/"+id, {
+                preserveState : true, 
+                preserveScroll : true,
+                onSuccess:()=> {
+                    this.showModifyPaycheckModal = false;
+                }
+            })
+        },
 
     },
-    updateItem() {
-      this.createItemForm.month_id = this.month.id;
-      Inertia.put("/items/" + this.itemFormId, this.createItemForm, {preserveScroll : true, preserveState : true}).then(()=>{
-        if(typeof this.errors.name !== 'undefined' || typeof this.errors.planned !== 'undefined' || typeof this.errors.category_id !== 'undefined') {
-          this.showItemModal = true;
-        }
-        else {
-          this.createItemForm.name = null,
-          this.createItemForm.planned = null,
-          this.createItemForm.category_id = null,
-          this.createItemForm.month_id = null,
-          this.createItemForm.is_fund = false,
-          this.showItemModal = false;
-        }
-      });
-
-      this.showModifyItemModal = false;
-    },
-    storeCategory() {
-      this.createCategoryForm.month_id = this.month.id;
-      Inertia.post("/categories", this.createCategoryForm, {preserveState: true, preserveScroll : true}).then(()=>{
-        if(typeof this.errors.name !== 'undefined') {
-          this.showCategoryModal = true;
-        }
-        else {
-          this.createCategoryForm.name = null,
-          this.createCategoryForm.month_id = null,
-          this.showCategoryModal = false
-        }
-      });
-
-    },
-      updateCategory() {
-          Inertia.put("/categories/" + this.categoryFormId, this.createCategoryForm);
-          this.showModifyCategoryModal = false;
-      },
-      updatePaycheck() {
-          Inertia.put("/paychecks/" + this.paycheckFormId, this.createPaycheckForm);
-          this.showModifyPaycheckModal = false;
-      },
-    storePaycheck() {
-      this.createPaycheckForm.month_id = this.month.id;
-      Inertia.post("/paychecks", this.createPaycheckForm).then(()=>{
-        if(typeof this.errors.name !== 'undefined' || typeof this.errors.payday !== 'undefined' || typeof this.errors.pay_date !== 'undefined') {
-          this.showPaycheckModal = true;
-        }
-        else {
-          this.createPaycheckForm.name = null,
-          this.createPaycheckForm.payday = null,
-          this.createPaycheckForm.pay_date = null,
-          this.showPaycheckModal = false
-        }
-      });
-    },
-    closeItem() {
-      this.errors = Object.assign({name : null, planned : null, category : null});
-      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : false});
-
-      this.showItemModal = false;
-    },
-    closeModifyItem() {
-      this.createItemForm = Object.assign({name : null, planned : null, category_id : null, month_id : null, is_fund : false});
-      this.showModifyItemModal = false;
-    },
-    closeCategory() {
-      this.errors = Object.assign({name : null});
-      this.createCategoryForm = Object.assign({name : null});
-      this.showCategoryModal = false;
-    },
-    closeModifyCategory() {
-      this.createCategoryForm = Object.assign({name : null});
-      this.showModifyCategoryModal = false;
-    },
-    closeConfirmationModal() {
-      this.showConfirmationModal = false;
-    },
-    closePaycheck() {
-      this.errors = Object.assign({name : null, payday : null, pay_date : null});
-      this.createPaycheckForm = Object.assign({name : null, payday : null, pay_date : null});
-      this.showPaycheckModal = false;
-    },
-    closeUpdatePaycheck() {
-        this.createPaycheckForm = Object.assign({name : null, payday : null, pay_date : null});
-        this.showModifyPaycheckModal = false;
-    
-    },
-    goToMonth() {
-      window.location = '/month/'+this.goTo.month + '/year/' + this.goTo.year;
-    },
-    deleteItem(id) {
-      Inertia.delete("/items/"+id, {preserveState : true, preserveScroll : true}).then(()=>{
-        this.showModifyItemModal = false;
-      });
-    },
-    deleteCategory(id) {
-      Inertia.delete("/categories/"+id, {preserveState : true, preserveScroll : true}).then(()=>{
-        this.showModifyCategoryModal = false;
-      });
-    },
-    deletePaycheck(id) {
-      Inertia.delete("/paychecks/"+id, {preserveState : true, preserveScroll : true}).then(()=>{
-        this.showModifyPaycheckModal = false;
-      });
-    },
-
-  },
 };
 </script>

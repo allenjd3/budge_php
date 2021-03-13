@@ -1,27 +1,25 @@
 require('./bootstrap');
 
-import Vue from 'vue';
 
-import { InertiaApp } from '@inertiajs/inertia-vue';
+import { App, plugin } from '@inertiajs/inertia-vue'
+import Vue from 'vue'
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 import vSelect from 'vue-select';
 
 Vue.mixin({ methods: { route } });
-Vue.use(InertiaApp);
+Vue.use(plugin)
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
-
-const app = document.getElementById('app');
-
 Vue.component('v-select', vSelect);
 
+const el = document.getElementById('app')
+
 new Vue({
-    render: (h) =>
-        h(InertiaApp, {
-            props: {
-                initialPage: JSON.parse(app.dataset.page),
-                resolveComponent: (name) => require(`./Pages/${name}`).default,
-            },
-        }),
-}).$mount(app);
+      render: h => h(App, {
+              props: {
+                        initialPage: JSON.parse(el.dataset.page),
+                        resolveComponent: name => require(`./Pages/${name}`).default,
+                      },
+            }),
+}).$mount(el)

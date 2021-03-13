@@ -134,7 +134,7 @@ export default {
         errors : Object,
         thefilter : String,
         userId : Number,
-        },
+    },
     data() {
         return {
             filterTransaction: {
@@ -160,22 +160,30 @@ export default {
     methods : {
         newTransaction() {
             if(this.transaction_id){
-                Inertia.put('/transactions/'+this.transaction_id, this.transactionForm, {preserveScroll : true, preserveState : true}).then(()=>{
-                    this.transactionForm.spent = null;
-                    this.transactionForm.name = null;
-                    this.transactionForm.spent_date = null;
-                    this.transactionForm.item_id = null;
-                    this.transactionForm.month_id = null;
-                    this.transaction_id = null;
-                    this.buttonMsg = "New Transaction";
+                Inertia.put('/transactions/'+this.transaction_id, this.transactionForm, {
+                    preserveScroll : true, 
+                    preserveState : true,
+                    onSuccess: () => {
+                        this.transactionForm.spent = null;
+                        this.transactionForm.name = null;
+                        this.transactionForm.spent_date = null;
+                        this.transactionForm.item_id = null;
+                        this.transactionForm.month_id = null;
+                        this.transaction_id = null;
+                        this.buttonMsg = "New Transaction";
 
-                });
+                    }
+                })
 
             }else {
-                Inertia.post('/transactions', this.transactionForm, {preserveState : true, preserveScroll : true}).then(()=>{
-                    this.transactionForm.spent = null;
-                    this.transactionForm.name = null;
+                Inertia.post('/transactions', this.transactionForm, {
+                    preserveState : true, 
+                    preserveScroll : true,
+                    onSuccess: () => {
+                        this.transactionForm.spent = null;
+                        this.transactionForm.name = null;
 
+                    }
                 });
             }
 
@@ -200,8 +208,8 @@ export default {
             this.transactionForm.name = transaction.name;
             this.transaction_id = transaction.id;
             this.buttonMsg = "Edit Transaction";
-            
-        
+
+
         },
         deleteTransaction(id) {
             Inertia.delete('/transactions/'+id, {preserveScroll : true, preserveState : true});
