@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Request;
 
 class CreateTransactionByMonthAction extends Action
 {
+    public $message;
+
+    public $filter;
+
+    public function __construct()
+    {
+        $this->message = null;
+        $this->filter = null;
+    }
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -39,28 +49,50 @@ class CreateTransactionByMonthAction extends Action
      */
     public function handle()
     {
-        $userId = auth()->user()->id;
-        $month = Month::find($this->month_id);
-        $items = Item::where('month_id','=',$month->id)->latest()->get();
-        $thefilter = null;
+        $items = Item::where('month_id', $this->month_id)->latest()->get();
 
-        if(Request::has('filter')) {
-            $filter = Request::get('filter');
-            $thefilter = $filter;
-            $transactions = Transaction::where('month_id','=', $month->id)->whereHas('item', function($query) use($filter){
-                $query->where('name', 'LIKE', '%' . $filter . '%');
-            })->with('item')->latest()->paginate(20);
-            if(!$transactions->count()){
-                $thefilter = null;
-                $transactions = Transaction::where('month_id','=', $month->id)->with('item')->latest()->paginate(20);
-                return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions', 'thefilter', 'userId' ]))->with('message', 'There are no Transactions associated with that Filter');
-            }
+        if (!Request::has('filter')) {
+            $transactions = $this->noFilter();
         }
-        else {
-            $transactions = Transaction::where('month_id','=', $month->id)->with('item')->latest()->paginate(20);
+        if (Request::has('filter')) {
+            $transactions = $this->hasFilter();
         }
         
+        if ($this->message !== null) {
+            return Inertia::render('ItemTransactions', [
+                'month'=> Month::find($this->month_id),
+                'items'=> $items,
+                'transactions'=> $transactions,
+                'filter'=> $this->filter,
+                'userId'=> auth()->user()->id
+            ])->with('message', $this->message);
+        }
 
-        return Inertia::render('ItemTransactions', compact([ 'month', 'items', 'transactions', 'thefilter', 'userId' ]));
+        return Inertia::render('ItemTransactions', [
+            'month'=> Month::find($this->month_id),
+            'items'=> $items,
+            'transactions'=> $transactions,
+            'filter'=> $this->filter,
+            'userId'=> auth()->user()->id
+        ]);
+    }
+
+    public function hasFilter()
+    {
+        $this->filter = Request::get('filter');
+        $transactions = Transaction::where('month_id', $this->month_id)->whereHas('item', function ($query) {
+            $query->where('name', 'LIKE', '%' . $this->filter . '%');
+        })->with('item')->latest()->paginate(20);
+        if (!$transactions->count()) {
+            $this->filter = null;
+            $transactions = Transaction::where('month_id', $this->month_id)->with('item')->latest()->paginate(20);
+            $this->message = 'There are no Transactions associated with that Filter';
+        }
+        return $transactions;
+    }
+
+    public function noFilter()
+    {
+        return Transaction::where('month_id', $this->month_id)->with('item')->latest()->paginate(20);
     }
 }

@@ -75,7 +75,7 @@
                                 </form>
                             </div>
                         </div>
-                        <template v-if="thefilter">
+                        <template v-if="filter">
                             <item-component :name=" ( transactions.data[0] ).item.name" :planned="( transactions.data[0] ).item.planned" :spent="( transactions.data[0] ).item.remaining" @toggleModal="createModifyItem(( transactions.data[0] ).item)"/>
                         </template>
                     </div>
@@ -84,9 +84,9 @@
             <div id="transactions" class="pt-12 pb-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-scroll md:overflow-hidden shadow-xl sm:rounded-lg p-8">
-                        <div v-if="$page.message" class="text-red-600">{{$page.message}} <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer text-gray-900">Clear Filter</a></div>
-                        <div v-if="thefilter" class="my-2">
-                            <span class="text-xl" v-text="'Filtering by: ' + thefilter"> </span>  <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer">Clear Filter</a>
+                        <div v-if="$page.props.message" class="text-red-600">{{$page.props.message}} <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer text-gray-900">Clear Filter</a></div>
+                        <div v-if="filter" class="my-2">
+                            <span class="text-xl" v-text="'Filtering by: ' + filter"> </span>  <a @click="clearFilter" class="ml-4 border p-2 cursor-pointer">Clear Filter</a>
                         </div>
                         <span>Page <span v-text="transactions.current_page"></span> of <span v-text="transactions.last_page"></span></span>
                         <table class="table-fixed md:w-full">
@@ -132,7 +132,7 @@ export default {
         items : Array, 
         transactions: Object, 
         errors : Object,
-        thefilter : String,
+        filter : String,
         userId : Number,
     },
     data() {

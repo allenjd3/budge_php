@@ -18,6 +18,7 @@ class CreateTransactionByMonthActionTest extends TestCase
     */
     function a_user_can_view_a_page_that_helps_them_create_transaction()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->create_team_by_user($user);
         $month = Month::factory()->create([
