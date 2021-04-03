@@ -3,7 +3,6 @@
 namespace App\Actions;
 
 use App\Models\Item;
-use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Action;
 
 class DeleteItemAction extends Action
@@ -37,9 +36,6 @@ class DeleteItemAction extends Action
     {
 
         $item = Item::find($this->item);
-        //foreach($item->transactions as $transaction){
-        //    $transaction->delete();
-        //}
         $item->delete();
         return redirect()->back();
 
