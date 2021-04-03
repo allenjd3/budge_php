@@ -35,14 +35,10 @@ class StoreImportTransactionsAction extends Action
     public function handle(Request $request)
     {
         
-        if( $request->file('csvimport')->store('temp') )
-        {
+        if ($request->file('csvimport')->store('temp')) {
             return [$message => 'success'];
-        }
-        else {
+        } else {
             return [$message => 'error'];
         }
-
-
     }
 }

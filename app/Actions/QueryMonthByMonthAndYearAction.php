@@ -34,8 +34,12 @@ class QueryMonthByMonthAndYearAction extends Action
      */
     public function handle()
     {
-        $month = Auth::user()->currentTeam->months()->where('month','=',$this->m)->where('year','=',$this->year)->first();
-        if( $month === null){
+        $month = Auth::user()->currentTeam
+                             ->months()
+                             ->where('month', $this->m)
+                             ->where('year', $this->year)
+                             ->first();
+        if ($month === null) {
             return redirect('/months');
         }
         return redirect()->route('dashboard-month', ['m'=>$month->id]);

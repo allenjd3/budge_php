@@ -11,7 +11,7 @@ class ImportTransactionsAction extends Action
 {
     public $month;
 
-    public function __construct(Request $request) 
+    public function __construct(Request $request)
     {
         $this->month = Month::find($request->route()->parameter('month'));
     }
@@ -49,6 +49,5 @@ class ImportTransactionsAction extends Action
         return Inertia::render('ImportTransactions', [
             'month' => $this->month
         ]);
-        
     }
 }

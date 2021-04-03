@@ -36,7 +36,7 @@ class ModifyMonthlyPlannedAction extends Action
     public function handle()
     {
         $month = Month::find($this->month_id);
-        $month->monthly_planned = BudgetMath::init()->setString( $this->monthly_planned )->getInteger();
+        $month->monthly_planned = BudgetMath::init()->setString($this->monthly_planned)->getInteger();
         $month->save();
 
         return redirect()->back();

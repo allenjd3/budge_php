@@ -38,6 +38,5 @@ class DeleteItemAction extends Action
         $item = Item::find($this->item);
         $item->delete();
         return redirect()->back();
-
     }
 }

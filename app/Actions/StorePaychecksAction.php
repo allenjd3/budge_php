@@ -28,7 +28,7 @@ class StorePaychecksAction extends Action
         return [
             'name'=>'required',
             'payday'=>'required|numeric',
-            'pay_date'=>'required|date' 
+            'pay_date'=>'required|date'
         ];
     }
 
@@ -41,7 +41,7 @@ class StorePaychecksAction extends Action
     {
         $paycheck = new Paycheck;
         $paycheck->name = $this->name;
-        $paycheck->payday = BudgetMath::init()->setString( $this->payday )->getInteger();
+        $paycheck->payday = BudgetMath::init()->setString($this->payday)->getInteger();
         $paycheck->pay_date = $this->pay_date;
         $paycheck->month_id = $this->month_id;
 

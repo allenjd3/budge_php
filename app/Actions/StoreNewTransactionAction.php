@@ -51,7 +51,8 @@ class StoreNewTransactionAction extends Action
 
         $item = $transaction->item;
 
-        $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned, $item->transactions->sum('spent'))->getInteger();
+        $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned, $item->transactions->sum('spent'))
+                                             ->getInteger();
         $item->save();
 
         return redirect()->back();

@@ -37,10 +37,23 @@ class ShowDashboardByMonthAction extends Action
      */
     public function handle()
     {
-        $month = Auth::user()->currentTeam->months()->with([ 'categories.items', 'paychecks' ])->find($this->m);
+        $month = Auth::user()->currentTeam
+                             ->months()
+                             ->with([
+                                 'categories.items',
+                                 'paychecks'
+                             ])->find($this->m);
+
         $pay = $month->paychecks->sum('payday');
-        $transactions = Item::where('month_id', '=', $month->id)->where('is_fund', false)->with('transactions')->get()->pluck('transactions')->flatten();
-        $fund_planned = Item::where('month_id', '=', $month->id)->where('is_fund', true)->sum('fund_planned');
+
+        $transactions = Item::where('month_id', $month->id)->where('is_fund', false)
+                                                           ->with('transactions')
+                                                           ->get()
+                                                           ->pluck('transactions')
+                                                           ->flatten();
+
+        $fund_planned = Item::where('month_id', $month->id)->where('is_fund', true)
+                                                           ->sum('fund_planned');
  
         $tSum = $transactions->sum('spent') + $fund_planned;
  
@@ -51,6 +64,12 @@ class ShowDashboardByMonthAction extends Action
         $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum)->getString();
         $monthlyPlanned = BudgetMath::init()->setNumber($month->monthly_planned)->getString();
 
-        return Inertia::render('Dashboard', compact(['month', 'paid', 'left', 'planning', 'monthlyPlanned']));
+        return Inertia::render('Dashboard', [
+            'month' => $month,
+            'paid' => $paid,
+            'left' => $left,
+            'planning' => $planning,
+            'monthlyPlanned' => $monthlyPlanned
+        ]);
     }
 }

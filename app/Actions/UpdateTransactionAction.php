@@ -46,22 +46,22 @@ class UpdateTransactionAction extends Action
         $transaction->name = $this->name;
         $transaction->item_id = $this->item_id;
         $transaction->month_id = $this->month_id;
-        $transaction->spent = BudgetMath::init()->setString( $this->spent )->getInteger();
+        $transaction->spent = BudgetMath::init()->setString($this->spent)->getInteger();
         $transaction->spent_date = $this->spent_date;
 
-        if($transaction->save())
-        {
+        if ($transaction->save()) {
             $item = $transaction->item;
 
-            $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned, $item->transactions->sum('spent'))->getInteger();
+            $item->remaining = BudgetMath::init()->removeValueFromTotal(
+                $item->planned,
+                $item->transactions->sum('spent')
+            )->getInteger();
             $item->save();
-
         }
 
         // This is the actual updating.
 
 
         return redirect()->back();
-
     }
 }
