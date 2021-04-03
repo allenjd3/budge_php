@@ -6,11 +6,13 @@ use App\Actions\DeleteItemAction;
 use App\Actions\DeletePaychecksAction;
 use App\Actions\DeleteTransactionAction;
 use App\Actions\GetAllMonthsByUserTeamAction;
+use App\Actions\ImportTransactionsAction;
 use App\Actions\ModifyMonthlyPlannedAction;
 use App\Actions\QueryMonthByMonthAndYearAction;
 use App\Actions\ShowDashboardAction;
 use App\Actions\ShowDashboardByMonthAction;
 use App\Actions\StoreCategoryAction;
+use App\Actions\StoreImportTransactionsAction;
 use App\Actions\StoreMonthAction;
 use App\Actions\StoreNewItemAction;
 use App\Actions\StoreNewTransactionAction;
@@ -38,40 +40,49 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', ShowDashboardAction::class)->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard/{m}', ShowDashboardByMonthAction::class)->name('dashboard-month');
+    Route::get('/dashboard', ShowDashboardAction::class)->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/create-transaction/{month_id}', CreateTransactionByMonthAction::class);
+    Route::get('/dashboard/{m}', ShowDashboardByMonthAction::class)->name('dashboard-month');
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/transactions', StoreNewTransactionAction::class);
+    Route::get('/create-transaction/{month_id}', CreateTransactionByMonthAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->delete('/transactions/{transaction}', DeleteTransactionAction::class);
+    Route::post('/transactions', StoreNewTransactionAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->put('/transactions/{transaction}', UpdateTransactionAction::class);
+    Route::delete('/transactions/{transaction}', DeleteTransactionAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/items', StoreNewItemAction::class);
+    Route::put('/transactions/{transaction}', UpdateTransactionAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->put('/items/{item}', UpdateItemAction::class);
+    Route::get('/month/{month}/transactions/import', ImportTransactionsAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->delete('/items/{item}', DeleteItemAction::class);
+    Route::post('/month/{month}/transactions/import', StoreImportTransactionsAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/months', GetAllMonthsByUserTeamAction::class);
+    Route::post('/items', StoreNewItemAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/categories', StoreCategoryAction::class );
+    Route::put('/items/{item}', UpdateItemAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->put('/categories/{category}', UpdateCategoryAction::class);
+    Route::delete('/items/{item}', DeleteItemAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->delete('/categories/{category}', DeleteCategoryAction::class);
+    Route::post('/categories', StoreCategoryAction::class );
 
-Route::middleware(['auth:sanctum','verified'])->get('/month/{m}/year/{year}', QueryMonthByMonthAndYearAction::class);
+    Route::put('/categories/{category}', UpdateCategoryAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/months', StoreMonthAction::class);
+    Route::delete('/categories/{category}', DeleteCategoryAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/modify-planned', ModifyMonthlyPlannedAction::class);
+    Route::get('/months', GetAllMonthsByUserTeamAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->post('/paychecks', StorePaychecksAction::class);
+    Route::get('/month/{m}/year/{year}', QueryMonthByMonthAndYearAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->put('/paychecks/{paycheck}', UpdatePaychecksAction::class);
+    Route::post('/months', StoreMonthAction::class);
 
-Route::middleware(['auth:sanctum', 'verified'])->delete('/paychecks/{paycheck}', DeletePaychecksAction::class);
+    Route::post('/modify-planned', ModifyMonthlyPlannedAction::class);
+
+    Route::post('/paychecks', StorePaychecksAction::class);
+
+    Route::put('/paychecks/{paycheck}', UpdatePaychecksAction::class);
+
+    Route::delete('/paychecks/{paycheck}', DeletePaychecksAction::class);
+
+});
+

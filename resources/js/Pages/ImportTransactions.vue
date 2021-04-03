@@ -16,6 +16,12 @@
                                 <div>
                                     <input type="file" id="csvimport" :name="csvimport" class="border p-2 rounded">
                                 </div>
+
+                                <input type="hidden" name="month" :value="month.id">
+                                
+                                
+                                
+
                             </div>
                             <div class="my-2">
                                 <button
@@ -45,10 +51,10 @@ export default {
     data() {
         return {
             'csvimport': ''
-
         }
 
     },
+    props : ['month'],
     methods : {
         submitCsv() {
             let data = new FormData();
