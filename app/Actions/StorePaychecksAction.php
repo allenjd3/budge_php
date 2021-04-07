@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\BudgeIt\Budge;
 use App\Feature\BudgetMath;
 use App\Models\Paycheck;
 use Lorisleiva\Actions\Action;
@@ -41,7 +42,7 @@ class StorePaychecksAction extends Action
     {
         $paycheck = new Paycheck;
         $paycheck->name = $this->name;
-        $paycheck->payday = BudgetMath::init()->setString($this->payday)->getInteger();
+        $paycheck->payday = ( new Budge($this->payday) )->getInteger();
         $paycheck->pay_date = $this->pay_date;
         $paycheck->month_id = $this->month_id;
 

@@ -2,14 +2,18 @@
 
 namespace App\Actions;
 
+use App\BudgeIt\Budge;
 use App\Feature\BudgetMath;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class ShowDashboardByMonthAction extends Action
 {
+    private $month;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -37,39 +41,78 @@ class ShowDashboardByMonthAction extends Action
      */
     public function handle()
     {
-        $month = Auth::user()->currentTeam
+        $this->month = Auth::user()->currentTeam
                              ->months()
                              ->with([
                                  'categories.items',
                                  'paychecks'
                              ])->find($this->m);
 
-        $pay = $month->paychecks->sum('payday');
+        $pay = $this->getPaychecksSum();
 
-        $transactions = Item::where('month_id', $month->id)->where('is_fund', false)
-                                                           ->with('transactions')
-                                                           ->get()
-                                                           ->pluck('transactions')
-                                                           ->flatten();
+        $transactions = $this->getTransactionsSum();
 
-        $fund_planned = Item::where('month_id', $month->id)->where('is_fund', true)
-                                                           ->sum('fund_planned');
+        $fund_planned = $this->getFundPlannedSum();
  
-        $tSum = $transactions->sum('spent') + $fund_planned;
+        $tSum = $transactions->addBudge($fund_planned);
  
-        $itemSum = $month->items->sum('planned');
+        $itemSum = $this->getItemPlannedSum();
 
-        $paid = BudgetMath::init()->setNumber($pay)->getString();
-        $planning = BudgetMath::init()->removeValueFromTotal($month->monthly_planned, $itemSum)->getString();
-        $left = BudgetMath::init()->removeValueFromTotal($pay, $tSum)->getString();
-        $monthlyPlanned = BudgetMath::init()->setNumber($month->monthly_planned)->getString();
+        $monthlyPlanned = $this->getMonthlyPlanned();
+
+        $paid = $pay->getString();
+
+        $planning = $monthlyPlanned->subBudge($itemSum)->getString();
+
+        $left = $pay->subBudge($tSum)->getString();
 
         return Inertia::render('Dashboard', [
-            'month' => $month,
+            'month' => $this->month,
             'paid' => $paid,
             'left' => $left,
             'planning' => $planning,
-            'monthlyPlanned' => $monthlyPlanned
+            'monthlyPlanned' => $this->getMonthlyPlanned()->getString()
         ]);
+    }
+
+    public function getPaychecksSum() : Budge
+    {
+        $payday = collect( DB::select('SELECT SUM(payday) as payday_sum FROM paychecks WHERE month_id = :month_id', ["month_id"=> $this->month->id]) );
+
+        return new Budge($payday->first()->payday_sum, true);
+    
+    }
+
+    public function getTransactionsSum() : Budge
+    {
+        
+        $transactions = collect( DB::select('SELECT SUM(spent) spent_sum FROM items LEFT JOIN transactions ON items.id = transactions.item_id WHERE items.month_id = :month_id AND items.is_fund = false', ['month_id' => $this->month->id]) );
+
+        return new Budge($transactions->first()->spent_sum, true);
+
+    }
+
+    public function getFundPlannedSum() : Budge
+    {
+        
+        $fund_planned = collect(DB::select('SELECT SUM(fund_planned) fund_planned_sum FROM items WHERE items.month_id = :month_id AND items.is_fund = true', ['month_id' => $this->month->id]));
+
+        return new Budge($fund_planned->first()->fund_planned_sum, true);
+    }
+
+    public function getItemPlannedSum() : Budge
+    {
+    
+        $planned = collect(DB::select('SELECT SUM(planned) AS planned_sum FROM months LEFT JOIN items ON months.id = items.month_id WHERE months.id = :month_id', ['month_id' => $this->month->id]));
+        
+        return new Budge($planned->first()->planned_sum, true);
+    }
+
+    public function getMonthlyPlanned() : Budge
+    {
+        $monthlyPlanned = collect(DB::select('SELECT monthly_planned FROM months WHERE months.id = :month_id', ['month_id' => $this->month->id]));
+
+        return new Budge($monthlyPlanned->first()->monthly_planned, true);
+    
     }
 }

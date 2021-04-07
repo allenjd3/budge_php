@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\BudgeIt\Budge;
 use App\Feature\BudgetMath;
 use App\Models\Item;
 use Lorisleiva\Actions\Action;
@@ -43,17 +44,31 @@ class UpdateItemAction extends Action
         $item = Item::find($this->item);
 
         $item->name = $this->name;
-        $item->planned = BudgetMath::init()->setString($this->planned)->getInteger();
-        $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned, $item->transactions->sum('spent'))
-                                             ->getInteger();
+        $item->planned = $this->getPlanned()->getInteger();
+        $item->remaining = $this->getPlanned()
+                                ->subBudge($this->getTransactionsFromItem($item))
+                                ->getInteger();
+
         $item->is_fund = $this->is_fund;
         if ($item->is_fund) {
-            $item->fund_planned = BudgetMath::init()->setString($this->fund_planned)->getInteger();
+            $item->fund_planned = ( new Budge($this->fund_planned) )->getInteger();
         }
         $item->month_id = $this->month_id;
         $item->category_id = $this->category_id;
         $item->save();
 
         return redirect()->back();
+    }
+
+    public function getPlanned() : Budge
+    {
+        return new Budge($this->planned);
+    
+    }
+
+    public function getTransactionsFromItem($item) : Budge
+    {
+        return new Budge($item->transactions->sum('spent'), true);
+    
     }
 }

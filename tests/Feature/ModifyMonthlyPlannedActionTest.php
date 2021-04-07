@@ -22,7 +22,7 @@ class ModifyMonthlyPlannedActionTest extends TestCase
         $month = Month::factory()->create();
         $month->refresh();
 
-        $response = $this->actingAs($user)->post('/modify-planned', ['month_id'=>$month->id, 'monthly_planned' => 2350]);
+        $response = $this->actingAs($user)->post('/modify-planned', ['month_id'=>$month->id, 'monthly_planned' => '2350']);
         
         $response->assertStatus(302);
         $this->assertDatabaseHas('months', [

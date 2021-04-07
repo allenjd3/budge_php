@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\BudgeIt\Budge;
 use App\Feature\BudgetMath;
 use App\Models\Transaction;
 use Lorisleiva\Actions\Action;
@@ -9,6 +10,7 @@ use App\Models\Item;
 
 class UpdateTransactionAction extends Action
 {
+    private $item;
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -46,22 +48,33 @@ class UpdateTransactionAction extends Action
         $transaction->name = $this->name;
         $transaction->item_id = $this->item_id;
         $transaction->month_id = $this->month_id;
-        $transaction->spent = BudgetMath::init()->setString($this->spent)->getInteger();
+        $transaction->spent = ( new Budge($this->spent) )->getInteger();
         $transaction->spent_date = $this->spent_date;
 
         if ($transaction->save()) {
-            $item = $transaction->item;
+            $this->item = $transaction->item;
 
-            $item->remaining = BudgetMath::init()->removeValueFromTotal(
-                $item->planned,
-                $item->transactions->sum('spent')
-            )->getInteger();
-            $item->save();
+            $this->item->remaining = $this->getItemPlanned()
+                                          ->subBudge($this->getTransactionsSum())
+                                          ->getInteger();
+            
+            $this->item->save();
         }
 
         // This is the actual updating.
 
 
         return redirect()->back();
+    }
+
+    public function getItemPlanned() : Budge
+    {
+        return new Budge($this->item->planned);
+    }
+
+    public function getTransactionsSum() : Budge
+    {
+        return new Budge($this->item->transactions->sum('spent'));
+    
     }
 }

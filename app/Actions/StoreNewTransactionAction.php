@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\BudgeIt\Budge;
 use App\Feature\BudgetMath;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -45,16 +46,33 @@ class StoreNewTransactionAction extends Action
         $transaction->name = $this->name;
         $transaction->item_id = $this->item_id;
         $transaction->month_id = $this->month_id;
-        $transaction->spent = BudgetMath::init()->setString($this->spent)->getInteger();
+        $transaction->spent = $this->getSpent()->getInteger();
         $transaction->spent_date = $this->spent_date;
         $transaction->save();
 
         $item = $transaction->item;
 
-        $item->remaining = BudgetMath::init()->removeValueFromTotal($item->planned, $item->transactions->sum('spent'))
+        $item->remaining = $this->getPlannedFromItem($item)->subBudge($this->getTransactionsSpentFromItem($item))
                                              ->getInteger();
         $item->save();
 
         return redirect()->back();
+    }
+
+    public function getSpent() : Budge
+    {
+        return new Budge($this->spent);
+    
+    }
+
+    public function getPlannedFromItem($item) : Budge
+    {
+        return new Budge($item->planned, true);
+    
+    }
+
+    public function getTransactionsSpentFromItem($item) : Budge
+    {
+        return new Budge($item->transactions->sum('spent'), true);
     }
 }
