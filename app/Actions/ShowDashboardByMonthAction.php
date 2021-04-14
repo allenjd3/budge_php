@@ -3,8 +3,6 @@
 namespace App\Actions;
 
 use App\BudgeIt\Budge;
-use App\Feature\BudgetMath;
-use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -77,25 +75,33 @@ class ShowDashboardByMonthAction extends Action
 
     public function getPaychecksSum() : Budge
     {
-        $payday = collect( DB::select('SELECT SUM(payday) as payday_sum FROM paychecks WHERE month_id = :month_id', ["month_id"=> $this->month->id]) );
+        $payday = collect(DB::select('SELECT SUM(payday) as payday_sum FROM paychecks WHERE month_id = :month_id', [
+            "month_id"=> $this->month->id
+        ]));
 
         return new Budge($payday->first()->payday_sum, true);
-    
     }
 
     public function getTransactionsSum() : Budge
     {
         
-        $transactions = collect( DB::select('SELECT SUM(spent) spent_sum FROM items LEFT JOIN transactions ON items.id = transactions.item_id WHERE items.month_id = :month_id AND items.is_fund = false', ['month_id' => $this->month->id]) );
+        $transactions = collect(DB::select('SELECT SUM(spent) spent_sum FROM items 
+                                            LEFT JOIN transactions ON items.id = transactions.item_id 
+                                            WHERE items.month_id = :month_id AND items.is_fund = false', [
+                                                'month_id' => $this->month->id
+                                            ]));
 
         return new Budge($transactions->first()->spent_sum, true);
-
     }
 
     public function getFundPlannedSum() : Budge
     {
         
-        $fund_planned = collect(DB::select('SELECT SUM(fund_planned) fund_planned_sum FROM items WHERE items.month_id = :month_id AND items.is_fund = true', ['month_id' => $this->month->id]));
+        $fund_planned = collect(DB::select('SELECT SUM(fund_planned) fund_planned_sum FROM items 
+                                            WHERE items.month_id = :month_id 
+                                            AND items.is_fund = true', [
+                                                'month_id' => $this->month->id
+                                            ]));
 
         return new Budge($fund_planned->first()->fund_planned_sum, true);
     }
@@ -103,16 +109,22 @@ class ShowDashboardByMonthAction extends Action
     public function getItemPlannedSum() : Budge
     {
     
-        $planned = collect(DB::select('SELECT SUM(planned) AS planned_sum FROM months LEFT JOIN items ON months.id = items.month_id WHERE months.id = :month_id', ['month_id' => $this->month->id]));
+        $planned = collect(DB::select('SELECT SUM(planned) AS planned_sum FROM months 
+                                       LEFT JOIN items ON months.id = items.month_id 
+                                       WHERE months.id = :month_id', [
+                                           'month_id' => $this->month->id
+                                       ]));
         
         return new Budge($planned->first()->planned_sum, true);
     }
 
     public function getMonthlyPlanned() : Budge
     {
-        $monthlyPlanned = collect(DB::select('SELECT monthly_planned FROM months WHERE months.id = :month_id', ['month_id' => $this->month->id]));
+        $monthlyPlanned = collect(DB::select('SELECT monthly_planned FROM months  
+                                              WHERE months.id = :month_id', [
+                                                  'month_id' => $this->month->id
+                                              ]));
 
         return new Budge($monthlyPlanned->first()->monthly_planned, true);
-    
     }
 }
