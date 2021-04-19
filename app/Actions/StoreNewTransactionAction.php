@@ -62,13 +62,11 @@ class StoreNewTransactionAction extends Action
     public function getSpent() : Budge
     {
         return new Budge($this->spent);
-    
     }
 
     public function getPlannedFromItem($item) : Budge
     {
         return new Budge($item->planned, true);
-    
     }
 
     public function getTransactionsSpentFromItem($item) : Budge

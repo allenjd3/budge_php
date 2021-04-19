@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CsvImport;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
@@ -39,7 +40,13 @@ class Team extends JetstreamTeam
         'deleted' => TeamDeleted::class,
     ];
 
-    public function months() {
+    public function months()
+    {
         return $this->hasMany(Month::class);
+    }
+
+    public function csvimports()
+    {
+        return $this->hasMany(CsvImport::class);
     }
 }

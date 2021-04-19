@@ -9,12 +9,17 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    public function month() {
+    protected $fillable = ['name', 'spent', 'spent_date', 'item_id', 'month_id'];
+
+    protected $dates = ['spent_date'];
+
+    public function month()
+    {
         return $this->belongsTo(Month::class);
     }
 
-    public function item() {
+    public function item()
+    {
         return $this->belongsTo(Item::class);
-    
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Actions;
 
+use Carbon\Carbon;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Lorisleiva\Actions\Action;
 
@@ -24,7 +26,9 @@ class StoreImportTransactionsAction extends Action
      */
     public function rules()
     {
-        return [];
+        return [
+            'csvimport'=>'required|mimes:csv,txt'
+        ];
     }
 
     /**
@@ -34,11 +38,21 @@ class StoreImportTransactionsAction extends Action
      */
     public function handle(Request $request)
     {
-        
-        if ($request->file('csvimport')->store('temp')) {
-            return [$message => 'success'];
+        $csv_path = $request->file('csvimport')->store('temp');
+
+        $request->user()->currentTeam->csvimports()->create([
+            'file_path'=> $csv_path,
+            'delete_by'=> Carbon::now()->addDays(1),
+        ]);
+        $csvimports = $request->user()->currentTeam->csvimports()->get();
+        if ($csv_path) {
+            return Inertia::render('ImportTransactions', [
+                'message'=>'Successfully added new transactions',
+                'month' => $this->month,
+                'csvimports'=> $csvimports
+            ]);
         } else {
-            return [$message => 'error'];
+            return ['message' => 'error'];
         }
     }
 }

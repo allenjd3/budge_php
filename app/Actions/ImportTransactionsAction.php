@@ -43,11 +43,13 @@ class ImportTransactionsAction extends Action
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(Request $request)
     {
 
+        $csvimports = $request->user()->currentTeam->csvimports()->get();
         return Inertia::render('ImportTransactions', [
-            'month' => $this->month
+            'month' => $this->month,
+            'csvimports'=> $csvimports
         ]);
     }
 }
