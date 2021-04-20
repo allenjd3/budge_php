@@ -78,6 +78,7 @@
                         <template v-if="filter">
                             <item-component :name=" ( transactions.data[0] ).item.name" :planned="( transactions.data[0] ).item.planned" :spent="( transactions.data[0] ).item.remaining" @toggleModal="createModifyItem(( transactions.data[0] ).item)"/>
                         </template>
+                        <a :href="`/month/${month.id}/transactions/import`" class="inline-block flex justify-center items-center bg-indigo-500 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600">Import CSV transactions</a>
                     </div>
                 </div>
             </div>
@@ -101,7 +102,7 @@
                                 <td class="border p-2 font-bold cursor-pointer" @click.prevent="transactionEdit(transaction)">{{transaction.name}}</td>
                                 <td class="border p-2 font-bold">{{formattedSpent(transaction.spent)}}</td>
                                 <td class="border p-2 font-bold">{{transaction.item.name}}</td>
-                                <td class="border p-2 font-bold">{{transaction.spent_date}}</td>
+                                <td class="border p-2 font-bold">{{( new Date(transaction.spent_date) ).toLocaleString().split(',')[0]}}</td>
                                 <td class="border p-2 font-bold"><a href="" @click.prevent="deleteTransaction(transaction.id)" class="font-bold text-red-400">Delete</a></td>
                             </tr>
                         </table>

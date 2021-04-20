@@ -63,12 +63,10 @@ class UpdateItemAction extends Action
     public function getPlanned() : Budge
     {
         return new Budge($this->planned);
-    
     }
 
     public function getTransactionsFromItem($item) : Budge
     {
         return new Budge($item->transactions->sum('spent'), true);
-    
     }
 }

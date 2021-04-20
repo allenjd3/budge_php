@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use Inertia\Inertia;
 use App\Models\Month;
+use App\BudgeIt\Budge;
 use App\Models\CsvImport;
 use Maatwebsite\Excel\Excel;
 use Lorisleiva\Actions\Action;
@@ -42,13 +43,27 @@ class ConfirmParseTransactionImport extends Action
         $month = Month::find($this->month);
         $itemFirst = $month->items()->first();
 
-        $csvArray = (new TransactionImport(
+        (new TransactionImport(
             $month,
             $itemFirst
         ))->import($csv->file_path, 'local', Excel::CSV);
 
-        return Inertia::render('CreateTransactionByMonthAction', [
-            'month' => $month
-        ]);
+        
+        $itemFirst->remaining = $this->getPlanned($itemFirst)
+                                ->subBudge($this->getTransactionsFromItem($itemFirst))
+                                ->getInteger();
+        $itemFirst->save();
+
+        return redirect("/create-transaction/$month->id");
+    }
+
+    public function getPlanned($item) : Budge
+    {
+        return new Budge($item->planned, true);
+    }
+
+    public function getTransactionsFromItem($item) : Budge
+    {
+        return new Budge($item->transactions->sum('spent'), true);
     }
 }

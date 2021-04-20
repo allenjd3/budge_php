@@ -1,35 +1,33 @@
 <?php
 
 namespace App\BudgeIt;
+
 use App\Exceptions\InvalidArgumentException;
 
-class Budge {
+class Budge
+{
     private $value;
 
     public function __construct($input, $isInt = false)
     {
-        if(!is_numeric($input)) {
-            if(is_null($input)) {
+        if (!is_numeric($input)) {
+            if (is_null($input)) {
                 $this->value = 0;
-            }
-            else {
+            } else {
                 throw new InvalidArgumentException;
-            
             }
         }
-        if($isInt) {
+        if ($isInt) {
             $this->value = $input;
             return;
         }
 
         $this->value = (int) bcmul($input, 100);
-    
     }
 
     public function getInteger() : int
     {
         return $this->value;
-    
     }
 
     public function getString() : String
@@ -52,6 +50,4 @@ class Budge {
 
         return $this;
     }
-
-
 }
