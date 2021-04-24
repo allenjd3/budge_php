@@ -9,9 +9,19 @@
             <div class="pt-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white shadow-xl sm:rounded-lg py-8 px-2">
-                        <div v-for="transaction in transactions" :key="transaction.id">
-                            <transaction-category-component :name="transaction.name" :spent="transaction.spent" :spent_date="transaction.spent_date" :items="items" :monthId="month.id" :transactionId="transaction.id" v-on:removeTransaction="removeTransaction(transaction.id)"></transaction-category-component>
-                        </div>
+                        <template v-if="transactions.length > 0">
+                            <div  v-for="transaction in transactions" :key="transaction.id">
+                                <transaction-category-component :name="transaction.name" :spent="transaction.spent" :spent_date="transaction.spent_date" :items="items" :monthId="month.id" :transactionId="transaction.id" v-on:removeTransaction="removeTransaction(transaction.id)"></transaction-category-component>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="text-xl m-4">
+                                No current Transactions
+                            </div>
+                            <div class="flex items-center">
+                                <a :href="`/dashboard/${month.id}`" class="block px-4 py-2 bg-gray-800 text-gray-100 mx-2">Dashboard</a><a :href="`/create-transaction/${month.id}`" class="px-4 py-2 block bg-gray-800 text-gray-100 mx-2">View Transactions</a>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -32,6 +42,9 @@ export default {
 
     },
     props : ['transactions', 'items', 'month'],
+    mounted(){
+        console.log(this.transactions.length)
+    },
     methods : {
         removeTransaction(id) {
             this.$delete(this.transactions, id )
