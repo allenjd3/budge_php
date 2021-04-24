@@ -11,22 +11,23 @@ class Month extends Model
 
     protected $fillable = ['month','year'];
 
-    public function categories() {
+    public function categories()
+    {
         return $this->hasMany(Category::class);
     }
 
-    public function items() {
+    public function items()
+    {
         return $this->hasMany(Item::class);
-    
     }
 
-    public function transactions() {
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class);
     }
 
-    public function paychecks() {
+    public function paychecks()
+    {
         return $this->hasMany(Paycheck::class);
     }
-
-
 }

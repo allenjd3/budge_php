@@ -75,6 +75,5 @@ class UpdateTransactionAction extends Action
     public function getTransactionsSum() : Budge
     {
         return new Budge($this->item->transactions->sum('spent'));
-    
     }
 }

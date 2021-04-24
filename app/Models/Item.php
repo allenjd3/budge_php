@@ -9,18 +9,20 @@ class Item extends Model
 {
     use HasFactory;
 
-    public function transactions() {
+    protected $fillable = ['name', 'month_id', 'planned', 'remaining', 'is_fund'];
+
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class);
     }
 
-    public function month() {
+    public function month()
+    {
         return $this->belongsTo(Month::class);
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
-
-
-    
 }

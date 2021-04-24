@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use Inertia\Inertia;
 use App\Models\Month;
 use App\BudgeIt\Budge;
 use App\Models\CsvImport;
@@ -41,18 +40,24 @@ class ConfirmParseTransactionImport extends Action
     {
         $csv = CsvImport::find($this->csvimport);
         $month = Month::find($this->month);
-        $itemFirst = $month->items()->first();
+        $itemCategory = $month->categories()->first();
+        
+        $itemDefault = $itemCategory->items()->firstOrCreate([
+            'name' => 'Transaction Importer',
+            'month_id' => $month->id,
+            'is_fund' => 0
+            ]);
 
         (new TransactionImport(
             $month,
-            $itemFirst
+            $itemDefault
         ))->import($csv->file_path, 'local', Excel::CSV);
 
         
-        $itemFirst->remaining = $this->getPlanned($itemFirst)
-                                ->subBudge($this->getTransactionsFromItem($itemFirst))
+        $itemDefault->remaining = $this->getPlanned($itemDefault)
+                                ->subBudge($this->getTransactionsFromItem($itemDefault))
                                 ->getInteger();
-        $itemFirst->save();
+        $itemDefault->save();
 
         return redirect("/create-transaction/$month->id");
     }

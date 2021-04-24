@@ -16,6 +16,7 @@ use App\Actions\ParseTransactionImport;
 use App\Actions\DeleteTransactionAction;
 use App\Actions\UpdateTransactionAction;
 use App\Actions\ImportTransactionsAction;
+use App\Actions\SortImportedTransactions;
 use App\Actions\StoreNewTransactionAction;
 use App\Actions\ModifyMonthlyPlannedAction;
 use App\Actions\ShowDashboardByMonthAction;
@@ -25,6 +26,7 @@ use App\Actions\DeleteImportTransactionAction;
 use App\Actions\StoreImportTransactionsAction;
 use App\Actions\CreateTransactionByMonthAction;
 use App\Actions\QueryMonthByMonthAndYearAction;
+use App\Actions\UpdateSortImportedTransactions;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +64,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/month/{month}/transactions/import/{csvimport}', ParseTransactionImport::class);
 
     Route::get('/month/{month}/transactions/import/{csvimport}/confirm', ConfirmParseTransactionImport::class);
+
+    Route::get('/month/{month}/transactions/sort', SortImportedTransactions::class);
+
+    Route::put('/month/{month}/transactions/sort', UpdateSortImportedTransactions::class);
 
     Route::delete('/month/{month}/transactions/import/{csvimport}/delete', DeleteImportTransactionAction::class);
 

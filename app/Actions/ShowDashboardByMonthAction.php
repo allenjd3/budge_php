@@ -87,8 +87,8 @@ class ShowDashboardByMonthAction extends Action
         
         $transactions = collect(DB::select('SELECT SUM(spent) spent_sum FROM items 
                                             LEFT JOIN transactions ON items.id = transactions.item_id 
-                                            WHERE items.month_id = :month_id AND items.is_fund = false', [
-                                                'month_id' => $this->month->id
+                                            WHERE items.month_id = :month_id AND items.is_fund IS FALSE', [
+                                                "month_id" => $this->month->id
                                             ]));
 
         return new Budge($transactions->first()->spent_sum, true);
@@ -99,7 +99,7 @@ class ShowDashboardByMonthAction extends Action
         
         $fund_planned = collect(DB::select('SELECT SUM(fund_planned) fund_planned_sum FROM items 
                                             WHERE items.month_id = :month_id 
-                                            AND items.is_fund = true', [
+                                            AND items.is_fund IS true', [
                                                 'month_id' => $this->month->id
                                             ]));
 
