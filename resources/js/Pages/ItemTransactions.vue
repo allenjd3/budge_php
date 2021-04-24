@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <template v-if="filter">
-                            <item-component :name=" ( transactions.data[0] ).item.name" :planned="( transactions.data[0] ).item.planned" :spent="( transactions.data[0] ).item.remaining" @toggleModal="createModifyItem(( transactions.data[0] ).item)"/>
+                            <item-filter-component :name=" ( transactions.data[0] ).item.name" :planned="( transactions.data[0] ).item.planned" :spent="( transactions.data[0] ).item.remaining" @toggleModal="createModifyItem(( transactions.data[0] ).item)"/>
                         </template>
                         <a :href="`/month/${month.id}/transactions/import`" class="inline-block flex justify-center items-center bg-indigo-500 text-white font-bold h-10 w-full md:w-64 rounded-lg hover:bg-indigo-600">Import CSV transactions</a>
                     </div>
@@ -122,11 +122,11 @@
 import AppLayout from "./../Layouts/AppLayout";
 import {Inertia} from "@inertiajs/inertia";
 import 'vue-select/dist/vue-select.css';
-import ItemComponent from "./../Components/ItemComponent";
+import ItemFilterComponent from "./../Components/ItemFilterComponent";
 export default {
     components: {
         AppLayout,
-        ItemComponent
+        ItemFilterComponent
     },
     props: { 
         month : Object, 

@@ -19,7 +19,7 @@
                                 No current Transactions
                             </div>
                             <div class="flex items-center">
-                                <a :href="`/dashboard/${month.id}`" class="block px-4 py-2 bg-gray-800 text-gray-100 mx-2">Dashboard</a><a :href="`/create-transaction/${month.id}`" class="px-4 py-2 block bg-gray-800 text-gray-100 mx-2">View Transactions</a>
+                                <inertia-link :href="`/dashboard/${month.id}`" class="block px-4 py-2 bg-gray-800 text-gray-100 mx-2">Dashboard</inertia-link><inertia-link :href="`/create-transaction/${month.id}`" class="px-4 py-2 block bg-gray-800 text-gray-100 mx-2">View Transactions</inertia-link>
                             </div>
                         </template>
                     </div>
