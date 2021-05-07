@@ -5,11 +5,11 @@ Budge app is an open source budgeting application that takes the annoyance out o
 ## Table of Contents
 
 - [Installation](#installation)
-- [Overview](#overview)
-- [Funds](#funds)
-- [Transactions](#transactions)
-- [Creating a New Month](#creating-a-new-month)
-- [Teams](#teams)
+- [Overview](#1-overview)
+- [Funds](#2-funds)
+- [Transactions](#3-transactions)
+- [Creating a New Month](#4-creating-a-new-month)
+- [Teams](#5-teams)
 
 ## Installation
 
