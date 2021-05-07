@@ -6,6 +6,7 @@ Budge app is an open source budgeting application that takes the annoyance out o
 
 [Installation](https://github.com/allenjd3/budge_php#Installation)
 
+## Installation
 
 #### 1. Clone repo
 
