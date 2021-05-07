@@ -70,7 +70,7 @@ You can also filter transactions by item type. Select the item in the drop down 
 
 #### 4. Creating a New Month
 
-Creating a new month after you already have a month is as easy as selecting one from the drop down menus on the dashboard that you haven't created yet. It will take you to the create new month pane. If you would like to copy over information from a previous month, select it from the dropdown and click **Create New Month***
+Creating a new month after you already have a month is as easy as selecting one from the drop down menus on the dashboard that you haven't created yet. It will take you to the create new month pane. If you would like to copy over information from a previous month, select it from the dropdown and click **Create New Month**
 
 If you select a month that already exists, you will jump to that month.
 
