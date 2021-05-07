@@ -63,7 +63,9 @@ The Paid widget is on the right side of the page when you create a new month. Th
 
 #### 2. Funds
 
-A fund is like its own little bank account. When you create a new item, you have the option to make it a fund. If you do this, you will have a new text box to enter your "Fund per Month" This is a flat amount that will get charged to the paid widget. Any transactions that you assign to a fund is not subtracted from your total. If you spend less than your fund amount, it will be rolled over to the next month. If you spend more than your fund amount the negative value will be rolled over to the next month. This is a way to plan savings for certain items. 
+A fund is like its own little bank account. When you create a new item, you have the option to make it a fund. Once clicked, you will have a new text box to enter your "Fund per Month". This is what you are planning to pay to the fund this month. It is also the monthly charge that will be subtracted from the paid widget. 
+
+Unlike other items, transactions that you assign to a fund item are not subtracted from your total paid. If you spend less than your fund amount, it will be rolled over to the next month. If you spend more than your fund amount the negative value will be rolled over to the next month. 
 
 #### 3. Transactions
 
