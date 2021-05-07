@@ -30,13 +30,7 @@ composer install
 npm install && npm run dev
 ```
 
-#### 3. Generate Key
-
-```
-php artisan key:generate
-```
-
-#### 4. Set up DB
+#### 3. Set up DB
 
 ```
 cp .env.example .env
@@ -49,6 +43,13 @@ touch database/database.sqlite
 
 php artisan migrate
 ```
+
+#### 4. Generate Key
+
+```
+php artisan key:generate
+```
+
 
 ## Features
 
